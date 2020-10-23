@@ -42,7 +42,7 @@ project/.sbtserver
 .sonar/
 
 # Application log
-sudoku.log
+caro.log
 
 # Application backup
 grid.json
