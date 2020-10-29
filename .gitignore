@@ -42,7 +42,6 @@ project/.sbtserver
 .sonar/
 
 # Application log
-caro.log
 
 # Application backup
 grid.json
