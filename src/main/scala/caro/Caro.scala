@@ -8,4 +8,5 @@ object Caro {
     val student = Player("Ying and Rebecca")
     println("Hello, " + student.name)
   }
+
 }
