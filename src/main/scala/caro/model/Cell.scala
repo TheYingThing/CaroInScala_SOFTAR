@@ -1,24 +1,22 @@
 package caro.model
 
-case class Cell() {
-  var occupied: Boolean = false
-  var tile: Tile = _
-  var left: Tile = _
-  var right: Tile = _
-  var up: Tile = _
-  var down: Tile = _
+case class Cell(occupied:Boolean, tile:Option[Tile], left:Option[Cell],
+                right:Option[Cell], up:Option[Cell], down:Option[Cell]) {
 
   def isOccupied: Boolean = occupied
   def putTile(t: Tile): Int = {
     if(isOccupied) {
       -1
     } else {
-      occupied = true
-      tile = t
+      copy(occupied = true, Some(t), left, right, up, down)
       0
     }
   }
-  def getTile: Tile = tile
-
+  def getTile: String = {
+    tile match {
+      case Some(t) => t.getColor
+      case None => "not occupied"
+    }
+  }
 }
 
