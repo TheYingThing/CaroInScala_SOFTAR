@@ -1,6 +1,6 @@
-package caro
+package caro.aview
 
-import model._
+import caro.model.{Board, Cell, Tile}
 
 class ScalaTui {
   def processInputLine(input: String, board:Board): Board = {

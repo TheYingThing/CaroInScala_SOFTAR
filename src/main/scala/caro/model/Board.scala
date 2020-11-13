@@ -1,7 +1,7 @@
 package caro.model
 
 
-case class Board (board:Vector[Vector[Cell]] = Vector.fill(13, 13)(new Cell(None))) {
+case class Board (board:Vector[Vector[Cell]] = Vector.fill(13, 13)(Cell(None))) {
   //def this(size:Int, contents:Cell) = this(Vector.tabulate(size, size){(row, col) => contents})
   val size:Int = board.size
   def getCell(row:Int, col:Int):Cell = board (row)(col)
