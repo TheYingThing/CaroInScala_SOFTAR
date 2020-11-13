@@ -1,6 +1,6 @@
 package caro
 
-import caro.model.Player
+import caro.model._
 
 object Caro {
   def main(args: Array[String]): Unit = {

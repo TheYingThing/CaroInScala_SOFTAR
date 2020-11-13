@@ -1,4 +1,4 @@
-
+import caro.model.Tile
 
 //Ab hier aber richtig
 
@@ -69,3 +69,39 @@ for(i<-0 to 5) {
       printf("_______ ")
   }
 }
+
+case class Board[T] (cells:Vector[Vector[T]]) {
+  def this(size:Int, contents:T) = this(Vector.tabulate(size, size){(row, col) => contents})
+  val size:Int = cells.size
+  def getCell(row:Int, col:Int):T = cells (row)(col)
+  def replaceCell(row:Int, col:Int, cell:T):Board[T] = copy(cells.updated(row, cells(row).updated(col, cell)))
+  def fill(contents:T):Board[T] = copy (Vector.tabulate(size, size){(row, col) => contents})
+}
+
+
+
+case class CellFunc(occupied:Boolean, tile:Option[Tile]) {
+
+  def isOccupied: Boolean = occupied
+  def putTile(t: Tile): CellFunc = copy(occupied = true, Some(t))
+
+  def getTile: String = {
+    tile match {
+      case Some(t) => t.getColor
+      case None => "not occupied"
+    }
+  }
+}
+
+val cell2 = CellFunc(occupied = false, None)
+val cell3 = CellFunc(occupied = true, tile = Some(redTile))
+
+val testBoard = Board(Vector(Vector(cell2, cell3)))
+
+testBoard.cells(0)(1).getTile
+
+val originalCell = CellFunc(false, None)
+originalCell.getTile
+
+val newCell = originalCell.putTile(redTile)
+newCell.getTile
