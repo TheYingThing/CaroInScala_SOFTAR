@@ -12,28 +12,33 @@ class Rules(board:Board){
   def getLowerLeft(row:Int, col:Int):Cell = board.getCell(row + 1, col - 1)
   def getLowerRight(row:Int, col:Int):Cell = board.getCell(row + 1, col + 1)
 
+  def allRules(row:Int, col:Int, cell:Cell):Boolean = {
+    return sameColor(col, row, cell) && onEdge(row, col) && diagonal(row, col, cell) && maxColor(row, col , cell)
+      && maxField(row, col)
+
+  }
 
   def sameColor(row:Int, col:Int, cell:Cell):Boolean = {
     if (getRight(row, col).isOccupied) {
       if (getRight(row, col).getColor.equals(cell.getColor)) {
-        return true
+        return false
       }
     } else if(getLeft(row,col).isOccupied) {
       if(getLeft(row, col).getColor.equals(cell.getColor)) {
-        return true
+        return false
       }
     } else if(getOver(row,col).isOccupied) {
       if(getOver(row, col).getColor.equals(cell.getColor)) {
-        return true
+        return false
       }
     } else if(getUnder(row,col).isOccupied) {
       if(getUnder(row,col).getColor.equals(cell.getColor)) {
-        return true
+        return false
       }
     }
-     false
+     true
   }
-
+//return true when placed next to already placed tile
   def onEdge(row:Int, col:Int):Boolean = {
      if (getRight(row, col).isOccupied) {
       return true
@@ -46,7 +51,7 @@ class Rules(board:Board){
     }
     false
   }
-
+//return true when diagonal is not full
   def diagonal(row:Int, col:Int, cell:Cell):Boolean ={
     var counterDiag1:Int = 0
     var counterDiag2:Int = 0
@@ -95,11 +100,11 @@ class Rules(board:Board){
     }
     false
   }
-
+//returns true when tile can be laid
   def maxColor(row:Int, col:Int, cell:Cell):Boolean = {
     twoColor(row-1, col, cell)&&twoColor(row+1, col, cell)&&twoColor(row, col+1, cell)&&twoColor(row, col-1, cell)
   }
-
+//return true when less than tow of same color
   def twoColor(row:Int, col:Int, cell:Cell):Boolean = {
     var counter:Int = 0
     if (getOver(row, col).getColor == cell.getColor)
@@ -110,15 +115,17 @@ class Rules(board:Board){
       counter += 1
     if (getRight(row, col).getColor == cell.getColor)
       counter += 1
-    counter >= 2
+    counter < 2
   }
-
+//return true when able to place new tile
   def maxField(row:Int, col:Int):Boolean = {
     if(board.getHeight == maxSize && board.rowEmpty(row))
-      return true
+      return false
     if(board.getWidth == maxSize && board.colEmpty(col))
-      return true
-    false
+      return false
+    true
   }
+
+
 
 }
