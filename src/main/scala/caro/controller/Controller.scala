@@ -14,9 +14,11 @@ class Controller(var board:Board) extends Observable {
   def boardToString: String = board.toString
 
   def putCell(row: Int, col: Int, color:String):Unit = {
+    if(rule.allRules(row, col, color)) {
+      board = board.replaceCell(row, col, color)
+      notifyObservers
+    }
 
-    board = board.replaceCell(row, col, color)
-    notifyObservers
   }
 
 
