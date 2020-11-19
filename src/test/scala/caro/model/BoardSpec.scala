@@ -1,10 +1,8 @@
-package caro
-
-import caro.model._
+package caro.model
 
 import org.scalatest._
-import wordspec._
-import matchers._
+import org.scalatest.matchers._
+import org.scalatest.wordspec._
 
 
 class BoardSpec extends AnyWordSpec with should.Matchers {
@@ -12,20 +10,19 @@ class BoardSpec extends AnyWordSpec with should.Matchers {
   "A Board is a two-dimensional Vector that contains Cells as the playingfield. A Board" when {
     "being created" should {
       val emptyBoard = Board()
-      val redTile = Tile("red")
-      val cell1 = Cell(Some(redTile))
+      val redCell = Cell(Some("red"), None, None, None, None)
       "be filled with empty Cells" in {
 
-        emptyBoard.board(1)(1) should be(Cell(None))
-        emptyBoard.board(3)(5) should be(Cell(None))
+        emptyBoard.getCell(1, 1).getColor should be("not occupied")
+        emptyBoard.getCell(3, 5).getColor should be("not occupied")
       }
       "have size 13" in {
         emptyBoard.size should be (13)
       }
       "be able to replace empty Cells with filled Cells and return new Board" in {
-        val newBoard = emptyBoard.replaceCell(1,1, cell1)
-        emptyBoard.board(1)(1) should be(Cell(None))
-        newBoard.board(1)(1) should be (Cell(Some(Tile("red"))))
+        val newBoard = emptyBoard.replaceCell(1,1, "red")
+        emptyBoard.getCell(1, 1).getColor should be("not occupied")
+        newBoard.getCell(1, 1).getColor should be ("red")
       }
     }
     "filled with " should {
@@ -37,13 +34,13 @@ class BoardSpec extends AnyWordSpec with should.Matchers {
       val whiteTile = Tile("white")
       val grayTile = Tile("gray")
 
-      val board1 = testBoard.replaceCell(2,4, Cell(Some(redTile)))
-      val board2 = board1.replaceCell(1,4, Cell(Some(blackTile)))
-      val board3 = board2.replaceCell(2,5,Cell(Some(grayTile)))
-      val board4 = board3.replaceCell(1,3,Cell(Some(whiteTile)))
+      val board1 = testBoard.replaceCell(2,4, "red")
+      val board2 = board1.replaceCell(1,4, "black")
+      val board3 = board2.replaceCell(2,5, "grey")
+      val board4 = board3.replaceCell(1,3, "white")
 
       "return the Cell at index" in {
-        board4.getCell(2,4) should be (Cell(Some(Tile("red"))))
+        board4.getCell(2,4).getColor should be ("red")
 
       }
       "be able to print current state as String" in {

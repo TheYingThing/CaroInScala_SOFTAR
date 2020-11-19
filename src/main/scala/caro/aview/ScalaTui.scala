@@ -8,7 +8,13 @@ class ScalaTui {
       case "board" => board
       case "new" => new Board
       case _ => input.split(" ").toList match {
-        case row::column::color::Nil => board.replaceCell(row.toInt - 1 , column.toInt - 1, Cell(Some(Tile(color))))
+        case first::color::Nil =>
+          if (first.equals("first")) {
+            board.replaceCell(6, 6, color)
+          } else {
+            board
+          }
+        case row::column::color::Nil => board.replaceCell(row.toInt - 1 , column.toInt - 1, color)
         case _ => board
       }
     }
