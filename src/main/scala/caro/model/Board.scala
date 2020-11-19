@@ -20,10 +20,6 @@ case class Board (board:Vector[Vector[Cell]] = Vector.fill(13, 13)(Cell(None)), 
   }
 
   def replaceCell(row:Int, col:Int, color:String):Board = {
-    val up = getCell(row-1, col)
-    val down = getCell(row+1, col)
-    val left = getCell(row, col-1)
-    val right = getCell(row, col+1)
     if(this.getCell(row, col).getColor != color) {
       this
     } else {
