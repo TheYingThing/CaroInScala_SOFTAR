@@ -8,4 +8,5 @@ case class Player(name: String) {
   val white = 3
 
   override def toString:String = name
+  val score:Int = 0
 }

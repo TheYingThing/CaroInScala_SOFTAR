@@ -8,7 +8,7 @@ class ScalaTui {
       case "board" => board
       case "new" => new Board
       case _ => input.split(" ").toList match {
-        case row::column::color::Nil => board.replaceCell(row.toInt - 1 , column.toInt - 1, Cell(Some(Tile(color))))
+        case row::column::color::Nil => board.replaceCell(row.toInt - 1 , column.toInt - 1, Cell(Some(color)))
         case _ => board
       }
     }

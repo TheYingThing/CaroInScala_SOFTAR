@@ -1,15 +1,13 @@
-package caro
-
-import caro.model._
+package caro.model
 
 import org.scalatest._
-import wordspec._
-import matchers._
+import org.scalatest.matchers._
+import org.scalatest.wordspec._
 
 class PlayerSpec extends AnyWordSpec with should.Matchers {
 
   "A Player" when {
-    "being created" should {
+    "new" should {
       val player = Player("A name")
       "have a name" in {
         player.name should be("A name")
