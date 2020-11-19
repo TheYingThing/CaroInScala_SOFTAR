@@ -10,15 +10,13 @@ class BoardSpec extends AnyWordSpec with should.Matchers {
   "A Board is a two-dimensional Vector that contains Cells as the playingfield. A Board" when {
     "being created" should {
       val emptyBoard = Board()
-      val redCell = Cell(Some("red"), None, None, None, None)
+      val redCell = Cell(Some("red"))
       "be filled with empty Cells" in {
 
         emptyBoard.getCell(1, 1).getColor should be("not occupied")
         emptyBoard.getCell(3, 5).getColor should be("not occupied")
       }
-      "have size 13" in {
-        emptyBoard.size should be (13)
-      }
+
       "be able to replace empty Cells with filled Cells and return new Board" in {
         val newBoard = emptyBoard.replaceCell(1,1, "red")
         emptyBoard.getCell(1, 1).getColor should be("not occupied")

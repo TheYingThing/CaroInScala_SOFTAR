@@ -1,7 +1,7 @@
 package caro.model
 
 
-case class Board (board:Vector[Vector[Cell]] = Vector.fill(13, 13)(Cell(None, None, None, None, None)), width:Int=0,
+case class Board (board:Vector[Vector[Cell]] = Vector.fill(13, 13)(Cell(None)), width:Int=0,
                   height:Int=0) {
 
   def getCell(row:Int, col:Int):Cell = board (row)(col)
@@ -27,7 +27,7 @@ case class Board (board:Vector[Vector[Cell]] = Vector.fill(13, 13)(Cell(None, No
     if(this.getCell(row, col).getColor != color) {
       this
     } else {
-      val cell = Cell(Some(color), Some(right), Some(left), Some(up), Some(down))
+      val cell = Cell(Some(color))
       var newWidth = 0
       var newHeight = 0
       if(rowEmpty(row)&&colEmpty(col)) {

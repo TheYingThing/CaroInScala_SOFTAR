@@ -9,7 +9,7 @@ class CellSpec extends AnyWordSpec with should.Matchers {
 
   "A Cell" when {
     "no Color set" should {
-      val emptyCell = Cell(None, None, None, None, None)
+      val emptyCell = Cell(None)
       "have not be occupied" in {
         emptyCell.getColor should  be("not occupied")
       }
@@ -23,7 +23,7 @@ class CellSpec extends AnyWordSpec with should.Matchers {
       }
     }
     "a Tile is set" should {
-      val filledCell = Cell(Some("red"), None, None, None, None)
+      val filledCell = Cell(Some("red"))
       "return that Tile" in {
         filledCell.getColor should be("red")
       }
