@@ -1,9 +1,24 @@
 package caro.model
 
 
-case class Board (board:Vector[Vector[Cell]] = Vector.fill(13, 13)(Cell(None, None, None, None, None))) {
-  val size:Int = board.size
+case class Board (board:Vector[Vector[Cell]] = Vector.fill(13, 13)(Cell(None, None, None, None, None)), width:Int=0,
+                  height:Int=0) {
+
   def getCell(row:Int, col:Int):Cell = board (row)(col)
+  def getWidth:Int = width
+  def getHeight:Int = height
+  def rowEmpty(row:Int):Boolean = {
+    for(i<-0 to 12)
+      return !getCell(row, i).isOccupied
+    true
+  }
+
+  def colEmpty(col:Int):Boolean = {
+    for (i<-0 to 12)
+      return !getCell(i, col).isOccupied
+    true
+  }
+
   def replaceCell(row:Int, col:Int, color:String):Board = {
     val up = getCell(row-1, col)
     val down = getCell(row+1, col)
@@ -13,13 +28,20 @@ case class Board (board:Vector[Vector[Cell]] = Vector.fill(13, 13)(Cell(None, No
       this
     } else {
       val cell = Cell(Some(color), Some(right), Some(left), Some(up), Some(down))
-      copy(board.updated(row, board(row).updated(col, cell)))
+      var newWidth = 0
+      var newHeight = 0
+      if(rowEmpty(row)&&colEmpty(col)) {
+        newHeight = 1
+        newWidth = 1
+      } else if(colEmpty(col)) {
+        newWidth = getWidth + 1
+      } else if(rowEmpty(row)) {
+        newHeight = getHeight + 1
+      }
+      copy(board.updated(row, board(row).updated(col, cell)), width = newWidth, height = newHeight)
     }
   }
-  //def setNeighbors(row:Int, col:Int):Board = {
-  //def edgeOfBoard(cell:Cell):Boolean = {
 
-  //}
   override def toString: String = {
     var output = ""
     val box = " |___|"

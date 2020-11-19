@@ -38,12 +38,6 @@ object Caro {
       board = tui.processInputLine(input, board)
     } while(input != "quit")
 
-    println("Cell: " + board.getCell(5, 5).getColor)
-    println("Right " + board.getCell(5, 5).getRight)
-    println("Left: " + board.getCell(5, 5).getLeft)
-    println("Up: " + board.getCell(5, 5).getUp)
-    println("Down: " + board.getCell(5, 5).getDown)
-
   }
 
 }
