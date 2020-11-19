@@ -13,10 +13,6 @@ case class Board (board:Vector[Vector[Cell]] = Vector.fill(13, 13)(Cell(None, No
       this
     } else {
       val cell = Cell(Some(color), Some(right), Some(left), Some(up), Some(down))
-      this.replaceCell(row-1, col, up.getColor)
-      this.replaceCell(row+1, col, down.getColor)
-      this.replaceCell(row, col-1, left.getColor)
-      this.replaceCell(row, col+1, right.getColor)
       copy(board.updated(row, board(row).updated(col, cell)))
     }
   }
