@@ -1,13 +1,16 @@
 package caro
 
 import caro.aview.ScalaTui
+import caro.controller.Controller
 import caro.model._
 
 import scala.io.StdIn.readLine
 
 object Caro {
   var board = new Board
-  val tui = new ScalaTui
+  val controller = new Controller(board)
+  val tui = new ScalaTui(controller)
+
   def main(args: Array[String]): Unit = {
     println("Welcome to Caro!\nPlayer 1, please enter your name: ")
     val name1: String = readLine()
@@ -32,10 +35,9 @@ object Caro {
 
     do {
 
-      println("\nCurrent Board State:" + board.toString)
       printf("Enter your command: \n")
       input = readLine()
-      board = tui.processInputLine(input, board)
+      tui.processInputLine(input)
     } while(input != "quit")
 
   }

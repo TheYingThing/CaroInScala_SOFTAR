@@ -1,26 +1,36 @@
 package caro.aview
 
+import caro.controller
+import caro.controller.Controller
 import caro.model._
-import org.scalatest._
 import org.scalatest.matchers._
 import org.scalatest.wordspec._
 
 class ScalaTuiSpec extends AnyWordSpec with should.Matchers{
 
   "A Caro Tui" should {
-    val tui = new ScalaTui()
     val board = new Board()
+    val cont = new Controller(board)
+    val tui = new ScalaTui(cont)
+
     "print the board on input 'board" in {
-      tui.processInputLine("board", board) should be(board)
+      tui.processInputLine("board")
+      cont.board should be(board)
     }
+
     "create a new board on input 'new'" in {
-      tui.processInputLine("new", board) should be(new Board())
+      tui.processInputLine("new")
+      cont.board should be(new Board())
     }
-    "set a tile on input '4 5 red'" in {
-      tui.processInputLine("4 5 red", board).getCell(3, 4) should be ("red")
+
+    "set a tile on input 'first red'" in {
+      tui.processInputLine("first red")
+      cont.board.getCell(6, 6).getColor should be ("red")
     }
-    "not set a tile on input 'red'" in {
-      tui.processInputLine("red", board) should be(board)
+
+    "set a tile on input '7 8 black'" in {
+      tui.processInputLine("7 8 black")
+      cont.board.getCell(6, 7).getColor should be("black")
     }
    }
 }

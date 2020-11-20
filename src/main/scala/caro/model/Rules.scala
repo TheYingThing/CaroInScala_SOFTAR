@@ -21,21 +21,15 @@ class Rules(board:Board){
 
   //returns true when tile can be laid
   def sameColor(row:Int, col:Int, color:String):Boolean = {
-
-      if (getRight(row, col).getColor.equals(color)) {
-         return false
-      }
-      if(getLeft(row, col).getColor.equals(color)) {
-          return false
-      }
-      if(getOver(row, col).getColor.equals(color)) {
-         return false
-      }
-      if(getUnder(row,col).getColor.equals(color)) {
-        return false
-      }
-
-     true
+    if(getRight(row, col).getColor == color)
+      return false
+    if(getLeft(row, col).getColor == color)
+      return false
+    if(getOver(row, col).getColor == color)
+      return false
+    if(getUnder(row,col).getColor == color)
+      return false
+    true
   }
 
   //returns true when tile can be laid
@@ -51,9 +45,6 @@ class Rules(board:Board){
         true
      else
        false
-
-
-
   }
 
   //returns true when tile can be laid
@@ -88,9 +79,8 @@ class Rules(board:Board){
       if(getLowerLeft(row + 1, col - 1).getColor.equals(color))
         counter2 += 1
         if(getLowerLeft(row + 2, col - 2).getColor.equals(color))
-          counter2 += 2
-
-    counter1 <=2 && counter2 <= 2
+          counter2 += 1
+    counter1 <= 2 && counter2 <= 2
   }
 
   //return true when tile can be laid
