@@ -1,10 +1,9 @@
 package caro.controller
 
-import caro.model.{Board,Cell,Rules}
+import caro.model.Board
 import caro.util.Observable
 
 class Controller(var board:Board) extends Observable {
-  var rule:Rules = new Rules(board)
 
   def newBoard():Unit = {
     board = new Board()
@@ -14,9 +13,8 @@ class Controller(var board:Board) extends Observable {
   def boardToString: String = board.toString
 
   def putCell(row: Int, col: Int, color:String):Unit = {
-    if(rule.allRules(row, col, color)) {
+    if(board.allRules(row, col, color)) {
       board = board.replaceCell(row, col, color)
-      rule = new Rules(board)
       notifyObservers
     } else {
       println("could not place cell")

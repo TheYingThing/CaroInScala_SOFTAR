@@ -26,7 +26,7 @@ object Caro {
 
     Thread.sleep(1000)
 
-    print("\nCommands:\n\t'board' - prints current board\n\t'new' - creates blank board\n\t"
+    print("\nCommands:\n\t'first <Tile color>' - start with this color tile\n\t'board' - prints current board\n\t'new' - creates blank board\n\t"
           + "'<column> <row> <Tile color> - sets tile at position\n")
 
     var input: String = ""

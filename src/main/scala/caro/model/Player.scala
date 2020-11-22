@@ -8,7 +8,7 @@ case class Player(name: String) {
   val grey = 3
   val white = 3
 
-  def getPoints:Int = points
-  def layTile(color: String):Player = this
+  //def getPoints:Int = points
+  //def layTile(color: String):Player = this
   override def toString:String = name
 }

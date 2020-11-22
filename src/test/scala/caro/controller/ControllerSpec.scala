@@ -26,7 +26,6 @@ class ControllerSpec extends AnyWordSpec with should.Matchers {
       cont2.putCell(6, 6, "black")
       cont2.putCell(10, 10, "red")
       println(cont2.boardToString)
-      println(cont2.rule.onEdge(6, 6))
       cont2.board.getCell(10, 10).getColor should be("not occupied")
     }
   }
