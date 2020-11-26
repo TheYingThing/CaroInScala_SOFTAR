@@ -1,4 +1,3 @@
-import caro.model.Tile
 
 //Ab hier aber richtig
 

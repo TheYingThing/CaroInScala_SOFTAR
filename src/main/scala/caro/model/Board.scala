@@ -1,46 +1,94 @@
 package caro.model
 
 import scala.collection.mutable.ListBuffer
+import scala.collection.immutable.ListMap
 
-
-case class Board (board:Vector[Vector[Cell]] = Vector.fill(13, 13)(Cell(None)), width:Int=0,
-                  height:Int=0) {
+case class Board (board:Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)), width:Int=0,
+                  height:Int=0, moves:Int=0, player1:Player = Player("player 1"), player2:Player = Player("player 2")) {
+  //3-15
   val maxSize:Int = 6
+
   def getCell(row:Int, col:Int):Cell = board (row)(col)
+
   def getWidth:Int = this.width
+
   def getHeight:Int = this.height
+
   def isEmpty:Boolean = {
     !(board exists(v => v exists(c => c.isOccupied)))
   }
+
   def rowEmpty(row:Int):Boolean = {
     !(board(row) exists(c => c.isOccupied))
   }
 
   def colEmpty(col:Int):Boolean = {
     var occ = true
-    for (i<-0 to 12) {
+    for (i<-3 to 15) {
       if(getCell(i, col).isOccupied)
         occ = false
     }
     return occ
   }
 
-  def replaceCell(row:Int, col:Int, color:String):Board = {
-    if(this.getCell(row, col).getColor != color && this.getCell(row, col).isOccupied) {
-      this
+  def updatePlayer(row:Int, col:Int, color:String, player:Player):Player = {
+    val oldvalue: Int = player.getTiles(color)
+    if(oldvalue == 0) {
+      println("no tiles of this color left")
+      return player
+    }
+    val ntiles = player.getTiles.updated(color, oldvalue-1)
+    val npoints = player.getPoints + newPoints(row, col, color)
+    player.copy(tiles = ntiles, points = npoints)
+
+  }
+
+  def updateWidth(col:Int):Int = {
+    val currentWidth = this.getWidth
+    var newWidth = 0
+    if (this.isEmpty || colEmpty(col)) {
+      newWidth = currentWidth +1
     } else {
-      val cell = Cell(Some(color))
-      var newWidth = this.getWidth
-      var newHeight = this.getHeight
-      if(this.isEmpty) {
-        newHeight += 1
-        newWidth += 1
-      } else if(colEmpty(col)) {
-        newWidth += 1
-      } else if(rowEmpty(row)) {
-        newHeight += 1
+      newWidth = currentWidth
+    }
+    newWidth
+  }
+  def updatedHeight(row:Int):Int = {
+    val currentHeight = this.getHeight
+    var newHeight = 0
+    if (this.isEmpty || rowEmpty(row)) {
+      newHeight = currentHeight + 1
+    } else {
+      newHeight = currentHeight
+    }
+    newHeight
+  }
+
+  def replaceCell(row:Int, col:Int, color:String):Board = {
+    if(allRules(row, col, color)){
+      if(this.getCell(row, col).getColor != color && this.getCell(row, col).isOccupied) {
+        this
+      } else {
+        var newPlayer1 = player1
+        var newPlayer2 = player2
+        if(moves%2 == 0) {
+          newPlayer1 = updatePlayer(row, col, color, player1)
+        } else {
+          newPlayer2 = updatePlayer(row, col, color, player2)
+        }
+        val cell = Cell(Some(color))
+        copy(board.updated(row, board(row).updated(col, cell)),
+          width = updateWidth(col), height = updatedHeight(row), moves = this.moves + 1,
+          player1 = newPlayer1, player2 = newPlayer2)
       }
-      copy(board.updated(row, board(row).updated(col, cell)), width = newWidth, height = newHeight)
+    } else {
+      print(row, col)
+      println("illegal move, minus 10 points")
+      if(moves%2 == 0) {
+        copy(player1 = player1.copy(points = player1.getPoints-10))
+      } else {
+        copy(player2 = player2.copy(points = player2.getPoints-10))
+      }
     }
   }
 
@@ -49,10 +97,10 @@ case class Board (board:Vector[Vector[Cell]] = Vector.fill(13, 13)(Cell(None)), 
     val box = " |___|"
     for (k<- 1 to 13)
       output = output + k.toString.padTo(6, ' ')
-    for (i<- 0 to 12) {
-      output = output + "\n" + (i+1).toString.padTo(3, ' ')
-      for (j <- 0 to 12) {
-        if (this.getCell(i, j).getColor.equals("not occupied")) {
+    for (i<- 3 to 15) {
+      output = output + "\n" + (i-2).toString.padTo(3, ' ')
+      for (j <- 3 to 15) {
+        if (this.getCell(i, j).getColor.equals("none")) {
           output = output + box
         } else {
           output = output + " " + this.getCell(i, j).getColor.padTo(5, ' ')
@@ -66,12 +114,12 @@ case class Board (board:Vector[Vector[Cell]] = Vector.fill(13, 13)(Cell(None)), 
   //----------------------------RULES----------------------------------------------------------------------------------
   //all return true if you can fill the cell
   def allRules(row:Int, col:Int, color:String):Boolean = {
-    if(this.isEmpty)
+    if(this.isEmpty && row==9 && col==9)
       true
     else
       sameColor(row, col, color)&&onEdge(row, col)&&diagonal(row, col, color)&&maxColor(row, col, color)&&maxField(row, col)
   }
-
+  //rechts, links, oben, unten
   def getNeighbors(row:Int, col:Int):List[Cell] = {
     getCell(row, col+1)::getCell(row, col-1)::getCell(row-1, col)::getCell(row+1, col)::Nil
   }
@@ -109,11 +157,12 @@ case class Board (board:Vector[Vector[Cell]] = Vector.fill(13, 13)(Cell(None)), 
     !(d1||d2)
   }
 
+  //returns true if theres less than two of the same color
   def twoColor(row:Int, col:Int, color:String):Boolean = {
     val counter:Int = getNeighbors(row, col).count(n => n.getColor == color)
     counter < 2
   }
-
+  //return true when theres no neighbor that has two neighbors that are of the same color as the tile to be laid
   def maxColor(row:Int, col:Int, color:String):Boolean = {
     twoColor(row-1, col, color)&&twoColor(row+1, col, color)&&twoColor(row, col+1, color)&&twoColor(row, col-1, color)
   }
@@ -127,7 +176,16 @@ case class Board (board:Vector[Vector[Cell]] = Vector.fill(13, 13)(Cell(None)), 
     true
   }
 
-
+//-----------------------POINTS----------------------------------------------------------------------------
+  def newPoints(row:Int, col:Int, color:String):Int = {
+    val combinations:Map[String, Int] = ListMap("redblack"->10, "blackred"->10, "redgrey"->8, "greyred"->8,
+    "redwhite"->6, "whitered"->6, "blackgrey"->4, "greyblack"->4, "blackwhite"->2, "whiteblack"->2,
+    "greyshite"->1, "whitegrey"->1).withDefaultValue(0)
+    val neighbors:List[String] = this.getNeighbors(row, col).map(c => c.getColor+color)
+    var newPoints = 0
+    neighbors.foreach(f => newPoints += combinations(f))
+    newPoints
+  }
 
 
 }

@@ -11,7 +11,7 @@ class CellSpec extends AnyWordSpec with should.Matchers {
     "no Color set" should {
       val emptyCell = Cell(None)
       "have not be occupied" in {
-        emptyCell.getColor should  be("not occupied")
+        emptyCell.getColor should  be("none")
       }
 
       "not be occupied" in {

@@ -10,7 +10,7 @@ case class Cell(color:Option[String]) {
   def getColor: String = {
     color match {
       case Some(t) => t
-      case None => "not occupied"
+      case None => "none"
     }
   }
 }

@@ -18,19 +18,19 @@ class ScalaTuiSpec extends AnyWordSpec with should.Matchers{
       cont.board should be(board)
     }
 
-    "create a new board on input 'new'" in {
-      tui.processInputLine("new")
-      cont.board should be(new Board())
+    "create a new board on input 'start'" in {
+      tui.processInputLine("start")
+      cont.board.isEmpty should be(true)
     }
 
     "set a tile on input 'first red'" in {
       tui.processInputLine("first red")
-      cont.board.getCell(6, 6).getColor should be ("red")
+      cont.board.getCell(9, 9).getColor should be ("red")
     }
 
-    "set a tile on input '7 8 black'" in {
+    "set a tile on input '9 10 black'" in {
       tui.processInputLine("7 8 black")
-      cont.board.getCell(6, 7).getColor should be("black")
+      cont.board.getCell(9, 10).getColor should be("black")
     }
    }
 }

@@ -10,59 +10,60 @@ class BoardSpec extends AnyWordSpec with should.Matchers {
   "A Board is a two-dimensional Vector that contains Cells as the playingfield. A Board" when {
 
     //----------------emtpy------------------
-    "being created" should {
+    "empty" should {
       val emptyBoard = Board()
       "be empty" in {
         emptyBoard.isEmpty should be(true)
       }
       "have empty row" in {
-        emptyBoard.rowEmpty(6) should be(true)
+        emptyBoard.rowEmpty(9) should be(true)
       }
       "have emtpy column" in {
-        emptyBoard.colEmpty(6) should be(true)
+        emptyBoard.colEmpty(9) should be(true)
       }
-      "be able to replace empty Cells with filled Cells and return new Board" in {
-        val newBoard = emptyBoard.replaceCell(1,1, "red")
-        emptyBoard.getCell(1, 1).getColor should be("not occupied")
-        newBoard.getCell(1, 1).getColor should be ("red")
+      "not be allowed to place a tile if it's not in the center" in {
+        emptyBoard.replaceCell(4,4, "red").getCell(4, 4).getColor should be("none")
+      }
+      "place a tile if it's in the center" in {
+        emptyBoard.replaceCell(9, 9, "black").getCell(9, 9).getColor should be("black")
       }
     }
 
     //---------------filled-------------------
     "filled with " should {
       var testBoard = Board()
-      testBoard = testBoard.replaceCell(2,4, "red")
-      testBoard  = testBoard.replaceCell(1,4, "black")
-      testBoard = testBoard.replaceCell(2,5, "gray")
-      testBoard = testBoard.replaceCell(1,3, "white")
+      testBoard = testBoard.replaceCell(9,9, "red")
+      testBoard  = testBoard.replaceCell(8,9, "black")
+      testBoard = testBoard.replaceCell(8,8, "grey")
+      testBoard = testBoard.replaceCell(7,8, "white")
       println("testBoard")
       println(testBoard.toString)
       "not be empty" in {
         testBoard.isEmpty should be(false)
       }
       "not be empty in this column" in {
-        testBoard.colEmpty(4) should be(false)
+        testBoard.colEmpty(9) should be(false)
       }
       "not be empty in this row" in {
-        testBoard.rowEmpty(2) should be(false)
+        testBoard.rowEmpty(8) should be(false)
       }
       "return the Cell at index" in {
-        testBoard.getCell(2,4).getColor should be ("red")
+        testBoard.getCell(9,9).getColor should be ("red")
       }
       "have width and height set" in {
-        testBoard.getHeight should be(2)
-        testBoard.getWidth should be(3)
+        testBoard.getHeight should be(3)
+        testBoard.getWidth should be(2)
       }
       "be able to print current state as String" in {
         testBoard.toString should be (
           "    1     2     3     4     5     6     7     8     9     10    11    12    13    \n" +
           "1   |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___|\n" +
-          "2   |___| |___| |___| white black |___| |___| |___| |___| |___| |___| |___| |___|\n" +
-          "3   |___| |___| |___| |___| red   gray  |___| |___| |___| |___| |___| |___| |___|\n" +
+          "2   |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___|\n" +
+          "3   |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___|\n" +
           "4   |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___|\n" +
-          "5   |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___|\n" +
-          "6   |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___|\n" +
-          "7   |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___|\n" +
+          "5   |___| |___| |___| |___| |___| white |___| |___| |___| |___| |___| |___| |___|\n" +
+          "6   |___| |___| |___| |___| |___| grey  black |___| |___| |___| |___| |___| |___|\n" +
+          "7   |___| |___| |___| |___| |___| |___| red   |___| |___| |___| |___| |___| |___|\n" +
           "8   |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___|\n" +
           "9   |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___|\n" +
           "10  |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___|\n" +
@@ -72,76 +73,82 @@ class BoardSpec extends AnyWordSpec with should.Matchers {
       }
     }
     "being tested for rules" should {
-      val board: Board =  Board()
+      var board: Board =  Board()
+
+      board = board.replaceCell(9, 9, "black")
+      board = board.replaceCell(9, 10, "grey")
+      board = board.replaceCell(8, 10, "red")
+      board = board.replaceCell(7, 10, "black")
+      board = board.replaceCell(7, 9, "grey")
+      board = board.replaceCell(7, 8, "red")
+      board = board.replaceCell(6, 9, "black")
+      board = board.replaceCell(6, 10, "red")
+      board = board.replaceCell(6, 8, "white")
+      board = board.replaceCell(6, 7, "red")
+      board = board.replaceCell(6, 6, "white")
+      board = board.replaceCell(5, 7, "black")
+      board = board.replaceCell(5, 6, "red")
+      board = board.replaceCell(5, 5, "black")
 
 
-      val board1: Board = board.replaceCell(1,2, "red")
-      val board2: Board = board1.replaceCell(2,2, "black")
-      val board3: Board = board2.replaceCell(4,2, "grey")
-      val board4: Board = board3.replaceCell(2,3, "red")
-      val board5: Board = board4.replaceCell(2,4, "white")
-      val board6: Board = board5.replaceCell(3,3, "white")
-      val board7: Board = board6.replaceCell(3,4, "red")
-      val board8: Board = board7.replaceCell(3,5, "white")
-      val board9: Board = board8.replaceCell(3,7, "black")
-      val board10: Board = board9.replaceCell(4,5, "red")
-      val board11: Board = board10.replaceCell(4,6, "grey")
-      val board12: Board = board11.replaceCell(4,7, "black")
-      val board13: Board = board12.replaceCell(5,7, "red")
-      val board14: Board = board13.replaceCell(6,7, "grey")
-      println(board14.toString)
+
+      println(board.toString)
       "return a List with two lists containing all diagonal cells without the source cell" in {
-
+        board.getDiagonals(7, 8)(0) should be(List(Cell(None), Cell(Some("red")), Cell(Some("red")),
+          Cell(None), Cell(Some("grey")), Cell(None)))
+      }
+      "return a List containing all the neighbouring cells" in {
+        board.getNeighbors(6, 8) should be (List(Cell(Some("black")), Cell(Some("red")), Cell(None), Cell(Some("red"))))
       }
       "return false if two neighbouring cells have the same color" in {
-        board14.sameColor(4, 7, "black") should be(false)
+        board.sameColor(8, 8, "red") should be(false)
       }
-      "return true if they do not" in {
-        board14.sameColor(4, 6, "grey") should be(true)
+      "return true if they have a different color" in {
+        board.sameColor(7, 7, "grey") should be(true)
       }
       "return false if a cell is not touching another cell" in {
-        board14.onEdge(3, 1) should be(false)
+        board.onEdge(6, 4) should be(false)
       }
-      "return true if it is" in {
-        board14.onEdge(2, 2) should be(true)
+      "return true if it is touching another cell" in {
+        board.onEdge(5, 5) should be(true)
       }
       "check the amount of cells of the same color touching diagonally" in {
-        board14.diagonal(3, 4, "red") should be(false)
+        board.diagonal(8, 9, "red") should be(false)
       }
       "return true if it is not" in {
-        board14.diagonal(3,5, "white") should be (true)
+        board.diagonal(6,8, "white") should be (true)
       }
-      "return false if more than 2 cells with the same color are neighbours to the same cell " in {
-        board14.maxColor(3, 5, "white") should be(false)
+      "return false if more than 1 cells with the same color are neighbours to the same cell " in {
+        board.maxColor(5, 8, "red") should be(false)
       }
       "return true if there are less" in {
-        board14.maxColor(2, 3, "black") should be(true)
+        board.maxColor(6, 11, "grey") should be(true)
       }
       "return false if two cells of the same color share a neighbour" in {
-        board14.twoColor(2,2, "red") should be (false)
+        board.twoColor(6,8, "red") should be (false)
       }
       "return true if there is only one cell of that color" in {
-        board14.twoColor(2,3, "black") should be (true)
+        board.twoColor(6,5, "grey") should be (true)
       }
       "return false is the max size of the field is already reached" in {
 
-        board14.maxField(4,8) should be (false)
-        board14.maxField(7,7) should be (false)
+        board.maxField(7,11) should be (false)
+
       }
       "return true if not" in {
         var miniBoard = Board()
-        miniBoard = miniBoard.replaceCell(1, 1, "red")
-        miniBoard = miniBoard.replaceCell(1, 2, "black")
+        miniBoard = miniBoard.replaceCell(4, 4, "red")
+        miniBoard = miniBoard.replaceCell(4, 5, "black")
 
-        miniBoard.maxField(1, 2) should be(true)
+        miniBoard.maxField(4, 5) should be(true)
       }
       "check all rules at once" in {
-        board14.allRules(3,4, "red") should be (false)
+        board.allRules(6,7, "red") should be (false)
       }
-      "return true if a cell is the only one on the board" in {
+      "return true if a cell is placed in center of empty board" in {
         val newBoard = Board()
         println(newBoard.isEmpty)
-        newBoard.allRules(2,2, "red") should be (true)
+        newBoard.allRules(9,9, "red") should be (true)
       }
     }
   }

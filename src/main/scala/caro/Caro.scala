@@ -12,22 +12,14 @@ object Caro {
   val tui = new ScalaTui(controller)
 
   def main(args: Array[String]): Unit = {
-    println("Welcome to Caro!\nPlayer 1, please enter your name: ")
-    val name1: String = readLine()
-    val player1 = Player(name1)
-    println("Hello, " + player1.name)
+    println("Welcome to Caro!\n")
 
-    Thread.sleep(1000)
-
-    println("Player 2, please enter your name:")
-    val name2: String = readLine()
-    val player2 = Player(name2)
-    println("Hello " + player2.name)
-
-    Thread.sleep(1000)
-
-    print("\nCommands:\n\t'first <Tile color>' - start with this color tile\n\t'board' - prints current board\n\t'new' - creates blank board\n\t"
-          + "'<column> <row> <Tile color> - sets tile at position\n")
+    print("\nCommands:"
+          + "\n\t'player1|player2 <name>' - set player names"
+          + "\n\t'start' - creates blank board with player names"
+          + "\n\t'first <Tile color>' - start with this color tile"
+          + "\n\t'board' - prints current board"
+          + "\n\t'<column> <row> <Tile color> - sets tile at position")
 
     var input: String = ""
 
