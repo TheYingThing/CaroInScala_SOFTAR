@@ -94,7 +94,7 @@ class BoardSpec extends AnyWordSpec with should.Matchers {
 
       println(board.toString)
       "return a List with two lists containing all diagonal cells without the source cell" in {
-        board.getDiagonals(7, 8)(0) should be(List(Cell(None), Cell(Some("red")), Cell(Some("red")),
+        board.getDiagonals(7, 8).head should be(List(Cell(None), Cell(Some("red")), Cell(Some("red")),
           Cell(None), Cell(Some("grey")), Cell(None)))
       }
       "return a List containing all the neighbouring cells" in {
@@ -131,7 +131,6 @@ class BoardSpec extends AnyWordSpec with should.Matchers {
         board.twoColor(6,5, "grey") should be (true)
       }
       "return false is the max size of the field is already reached" in {
-
         board.maxField(7,11) should be (false)
 
       }
