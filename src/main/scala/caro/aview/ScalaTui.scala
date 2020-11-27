@@ -9,27 +9,18 @@ class ScalaTui(controller: Controller) extends Observer{
   val center = 9
 
   def processInputLine(input: String):Unit = {
-    var name1 = "player1"
-    var name2 = "player2"
-    input match {
+    val command = input.split(" ").toList
+    command.head match {
       case "board" => update
-      case "start" => controller.newBoard(name1, name2)
-      case _ => input.split(" ").toList match {
-        case first::color::Nil =>
-          if (first.equals("first")) {
-            controller.putCell(center, center, color)
-          } else {
-            update
-          }
-        case row::column::color::Nil => controller.putCell(row.toInt+2 , column.toInt+2, color)
-        case player::name::Nil =>
-          if(player.equals("player1")){
-            name1 = name
-          } else if(player.equals("player2")){
-            name2 = name
-          }
-        case _ => println("Not a valid Command!")
+      case "start" => controller.newBoard("player1", "player2")
+      case "first" => controller.putCell(center, center, command.tail.head)
+      case "player1" => controller.newBoard(command.tail.head, controller.board.player2.name)
+      case "player2" => controller.newBoard(controller.board.player1.name, command.tail.head)
+      case "put" => {
+        val cmd = command.toArray
+        controller.putCell(cmd(1).toInt + 2 , cmd(2).toInt + 2, cmd(3))
       }
+      case _ => println("Not a valid Command!")
     }
   }
 

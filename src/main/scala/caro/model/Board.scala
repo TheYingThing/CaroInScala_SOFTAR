@@ -4,7 +4,7 @@ import scala.collection.mutable.ListBuffer
 import scala.collection.immutable.ListMap
 
 case class Board (board:Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)), width:Int=0,
-                  height:Int=0, moves:Int=0, player1:Player = Player("player 1"), player2:Player = Player("player 2")) {
+                  height:Int=0, moves:Int=0, player1:Player = Player("player1"), player2:Player = Player("player2")) {
   //3-15
   val maxSize:Int = 6
 
@@ -73,8 +73,12 @@ case class Board (board:Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)), 
         var newPlayer2 = player2
         if(moves%2 == 0) {
           newPlayer1 = updatePlayer(row, col, color, player1)
+          if(newPlayer1 == player1)
+            return this
         } else {
           newPlayer2 = updatePlayer(row, col, color, player2)
+          if(newPlayer2 == player2)
+            return this
         }
         val cell = Cell(Some(color))
         copy(board.updated(row, board(row).updated(col, cell)),

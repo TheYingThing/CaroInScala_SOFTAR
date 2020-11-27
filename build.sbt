@@ -8,3 +8,4 @@ libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.2"
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.2" % "test"
 
+resolvers += Resolver.url("scoverage-bintray", url("https://dl.bintray.com/sksamuel/sbt-plugins/"))(Resolver.ivyStylePatterns)
