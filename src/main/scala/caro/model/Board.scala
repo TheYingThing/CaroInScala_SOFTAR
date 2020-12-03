@@ -3,7 +3,7 @@ package caro.model
 import scala.collection.mutable.ListBuffer
 import scala.collection.immutable.ListMap
 
-case class Board (board:Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)), width:Int=0,
+case class Board (board:Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell("none")), width:Int=0,
                   height:Int=0, moves:Int=0, player1:Player = Player("player1"), player2:Player = Player("player2")) {
   //3-15
   val maxSize:Int = 6
@@ -34,7 +34,6 @@ case class Board (board:Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)), 
   def updatePlayer(row:Int, col:Int, color:String, player:Player):Player = {
     val valid:Boolean = player.getTiles.keySet.contains(color)
     var oldvalue: Int = 0
-
     if (!valid) {
       println("Not a valid color!")
       return player
@@ -82,6 +81,7 @@ case class Board (board:Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)), 
   def replace(strategy:CellReplacementStrategy, row:Int, col:Int, color:String, board:Board): Board = {
    strategy.newCell(row, col, color, board)
   }
+
   def replaceCell(row:Int, col:Int, color:String):Board = {
 
     if(allRules(row, col, color)){
@@ -135,6 +135,12 @@ case class Board (board:Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)), 
         }
       }
     }
+    if (moves % 2 == 0) {
+      output = output + "\n" + player1.getName + " it's your turn!\n"
+    } else {
+      output = output + "\n" + player2.getName + " it's your turn!\n"
+    }
+    output = output + player1.toString + "\n" + player2.toString
     output
   }
 

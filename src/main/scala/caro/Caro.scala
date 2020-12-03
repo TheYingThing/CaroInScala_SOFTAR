@@ -19,7 +19,7 @@ object Caro {
           + "\n\t'start' - creates blank board with player names"
           + "\n\t'first <Tile color>' - start with this color tile"
           + "\n\t'board' - prints current board"
-          + "\n\t'<column> <row> <Tile color> - sets tile at position")
+          + "\n\t'put <column> <row> <Tile color> - sets tile at position")
 
     var input: String = ""
 
@@ -27,7 +27,7 @@ object Caro {
 
     do {
 
-      printf("Enter your command: \n")
+      printf("\nEnter your command: \n")
       input = readLine()
       tui.processInputLine(input)
     } while(input != "quit")

@@ -8,5 +8,14 @@ case class Player(name: String,
 
   def getPoints:Int = points
   def getTiles:ListMap[String, Int] = tiles
-  override def toString:String = name
+  def getName:String = name
+
+  override def toString:String = {
+    var output = ""
+    output = output + name + "\n"
+    tiles.foreachEntry((color, number) => output = output + color  + ": " + number + "\n").toString
+    output = output + "Score: " + getPoints + "\n"
+
+    output
+  }
 }

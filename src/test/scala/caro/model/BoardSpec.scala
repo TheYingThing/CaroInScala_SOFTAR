@@ -69,9 +69,13 @@ class BoardSpec extends AnyWordSpec with should.Matchers {
           "10  |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___|\n" +
           "11  |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___|\n" +
           "12  |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___|\n" +
-          "13  |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___|")
+          "13  |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___|\n" +
+          "player1 it's your turn!\n" +
+          "player1\nred: 3\nblack: 3\ngrey: 3\nwhite: 3\nScore: 0" +
+          "player2\nred: 3\nblack: 3\ngrey: 3\nwhite: 3\nScore: 0\n")
       }
     }
+    //------------------------rules-----------------------------------------
     "being tested for rules" should {
       var board: Board =  Board()
 
@@ -94,11 +98,13 @@ class BoardSpec extends AnyWordSpec with should.Matchers {
 
       println(board.toString)
       "return a List with two lists containing all diagonal cells without the source cell" in {
-        board.getDiagonals(7, 8).head should be(List(Cell(None), Cell(Some("red")), Cell(Some("red")),
-          Cell(None), Cell(Some("grey")), Cell(None)))
+        board.getDiagonals(7, 8).head.map(c => c.getColor) should be (List("none", "red", "red",
+          "none", "grey", "none"))
+        board.getDiagonals(7, 8).last.map(c => c.getColor) should be (List("none", "none", "none",
+          "black", "none", "none"))
       }
       "return a List containing all the neighbouring cells" in {
-        board.getNeighbors(6, 8) should be (List(Cell(Some("black")), Cell(Some("red")), Cell(None), Cell(Some("red"))))
+        board.getNeighbors(6, 8).map(c => c.getColor) should be (List("black", "red", "none", "red"))
       }
       "return false if two neighbouring cells have the same color" in {
         board.sameColor(8, 8, "red") should be(false)
