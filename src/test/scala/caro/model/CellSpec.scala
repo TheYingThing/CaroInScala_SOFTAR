@@ -17,10 +17,6 @@ class CellSpec extends AnyWordSpec with should.Matchers {
       "not be occupied" in {
         emptyCell.isOccupied should be(false)
       }
-      "be able to put a new Tile" in {
-        val newCell = emptyCell.putTile("gray")
-        newCell.getColor should be ("gray")
-      }
     }
     "a Tile is set" should {
       val filledCell = Cell(Some("red"))
@@ -30,11 +26,6 @@ class CellSpec extends AnyWordSpec with should.Matchers {
       "be occupied" in {
         filledCell.isOccupied should be(true)
       }
-      "not be able to set to another Tile" in {
-        val replaceCell = filledCell.putTile("black")
-        replaceCell.getColor should be ("red")
-      }
-
     }
   }
 
