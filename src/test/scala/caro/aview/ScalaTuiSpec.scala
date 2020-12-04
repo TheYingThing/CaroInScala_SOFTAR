@@ -33,10 +33,24 @@ class ScalaTuiSpec extends AnyWordSpec with should.Matchers{
       cont.board.getCell(9, 10).getColor should be("black")
     }
 
-    "set a name for player1 on input 'player1 Ying'" in {
-      tui.processInputLine("player1 Ying")
-      cont.board.player1.name should be("Ying")
+    "set a name for player1 on input 'player1 Sam'" in {
+      tui.processInputLine("player1 Sam")
+      cont.board.player1.name should be("Sam")
       cont.board.player2.name should be("player2")
+    }
+
+    "set a name for player2 on input 'player2 Mike'" in {
+      tui.processInputLine("player2 Mike")
+      cont.board.player2.name should be("Mike")
+      cont.board.player1.name should be("Sam")
+    }
+
+    "exit the game on input'quit'" in {
+      tui.processInputLine("quit") should be()
+    }
+
+    "not do anything on wrong input" in {
+      tui.processInputLine("wrong") should be()
     }
    }
 }

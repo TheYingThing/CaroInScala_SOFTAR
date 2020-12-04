@@ -71,8 +71,31 @@ class BoardSpec extends AnyWordSpec with should.Matchers {
           "12  |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___|\n" +
           "13  |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___| |___|\n" +
           "player1 it's your turn!\n" +
-          "player1\nred: 3\nblack: 3\ngrey: 3\nwhite: 3\nScore: 0" +
-          "player2\nred: 3\nblack: 3\ngrey: 3\nwhite: 3\nScore: 0\n")
+          "player1\nred: 2\nblack: 3\ngrey: 2\nwhite: 3\nScore: 14\n\n" +
+          "player2\nred: 3\nblack: 2\ngrey: 3\nwhite: 2\nScore: 11\n")
+      }
+    }
+    //------------------------update player----------------------------------
+    "updating a player" should {
+      var playerBoard = Board()
+      playerBoard = playerBoard.replaceCell(9,9, "red")
+      playerBoard  = playerBoard.replaceCell(8,9, "black")
+      playerBoard = playerBoard.replaceCell(8,8, "grey")
+      playerBoard = playerBoard.replaceCell(7,8, "white")
+
+      "not accept pink as a valid color" in{
+        playerBoard.updatePlayer(8, 7, "pink", playerBoard.player1) should be(playerBoard.player1)
+      }
+      "accept white as a valid color" in{
+        var playernew = playerBoard.updatePlayer(8, 7, "white", playerBoard.player1)
+        println(playernew.toString)
+        playernew.getPoints should be(15)
+      }
+      "not have any white tiles left" in {
+        var playerwhite = playerBoard.updatePlayer(8, 7, "white", playerBoard.player1)
+        playerwhite = playerBoard.updatePlayer(10, 9, "white", playerwhite)
+        playerwhite = playerBoard.updatePlayer(9, 10, "white", playerwhite)
+        playerBoard.updatePlayer(11, 12, "white", playerwhite) should be(playerwhite)
       }
     }
     //------------------------rules-----------------------------------------
@@ -95,7 +118,7 @@ class BoardSpec extends AnyWordSpec with should.Matchers {
       board = board.replaceCell(5, 5, "black")
 
 
-
+      println("full board")
       println(board.toString)
       "return a List with two lists containing all diagonal cells without the source cell" in {
         board.getDiagonals(7, 8).head.map(c => c.getColor) should be (List("none", "red", "red",
@@ -136,9 +159,12 @@ class BoardSpec extends AnyWordSpec with should.Matchers {
       "return true if there is only one cell of that color" in {
         board.twoColor(6,5, "grey") should be (true)
       }
-      "return false is the max size of the field is already reached" in {
+      "return false if the max size of the field is already reached in this column" in {
         board.maxField(7,11) should be (false)
-
+      }
+      "return false if the max size of the field is already reached in this row" in {
+        board = board.replaceCell(10, 9, "grey")
+        board.maxField(11, 9) should be (false)
       }
       "return true if not" in {
         var miniBoard = Board()

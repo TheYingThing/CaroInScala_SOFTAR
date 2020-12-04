@@ -79,7 +79,7 @@ case class Board (board:Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell("none"))
   }
 
   def replace(strategy:CellReplacementStrategy, row:Int, col:Int, color:String, board:Board): Board = {
-   strategy.newCell(row, col, color, board)
+   strategy.newBoard(row, col, color, board)
   }
 
   def replaceCell(row:Int, col:Int, color:String):Board = {
