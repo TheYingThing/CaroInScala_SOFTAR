@@ -16,15 +16,18 @@ class ScalaTui(controller: Controller) extends Observer{
       case "first" => controller.putCell(center, center, command.tail.head)
       case "player1" => controller.newBoard(command.tail.head, controller.board.player2.name)
       case "player2" => controller.newBoard(controller.board.player1.name, command.tail.head)
-      case "put" => {
+      case "put" =>
         val cmd = command.toArray
         controller.putCell(cmd(1).toInt + 2 , cmd(2).toInt + 2, cmd(3))
-      }
+
       case "quit" =>
       case _ => println("Not a valid Command!")
     }
   }
 
-  override def update: Unit = println(controller.boardToString)
+  override def update: Boolean = {
+    println(controller.boardToString)
+    true
+  }
 }
 

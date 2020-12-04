@@ -28,7 +28,7 @@ case class Board (board:Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell("none"))
       if(getCell(i, col).isOccupied)
         occ = false
     }
-    return occ
+     occ
   }
 
   def updatePlayer(row:Int, col:Int, color:String, player:Player):Player = {
@@ -56,26 +56,24 @@ case class Board (board:Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell("none"))
     player.copy(tiles = ntiles, points = npoints)
 
   }
+  def updateField(int:Int, current:Int, empty:Int => Boolean):Int = {
+    val currentValue = current
+    var newValue = 0
+
+    if(this.isEmpty || empty(int)) {
+      newValue = currentValue + 1
+    } else {
+      newValue = currentValue
+    }
+    newValue
+  }
 
   def updateWidth(col:Int):Int = {
-    val currentWidth = this.getWidth
-    var newWidth = 0
-    if (this.isEmpty || colEmpty(col)) {
-      newWidth = currentWidth +1
-    } else {
-      newWidth = currentWidth
-    }
-    newWidth
+     updateField(col, this.getWidth, colEmpty)
   }
+
   def updatedHeight(row:Int):Int = {
-    val currentHeight = this.getHeight
-    var newHeight = 0
-    if (this.isEmpty || rowEmpty(row)) {
-      newHeight = currentHeight + 1
-    } else {
-      newHeight = currentHeight
-    }
-    newHeight
+    updateField(row, this.getHeight, rowEmpty)
   }
 
   def replace(strategy:CellReplacementStrategy, row:Int, col:Int, color:String, board:Board): Board = {
@@ -184,7 +182,7 @@ case class Board (board:Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell("none"))
   }
 
   def diagonal(row:Int, col:Int, color:String):Boolean = {
-    val diag1 = getDiagonals(row, col)(0).sliding(3).toList
+    val diag1 = getDiagonals(row, col).head.sliding(3).toList
     val diag2 = getDiagonals(row, col)(1).sliding(3).toList
     val d1 = diag1.exists(l => l.forall(c => c.getColor == color)) //true when theres a sequence of 3 same colors
     val d2 = diag2.exists(l => l.forall(c => c.getColor == color))
