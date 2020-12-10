@@ -1,14 +1,13 @@
 package caro.controller
 
 import caro.model.Board
-import caro.controller.Controller
 import org.scalatest.matchers._
 import org.scalatest.wordspec._
 
 class ControllerSpec extends AnyWordSpec with should.Matchers {
 
   "A Controller" should {
-    val board = new Board()
+    val board = Board()
     val cont = new Controller(board)
     "put a first tile" in {
       cont.putCell(9, 9, "black")
@@ -21,7 +20,7 @@ class ControllerSpec extends AnyWordSpec with should.Matchers {
     }
 
     "not put a tile" in {
-      val board2 = new Board()
+      val board2 = Board()
       val cont2 = new Controller(board2)
       cont2.putCell(13, 10, "red")
       println(cont2.boardToString)

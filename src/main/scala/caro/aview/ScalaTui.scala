@@ -3,7 +3,6 @@ package caro.aview
 import caro.controller.Controller
 import caro.util.Observer
 
-
 class ScalaTui(controller: Controller) extends Observer{
   controller.add(this)
   val center = 9
@@ -16,6 +15,8 @@ class ScalaTui(controller: Controller) extends Observer{
       case "first" => controller.putCell(center, center, command.tail.head)
       case "player1" => controller.newBoard(command.tail.head, controller.board.player2.name)
       case "player2" => controller.newBoard(controller.board.player1.name, command.tail.head)
+      case "undo" => controller.undo()
+      case "redo" => controller.redo()
       case "put" =>
         val cmd = command.toArray
         controller.putCell(cmd(1).toInt + 2 , cmd(2).toInt + 2, cmd(3))

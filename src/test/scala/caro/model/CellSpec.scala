@@ -1,6 +1,5 @@
 package caro.model
 
-import org.scalatest._
 import org.scalatest.matchers._
 import org.scalatest.wordspec._
 
@@ -9,7 +8,7 @@ class CellSpec extends AnyWordSpec with should.Matchers {
 
   "A Cell" when {
     "no Color set" should {
-      val emptyCell = Cell("none")
+      val emptyCell = Cell(None)
       "have not be occupied" in {
         emptyCell.getColor should  be("none")
       }
@@ -19,7 +18,7 @@ class CellSpec extends AnyWordSpec with should.Matchers {
       }
     }
     "a Tile is set" should {
-      val filledCell = Cell("red")
+      val filledCell = Cell(Some("red"))
       "return that Tile" in {
         filledCell.getColor should be("red")
       }

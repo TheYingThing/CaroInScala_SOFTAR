@@ -1,6 +1,5 @@
 package caro.model
 
-import org.scalatest._
 import org.scalatest.matchers._
 import org.scalatest.wordspec._
 

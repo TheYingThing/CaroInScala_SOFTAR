@@ -2,8 +2,9 @@ package caro.model
 
 import scala.collection.mutable.ListBuffer
 import scala.collection.immutable.ListMap
+import scala.util.{Failure, Success, Try}
 
-case class Board (board:Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell("none")), width:Int=0,
+case class Board (board:Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)), width:Int=0,
                   height:Int=0, moves:Int=0, player1:Player = Player("player1"), player2:Player = Player("player2")) {
   //3-15
   val maxSize:Int = 6
@@ -31,31 +32,33 @@ case class Board (board:Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell("none"))
      occ
   }
 
-  def updatePlayer(row:Int, col:Int, color:String, player:Player):Player = {
-    val valid:Boolean = player.getTiles.keySet.contains(color)
-    var oldvalue: Int = 0
-    if (!valid) {
-      println("Not a valid color!")
-      return player
-    } else {
-      oldvalue = player.getTiles(color)
-    }
-
-    if(oldvalue == 0) {
-      println("no tiles of this color left")
-      return player
-    }
-
-    val ntiles = player.getTiles.updated(color, oldvalue-1)
-    var npoints = 0
-    if(this.isEmpty)
-      npoints = player.getPoints + 10
-    else
-      npoints = player.getPoints + newPoints(row, col, color)
-
-    player.copy(tiles = ntiles, points = npoints)
-
+  def validColor(color:String, player:Player):Try[Int] = {
+    Try(player.getTiles(color))
   }
+
+  def updatePlayer(row:Int, col:Int, color:String, player:Player):Player = {
+    val oldValue: Try[Int] = validColor(color, player)
+    oldValue match {
+      case Success(value) => {
+        if (value == 0) {
+          println("No tiles of this color left")
+          return player
+        }
+        val ntiles = player.getTiles.updated(color, value-1)
+        var npoints = 0
+        if(this.isEmpty)
+          npoints = player.getPoints + 10
+        else
+          npoints = player.getPoints + newPoints(row, col, color)
+        player.copy(tiles = ntiles, points = npoints)
+      }
+      case Failure(exception) => {
+        println("Not a valid Color")
+        player
+      }
+    }
+  }
+
   def updateField(int:Int, current:Int, empty:Int => Boolean):Int = {
     val currentValue = current
     var newValue = 0
@@ -86,34 +89,11 @@ case class Board (board:Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell("none"))
       val legal = new LegalMove()
       replace(legal, row, col, color, this)
 
-      /*var newPlayer1 = player1
-      var newPlayer2 = player2
-      if(moves%2 == 0) {
-        newPlayer1 = updatePlayer(row, col, color, player1)
-        if(newPlayer1 == player1)
-          return this
-      } else {
-        newPlayer2 = updatePlayer(row, col, color, player2)
-        if(newPlayer2 == player2)
-          return this
-      }
-      val cell = Cell(Some(color))
-      copy(board.updated(row, board(row).updated(col, cell)),
-        width = updateWidth(col), height = updatedHeight(row), moves = this.moves + 1,
-        player1 = newPlayer1, player2 = newPlayer2)
-        */
-
     } else {
       print(row, col)
       println("illegal move, minus 10 points")
       val illegal = new IllegalMove()
       replace(illegal, row, col, color, this)
-      /*
-      if(moves%2 == 0) {
-        copy(player1 = updatePlayer(row, col, color, player1))
-      } else {
-        copy(player2 = updatePlayer(row, col, color, player2))
-      }*/
     }
   }
 
@@ -146,10 +126,10 @@ case class Board (board:Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell("none"))
   //all return true if you can fill the cell
 
   def allRules(row:Int, col:Int, color:String):Boolean = {
-    if(this.isEmpty && row==9 && col==9)
+    if(this.isEmpty && row==9 && col==9 || color == "none")
       true
     else
-      sameColor(row, col, color)&&onEdge(row, col)&&diagonal(row, col, color)&&maxColor(row, col, color)&&maxField(row, col)&&(!getCell(row, col).isOccupied)
+      sameColor(row, col, color)&&onEdge(row, col)&&diagonal(row, col, color)&&maxColor(row, col, color)&&maxField(row, col)
   }
   //rechts, links, oben, unten
   def getNeighbors(row:Int, col:Int):List[Cell] = {

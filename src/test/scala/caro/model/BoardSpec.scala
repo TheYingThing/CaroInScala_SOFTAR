@@ -1,6 +1,5 @@
 package caro.model
 
-import org.scalatest._
 import org.scalatest.matchers._
 import org.scalatest.wordspec._
 
@@ -87,7 +86,7 @@ class BoardSpec extends AnyWordSpec with should.Matchers {
         playerBoard.updatePlayer(8, 7, "pink", playerBoard.player1) should be(playerBoard.player1)
       }
       "accept white as a valid color" in{
-        var playernew = playerBoard.updatePlayer(8, 7, "white", playerBoard.player1)
+        val playernew = playerBoard.updatePlayer(8, 7, "white", playerBoard.player1)
         println(playernew.toString)
         playernew.getPoints should be(15)
       }
