@@ -17,6 +17,16 @@ class ScalaTuiSpec extends AnyWordSpec with should.Matchers{
       cont.board should be(board)
     }
 
+    "not do anything on input 'undo' if the board is empty" in {
+      tui.processInputLine("undo")
+      cont.board should be(board)
+    }
+
+    "not do anything on input 'redo' if the board is empty" in {
+      tui.processInputLine("redo")
+      cont.board should be(board)
+    }
+
     "set a tile on input 'first red'" in {
       tui.processInputLine("first red")
       cont.board.getCell(9, 9).getColor should be ("red")
