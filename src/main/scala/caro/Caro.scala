@@ -7,14 +7,12 @@ import caro.model._
 import scala.io.StdIn.readLine
 
 object Caro {
-  var board = new Board
-  val controller = new Controller(board)
-  val tui = new ScalaTui(controller)
+  val tui = new ScalaTui(new Controller(new Board))
 
   def main(args: Array[String]): Unit = {
-    println("Welcome to Caro!\n")
 
-    print("\nCommands:"
+    print("Welcome to Caro!\n"
+          + "\nCommands:"
           + "\n\t'player1|player2 <name>' - set player names"
           + "\n\t'first <Tile color>' - start with this color tile"
           + "\n\t'board' - prints current board"
@@ -24,11 +22,11 @@ object Caro {
           + "\n\t'quit' - exit game")
 
     var input: String = ""
-
-    Thread.sleep(1000)
-
-    do {
-
+    if (args.length>0)
+      input = args(0)
+    if(!input.isEmpty)
+      tui.processInputLine(input)
+    else do {
       printf("\nEnter your command: \n")
       input = readLine()
       tui.processInputLine(input)
