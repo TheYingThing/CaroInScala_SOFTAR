@@ -16,10 +16,12 @@ object Caro {
 
     print("\nCommands:"
           + "\n\t'player1|player2 <name>' - set player names"
-          + "\n\t'start' - creates blank board with player names"
           + "\n\t'first <Tile color>' - start with this color tile"
           + "\n\t'board' - prints current board"
-          + "\n\t'put <column> <row> <Tile color> - sets tile at position")
+          + "\n\t'put <column> <row> <Tile color> - sets tile at position"
+          + "\n\t'undo' - undo most recent move"
+          + "\n\t'redo' - redo most recent undo"
+          + "\n\t'quit' - exit game")
 
     var input: String = ""
 

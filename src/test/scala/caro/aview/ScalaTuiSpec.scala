@@ -17,11 +17,6 @@ class ScalaTuiSpec extends AnyWordSpec with should.Matchers{
       cont.board should be(board)
     }
 
-    "create a new board on input 'start'" in {
-      tui.processInputLine("start")
-      cont.board.isEmpty should be(true)
-    }
-
     "set a tile on input 'first red'" in {
       tui.processInputLine("first red")
       cont.board.getCell(9, 9).getColor should be ("red")
@@ -42,6 +37,16 @@ class ScalaTuiSpec extends AnyWordSpec with should.Matchers{
       tui.processInputLine("player2 Mike")
       cont.board.player2.name should be("Mike")
       cont.board.player1.name should be("Sam")
+    }
+
+    "undo the most recent move on input 'undo'" in {
+      tui.processInputLine("undo")
+      cont.board.getCell(9, 10).getColor should be("none")
+    }
+
+    "redo the most recent move on input 'redo'" in {
+      tui.processInputLine("redo")
+      cont.board.getCell(9, 10).getColor should be("black")
     }
 
     "exit the game on input'quit'" in {

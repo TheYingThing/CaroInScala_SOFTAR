@@ -11,8 +11,6 @@ class LegalMove extends CellReplacementStrategy {
   }
   override def newCell(row:Int, col:Int, color:String, thisboard:Board): Board = {
     var cell = Cell(Some(color))
-    if(color == "none")
-      cell = Cell(None)
     thisboard.copy(thisboard.board.updated(row, thisboard.board(row).updated(col, cell)),
       width = thisboard.updateWidth(col), height = thisboard.updatedHeight(row), moves = thisboard.moves + 1)
   }

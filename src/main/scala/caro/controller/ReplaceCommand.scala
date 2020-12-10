@@ -1,7 +1,7 @@
 package caro.controller
 
 import caro.util.Command
-import caro.model.{Board, LegalMove}
+import caro.model.Board
 class ReplaceCommand(row:Int, col:Int, color:String, controller:Controller) extends Command {
   val oldboard:Board = controller.board
   override def doStep(): Unit = {
