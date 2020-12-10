@@ -11,7 +11,6 @@ class ScalaTui(controller: Controller) extends Observer{
     val command = input.split(" ").toList
     command.head match {
       case "board" => update
-      case "start" => controller.newBoard("player1", "player2")
       case "first" => controller.putCell(center, center, command.tail.head)
       case "player1" => controller.newBoard(command.tail.head, controller.board.player2.name)
       case "player2" => controller.newBoard(controller.board.player1.name, command.tail.head)
