@@ -4,7 +4,7 @@ import scala.collection.mutable.ListBuffer
 import scala.collection.immutable.ListMap
 import scala.util.{Failure, Success, Try}
 
-case class Board (board:Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell("none")), width:Int=0,
+case class Board (board:Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)), width:Int=0,
                   height:Int=0, moves:Int=0, player1:Player = Player("player1"), player2:Player = Player("player2")) {
   //3-15
   val maxSize:Int = 6
@@ -31,6 +31,7 @@ case class Board (board:Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell("none"))
     }
      occ
   }
+
   def validColor(color:String, player:Player):Try[Int] = {
     Try(player.getTiles(color))
   }
@@ -47,12 +48,8 @@ case class Board (board:Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell("none"))
         var npoints = 0
         if(this.isEmpty)
           npoints = player.getPoints + 10
-        else {
-          if(ntiles.get(color) == 0)
-            npoints = player.getPoints + (newPoints(row, col, color)*2)
-          else
-            npoints = player.getPoints + newPoints(row, col, color)
-        }
+        else
+          npoints = player.getPoints + newPoints(row, col, color)
         player.copy(tiles = ntiles, points = npoints)
       }
       case Failure(exception) => {
@@ -91,6 +88,7 @@ case class Board (board:Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell("none"))
     if(allRules(row, col, color)){
       val legal = new LegalMove()
       replace(legal, row, col, color, this)
+
     } else {
       print(row, col)
       println("illegal move, minus 10 points")
@@ -111,6 +109,7 @@ case class Board (board:Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell("none"))
           output = output + box
         } else {
           output = output + " " + this.getCell(i, j).getColor.padTo(5, ' ')
+
         }
       }
     }
@@ -127,10 +126,10 @@ case class Board (board:Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell("none"))
   //all return true if you can fill the cell
 
   def allRules(row:Int, col:Int, color:String):Boolean = {
-    if(this.isEmpty && row==9 && col==9)
+    if(this.isEmpty && row==9 && col==9 || color == "none")
       true
     else
-      sameColor(row, col, color)&&onEdge(row, col)&&diagonal(row, col, color)&&maxColor(row, col, color)&&maxField(row, col)&&(!getCell(row, col).isOccupied)
+      sameColor(row, col, color)&&onEdge(row, col)&&diagonal(row, col, color)&&maxColor(row, col, color)&&maxField(row, col)
   }
   //rechts, links, oben, unten
   def getNeighbors(row:Int, col:Int):List[Cell] = {
@@ -199,7 +198,6 @@ case class Board (board:Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell("none"))
     neighbors.foreach(f => newPoints += combinations(f))
     newPoints
   }
-//-----------------------CHECK FOR VALID COLOR--------------------------------------------------------------
 
 
 }

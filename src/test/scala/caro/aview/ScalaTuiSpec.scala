@@ -1,6 +1,5 @@
 package caro.aview
 
-import caro.controller
 import caro.controller.Controller
 import caro.model._
 import org.scalatest.matchers._
@@ -9,7 +8,7 @@ import org.scalatest.wordspec._
 class ScalaTuiSpec extends AnyWordSpec with should.Matchers{
 
   "A Caro Tui" should {
-    val board = new Board()
+    val board = Board()
     val cont = new Controller(board)
     val tui = new ScalaTui(cont)
 
