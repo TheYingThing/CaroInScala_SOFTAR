@@ -86,14 +86,14 @@ class BoardSpec extends AnyWordSpec with should.Matchers {
         playerBoard.updatePlayer(8, 7, "pink", playerBoard.player1) should be(playerBoard.player1)
       }
       "accept white as a valid color" in{
-        val playernew = playerBoard.updatePlayer(8, 7, "white", playerBoard.player1)
+        val playernew = playerBoard.updatePlayer(8, 7, "white", playerBoard.player1)._1
         println(playernew.toString)
         playernew.getPoints should be(15)
       }
       "not have any white tiles left" in {
-        var playerwhite = playerBoard.updatePlayer(8, 7, "white", playerBoard.player1)
-        playerwhite = playerBoard.updatePlayer(10, 9, "white", playerwhite)
-        playerwhite = playerBoard.updatePlayer(9, 10, "white", playerwhite)
+        var playerwhite = playerBoard.updatePlayer(8, 7, "white", playerBoard.player1)._1
+        playerwhite = playerBoard.updatePlayer(10, 9, "white", playerwhite)._1
+        playerwhite = playerBoard.updatePlayer(9, 10, "white", playerwhite)._1
         playerBoard.updatePlayer(11, 12, "white", playerwhite) should be(playerwhite)
       }
     }

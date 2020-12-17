@@ -1,14 +1,18 @@
 package caro.model
 
+import caro.model.GameStatus.{GameStatus, IDLE, ILLEGALMOVE, message}
+
 import scala.collection.mutable.ListBuffer
 import scala.collection.immutable.ListMap
 import scala.util.{Failure, Success, Try}
 
 case class Board (board:Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)), width:Int=0,
-                  height:Int=0, moves:Int=0, lastColor:String="",
+                  height:Int=0, moves:Int=0, lastColor:String="",status:GameStatus=IDLE,
                   player1:Player = Player("player1"), player2:Player = Player("player2")) {
   //3-15
   val maxSize:Int = 6
+
+  def getStatus:String = GameStatus.message(this.status)
 
   def getLastColor:String = this.lastColor
 
@@ -39,13 +43,12 @@ case class Board (board:Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)), 
     Try(player.getTiles(color))
   }
 
-  def updatePlayer(row:Int, col:Int, color:String, player:Player):Player = {
+  def updatePlayer(row:Int, col:Int, color:String, player:Player):(Player, GameStatus) = {
     val oldValue: Try[Int] = validColor(color, player)
     oldValue match {
       case Success(value) => {
         if (value == 0) {
-          println("No tiles of this color left")
-          return player
+          return (player,GameStatus.NOCOLORSLEFT)
         }
         val ntiles = player.getTiles.updated(color, value-1)
         var npoints = 0
@@ -57,11 +60,10 @@ case class Board (board:Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)), 
           else
             npoints = player.getPoints + newPoints(row, col, color)
         }
-        player.copy(tiles = ntiles, points = npoints)
+        (player.copy(tiles = ntiles, points = npoints), GameStatus.IDLE)
       }
       case Failure(exception) => {
-        println("Not a valid Color")
-        player
+        (player, GameStatus.UNVALIDCOLOR)
       }
     }
   }
@@ -87,22 +89,19 @@ case class Board (board:Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)), 
   }
 
 
-  def replace(strategy:CellReplacementStrategy, row:Int, col:Int, color:String, board:Board): Board = {
-   strategy.newBoard(row, col, color, board)
+  def replace(strategy:CellReplacementStrategy, row:Int, col:Int, color:String, board:Board, status:GameStatus): Board = {
+   strategy.newBoard(row, col, color, board, status)
   }
 
   def replaceCell(row:Int, col:Int, color:String):Board = {
 
       if (allRules(row, col, color)) {
         val legal = new LegalMove()
-        replace(legal, row, col, color, this)
+        replace(legal, row, col, color, this, GameStatus.IDLE)
 
       } else {
-        println("row: " + row + 2 + " col: " + col + 2)
-        println("\nillegal move, minus 10 points")
-        println("enter new coordinates for tile: " + lastColor + "\ncorrect with: 'correct row col'")
         val illegal = new IllegalMove()
-        replace(illegal, row, col, color, this)
+        replace(illegal, row, col, color, this, GameStatus.ILLEGALMOVE)
       }
     }
 
@@ -129,6 +128,7 @@ case class Board (board:Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)), 
       output = output + "\n" + player2.getName + " it's your turn!\n"
     }
     output = output + player1.toString + "\n" + player2.toString
+    output  = output + message(this.status)
     output
   }
 
