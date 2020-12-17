@@ -100,6 +100,8 @@ case class Board (board:Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)), 
         replace(legal, row, col, color, this, GameStatus.IDLE)
 
       } else {
+        println("row: " + (row + 2) + " col: " + (col + 2))
+        println("\nillegal move, minus 10 points")
         val illegal = new IllegalMove()
         replace(illegal, row, col, color, this, GameStatus.ILLEGALMOVE)
       }

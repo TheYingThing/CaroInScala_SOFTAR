@@ -13,7 +13,7 @@ case class Player(name: String,
   override def toString:String = {
     var output = ""
     output = output + name + "\n"
-    tiles.foreachEntry((color, number) => output = output + color  + ": " + number + "\n").toString
+    tiles.foreachEntry((color, number) => output = output + color + ": " + number + "\n").toString
     output = output + "Score: " + getPoints + "\n"
 
     output
