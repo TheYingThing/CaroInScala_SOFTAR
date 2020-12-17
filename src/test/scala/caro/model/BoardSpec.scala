@@ -97,8 +97,8 @@ class BoardSpec extends AnyWordSpec with should.Matchers {
         playerBoard.updatePlayer(11, 12, "white", playerwhite) should be(playerwhite)
       }
     }
-    //------------------------rules-----------------------------------------
-    "being tested for rules" should {
+    //------------------------rules.txt-----------------------------------------
+    "being tested for rules.txt" should {
       var board: Board =  Board()
 
       board = board.replaceCell(9, 9, "black")
@@ -172,7 +172,7 @@ class BoardSpec extends AnyWordSpec with should.Matchers {
 
         miniBoard.maxField(4, 5) should be(true)
       }
-      "check all rules at once" in {
+      "check all rules.txt at once" in {
         board.allRules(6,7, "red") should be (false)
       }
       "return true if a cell is placed in center of empty board" in {

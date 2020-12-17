@@ -5,9 +5,12 @@ import scala.collection.immutable.ListMap
 import scala.util.{Failure, Success, Try}
 
 case class Board (board:Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)), width:Int=0,
-                  height:Int=0, moves:Int=0, player1:Player = Player("player1"), player2:Player = Player("player2")) {
+                  height:Int=0, moves:Int=0, lastColor:String="",
+                  player1:Player = Player("player1"), player2:Player = Player("player2")) {
   //3-15
   val maxSize:Int = 6
+
+  def getLastColor:String = this.lastColor
 
   def getCell(row:Int, col:Int):Cell = board (row)(col)
 
@@ -48,8 +51,12 @@ case class Board (board:Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)), 
         var npoints = 0
         if(this.isEmpty)
           npoints = player.getPoints + 10
-        else
-          npoints = player.getPoints + newPoints(row, col, color)
+        else {
+          if(ntiles(color) == 0)
+            npoints = player.getPoints + (newPoints(row, col, color) * 2)
+          else
+            npoints = player.getPoints + newPoints(row, col, color)
+        }
         player.copy(tiles = ntiles, points = npoints)
       }
       case Failure(exception) => {
@@ -79,23 +86,26 @@ case class Board (board:Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)), 
     updateField(row, this.getHeight, rowEmpty)
   }
 
+
   def replace(strategy:CellReplacementStrategy, row:Int, col:Int, color:String, board:Board): Board = {
    strategy.newBoard(row, col, color, board)
   }
 
   def replaceCell(row:Int, col:Int, color:String):Board = {
 
-    if(allRules(row, col, color)){
-      val legal = new LegalMove()
-      replace(legal, row, col, color, this)
+      if (allRules(row, col, color)) {
+        val legal = new LegalMove()
+        replace(legal, row, col, color, this)
 
-    } else {
-      print(row, col)
-      println("illegal move, minus 10 points")
-      val illegal = new IllegalMove()
-      replace(illegal, row, col, color, this)
+      } else {
+        println("row: " + row + 2 + " col: " + col + 2)
+        println("\nillegal move, minus 10 points")
+        println("enter new coordinates for tile: " + lastColor + "\ncorrect with: 'correct row col'")
+        val illegal = new IllegalMove()
+        replace(illegal, row, col, color, this)
+      }
     }
-  }
+
 
   override def toString: String = {
     var output = "    "
@@ -129,7 +139,7 @@ case class Board (board:Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)), 
     if(this.isEmpty && row==9 && col==9 || color == "none")
       true
     else
-      sameColor(row, col, color)&&onEdge(row, col)&&diagonal(row, col, color)&&maxColor(row, col, color)&&maxField(row, col)
+      sameColor(row, col, color)&&onEdge(row, col)&&diagonal(row, col, color)&&maxColor(row, col, color)&&maxField(row, col)&&(!this.getCell(row, col).isOccupied)
   }
   //rechts, links, oben, unten
   def getNeighbors(row:Int, col:Int):List[Cell] = {

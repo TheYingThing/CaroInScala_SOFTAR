@@ -1,6 +1,7 @@
 package caro
 
 import caro.aview.ScalaTui
+import caro.aview.gui.ScalaGui
 import caro.controller.Controller
 import caro.model._
 
@@ -10,8 +11,12 @@ object Caro {
   var board = new Board
   val controller = new Controller(board)
   val tui = new ScalaTui(controller)
+  val gui = new ScalaGui(controller)
 
   def main(args: Array[String]): Unit = {
+    gui.update
+    gui.visible = true
+
     println("Welcome to Caro!\n")
 
     print("\nCommands:"
