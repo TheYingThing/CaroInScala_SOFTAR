@@ -5,7 +5,10 @@ import caro.util.Observer
 import caro.aview.gui._
 
 import java.awt.Color
+import java.awt.image.BufferedImage
+import java.io.File
 import java.net.NoRouteToHostException
+import javax.imageio.ImageIO
 import javax.swing.{BorderFactory, Box, ImageIcon}
 import scala.io.Source
 import scala.swing.BorderPanel.Position._
@@ -35,7 +38,7 @@ class ScalaGui(controller:Controller) extends Frame with Observer{
 
   override def update: Boolean = {
     title = "Caro"
-    contents = new BorderPanel {
+    contents = new BoardPanel(this) {
       val pink = new Color(207, 155, 186)
       val rules = ("Welcome to Caro!\n"
         + "\nRules:"
@@ -54,17 +57,27 @@ class ScalaGui(controller:Controller) extends Frame with Observer{
         + "BlackWhite|WhiteBlack: 2pts\n"
         + "GreyWhite|WhiteGrey:   1pts\n")
       val boardStatus = new TextArea(controller.board.getStatus)
+      boardStatus.background = new Color(0, 0, 0, 0)
+      boardStatus.foreground = Color.WHITE
       val player1Stat = new TextArea(controller.board.player1.toString)
+      player1Stat.background = new Color(0, 0, 0, 0)
+      player1Stat.foreground = Color.WHITE
       val player2Stat = new TextArea(controller.board.player2.toString)
+      player2Stat.background = new Color(0, 0, 0, 0)
+      player2Stat.foreground = Color.WHITE
       val ruleTxt = new TextArea(rules)
+      ruleTxt.background = new Color(0, 0, 0, 0)
+      ruleTxt.foreground = Color.WHITE
       val pointsTxt = new TextArea(points)
+      pointsTxt.background = new Color(0, 0, 0, 0)
+      pointsTxt.foreground = Color.WHITE
 
       val gameboard = new BoxPanel(Orientation.Vertical) {
+        background = new Color(0, 0, 0, 0)
         for {i <- 3 to 15} {
           contents += new BoxPanel(Orientation.Horizontal) {
-            for {j <- 3 to 15} {
+            for {j <- 3 to 15}
               contents += new CellButton(i, j, controller.board.getCell(i, j).getColor,  controller)
-            }
           }
         }
       }
@@ -78,6 +91,7 @@ class ScalaGui(controller:Controller) extends Frame with Observer{
       }
 
       val playerStats = new BoxPanel(Orientation.Vertical) {
+        background = new Color(0, 0, 0, 0)
         contents += player1Stat
         player1Stat.editable = false
         player1Stat.border = BorderFactory.createEmptyBorder(30, 20, 0, 20)
@@ -85,15 +99,16 @@ class ScalaGui(controller:Controller) extends Frame with Observer{
         player2Stat.editable = false
         player2Stat.border = BorderFactory.createEmptyBorder(10, 20, 0, 20)
         if(controller.board.moves%2 == 0) {
-          player1Stat.background = pink
-          player2Stat.background = Color.WHITE
+          player1Stat.background = new Color(255, 255, 255, 50)
+          //player2Stat.background = Color.WHITE
         } else if(controller.board.moves%2 != 0) {
-          player2Stat.background = pink
-          player1Stat.background = Color.WHITE
+          player2Stat.background = new Color(255, 255, 255, 50)
+          //player1Stat.background = Color.WHITE
         }
       }
 
       val messageBoard = new BoxPanel(Orientation.Vertical) {
+        background = new Color(0, 0, 0, 0)
         contents += ruleTxt
         ruleTxt.editable = false
         ruleTxt.border = BorderFactory.createEmptyBorder(30, 20, 0, 20)
@@ -103,6 +118,7 @@ class ScalaGui(controller:Controller) extends Frame with Observer{
       }
 
       val gameStatus = new BoxPanel(Orientation.Vertical) {
+        background = new Color(0, 0, 0, 0)
         contents += boardStatus
       }
       layout(gameboard) = Center
@@ -120,12 +136,21 @@ class ScalaGui(controller:Controller) extends Frame with Observer{
     case ButtonClicked(`accept`) => controller.newBoard(p1 = player1.text, p2 = player2.text)
   }
 }
+
+class BoardPanel(frame:Frame) extends BorderPanel {
+  val image:BufferedImage = ImageIO.read(new File("/home/ydang/SE/CaroInScala/src/main/scala/caro/resources/wood"))
+  override def paintComponent(g: Graphics2D): Unit = {
+    super.paintComponent(g)
+    g.drawImage(image, 0, 0, frame.size.width, frame.size.height, null)
+  }
+}
+
 class CellButton(row:Int, col:Int, color:String, controller: Controller)  extends Button {
   val redColor = new Color(173, 0, 0)
   val blackColor = new Color(0, 0, 0)
   val whiteColor = new Color(255, 255, 255)
   val greyColor = new Color(80, 80, 80)
-  val boardColor = new Color(200, 200, 200)
+  val boardColor = new Color(200, 200, 200, 0)
   var currentColor = boardColor
   val s = new Dimension(60, 60)
 
@@ -169,12 +194,10 @@ class CellButton(row:Int, col:Int, color:String, controller: Controller)  extend
       text = "Go"
       font = new Font("Arial", 1, 9)
     }
-
   background = currentColor
   minimumSize = s
   maximumSize = s
   preferredSize = s
-  border = Swing.EmptyBorder
 
 
   reactions += {
@@ -194,6 +217,8 @@ class CellButton(row:Int, col:Int, color:String, controller: Controller)  extend
         }
 
   }
+
+
 
 
 

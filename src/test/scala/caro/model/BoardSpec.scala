@@ -83,7 +83,7 @@ class BoardSpec extends AnyWordSpec with should.Matchers {
       playerBoard = playerBoard.replaceCell(7,8, "white")
 
       "not accept pink as a valid color" in{
-        playerBoard.updatePlayer(8, 7, "pink", playerBoard.player1) should be(playerBoard.player1)
+        playerBoard.updatePlayer(8, 7, "pink", playerBoard.player1)._1 should be(playerBoard.player1)
       }
       "accept white as a valid color" in{
         val playernew = playerBoard.updatePlayer(8, 7, "white", playerBoard.player1)._1
@@ -94,7 +94,7 @@ class BoardSpec extends AnyWordSpec with should.Matchers {
         var playerwhite = playerBoard.updatePlayer(8, 7, "white", playerBoard.player1)._1
         playerwhite = playerBoard.updatePlayer(10, 9, "white", playerwhite)._1
         playerwhite = playerBoard.updatePlayer(9, 10, "white", playerwhite)._1
-        playerBoard.updatePlayer(11, 12, "white", playerwhite) should be(playerwhite)
+        playerBoard.updatePlayer(11, 12, "white", playerwhite)._1 should be(playerwhite)
       }
     }
     //------------------------rules.txt-----------------------------------------
