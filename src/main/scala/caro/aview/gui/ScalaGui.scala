@@ -1,24 +1,20 @@
 package caro.aview.gui
 
-import caro.controller._
+
 import caro.util.Observer
-import caro.aview.gui._
-import caro.controller.controllerComponent.controllerBaseImpl.Controller
 import caro.controller.controllerComponent._
 
 import java.awt.Color
 import java.awt.image.BufferedImage
 import java.io.File
-import java.net.NoRouteToHostException
 import javax.imageio.ImageIO
-import javax.swing.{BorderFactory, Box, ImageIcon}
-import scala.io.Source
+import javax.swing.{BorderFactory, ImageIcon}
 import scala.swing.BorderPanel.Position._
 import scala.swing._
-import scala.swing.event.{ButtonClicked, MouseClicked}
+import scala.swing.event.ButtonClicked
 
 
-class ScalaGui(controller:ControllerInerface) extends Frame with Observer{
+class ScalaGui(controller:ControllerInterface) extends Frame with Observer{
   controller.add(this)
 
   object player1 extends TextField{columns = 15}
@@ -41,14 +37,13 @@ class ScalaGui(controller:ControllerInerface) extends Frame with Observer{
   override def update: Boolean = {
     title = "Caro"
     contents = new BoardPanel(this) {
-      val pink = new Color(207, 155, 186)
-      val rules = ("Welcome to Caro!\n"
+      val rules: String = ("Welcome to Caro!\n"
         + "\nRules:"
         + "\n - Same color tiles cannot be\n   placed next to each other"
         + "\n - No more than three tiles\n   of the same color diagonally"
         + "\n - No more than two neighboring\n   tiles of the same color"
         + "\n - Placed tiles cannot exceed\n   6x6 in dimensions")
-      val points = ("Points:\n"
+      val points: String = ("Points:\n"
         + "First Tile Placed:     10pts\n"
         + "Last Tile of a color:  double pts\n"
         + "Wrong placement:     - 10pts\n"
@@ -74,7 +69,7 @@ class ScalaGui(controller:ControllerInerface) extends Frame with Observer{
       pointsTxt.background = new Color(0, 0, 0, 0)
       pointsTxt.foreground = Color.WHITE
 
-      val gameboard = new BoxPanel(Orientation.Vertical) {
+      val gameboard: BoxPanel = new BoxPanel(Orientation.Vertical) {
         background = new Color(0, 0, 0, 0)
         for {i <- 3 to 15} {
           contents += new BoxPanel(Orientation.Horizontal) {
@@ -83,7 +78,7 @@ class ScalaGui(controller:ControllerInerface) extends Frame with Observer{
           }
         }
       }
-      val setPlayer = new FlowPanel(){
+      val setPlayer: FlowPanel = new FlowPanel(){
         contents += player1
         contents += new Label("Player 1")
         contents += player2
@@ -92,7 +87,7 @@ class ScalaGui(controller:ControllerInerface) extends Frame with Observer{
         contents += new Label("accept")
       }
 
-      val playerStats = new BoxPanel(Orientation.Vertical) {
+      val playerStats: BoxPanel = new BoxPanel(Orientation.Vertical) {
         background = new Color(0, 0, 0, 0)
         contents += player1Stat
         player1Stat.editable = false
@@ -109,7 +104,7 @@ class ScalaGui(controller:ControllerInerface) extends Frame with Observer{
         }
       }
 
-      val messageBoard = new BoxPanel(Orientation.Vertical) {
+      val messageBoard: BoxPanel = new BoxPanel(Orientation.Vertical) {
         background = new Color(0, 0, 0, 0)
         contents += ruleTxt
         ruleTxt.editable = false
@@ -119,7 +114,7 @@ class ScalaGui(controller:ControllerInerface) extends Frame with Observer{
         pointsTxt.border = BorderFactory.createEmptyBorder(10, 20, 0, 20)
       }
 
-      val gameStatus = new BoxPanel(Orientation.Vertical) {
+      val gameStatus: BoxPanel = new BoxPanel(Orientation.Vertical) {
         background = new Color(0, 0, 0, 0)
         contents += boardStatus
       }
@@ -140,20 +135,20 @@ class ScalaGui(controller:ControllerInerface) extends Frame with Observer{
 }
 
 class BoardPanel(frame:Frame) extends BorderPanel {
-  val image:BufferedImage = ImageIO.read(new File("/home/rebecca/HTWG/AIN3/SE/CaroInScala/src/main/scala/caro/aview/gui/DSC01714.JPG"))
+  val image:BufferedImage = ImageIO.read(new File("/home/ydang/SE/CaroInScala/src/main/scala/caro/resources/wood"))
   override def paintComponent(g: Graphics2D): Unit = {
     super.paintComponent(g)
     g.drawImage(image, 0, 0, frame.size.width, frame.size.height, null)
   }
 }
 
-class CellButton(row:Int, col:Int, color:String, controller: ControllerInerface)  extends Button {
+class CellButton(row:Int, col:Int, color:String, controller: ControllerInterface)  extends Button {
   val redColor = new Color(173, 0, 0)
   val blackColor = new Color(0, 0, 0)
   val whiteColor = new Color(255, 255, 255)
   val greyColor = new Color(80, 80, 80)
   val boardColor = new Color(200, 200, 200, 0)
-  var currentColor = boardColor
+  var currentColor: Color = boardColor
   val s = new Dimension(60, 60)
 
   color match {
@@ -169,27 +164,27 @@ class CellButton(row:Int, col:Int, color:String, controller: ControllerInerface)
   val white = new RadioButton("")
   val grey = new RadioButton("")
 
-  val colorbuttons = new GridPanel(4, 2) {
+  val colorbuttons: GridPanel = new GridPanel(4, 2) {
     contents += red
     contents += new Label("") {
-      icon = new ImageIcon("/home/rebecca/HTWG/AIN3/SE/CaroInScala/src/main/scala/caro/resources/redButton")
+      icon = new ImageIcon("/home/ydang/SE/CaroInScala/src/main/scala/caro/resources/redButton")
     }
     contents += black
     contents += new Label("") {
-      icon = new ImageIcon("/home/rebecca/HTWG/AIN3/SE/CaroInScala/src/main/scala/caro/resources/blackButton")
+      icon = new ImageIcon("/home/ydang/SE/CaroInScala/src/main/scala/caro/resources/blackButton")
     }
     contents += white
     contents += new Label("") {
-      icon = new ImageIcon("/home/rebecca/HTWG/AIN3/SE/CaroInScala/src/main/scala/caro/resources/whiteButton")
+      icon = new ImageIcon("/home/ydang/SE/CaroInScala/src/main/scala/caro/resources/whiteButton")
     }
     contents += grey
     contents += new Label("") {
-      icon = new ImageIcon("/home/rebecca/HTWG/AIN3/SE/CaroInScala/src/main/scala/caro/resources/greyButton")
+      icon = new ImageIcon("/home/ydang/SE/CaroInScala/src/main/scala/caro/resources/greyButton")
     }
     val colors = new ButtonGroup(red, black, white, grey)
   }
 
-  val popupMenu = new PopupMenu{
+  val popupMenu: PopupMenu = new PopupMenu{
     contents += colorbuttons
   }
     if (row ==9 && col == 9) {

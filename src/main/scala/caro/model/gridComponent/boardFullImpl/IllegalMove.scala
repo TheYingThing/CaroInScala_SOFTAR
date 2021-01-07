@@ -1,6 +1,7 @@
-package caro.model
+package caro.model.gridComponent.boardFullImpl
 
-import caro.model.GameStatus.GameStatus
+
+import caro.model.gridComponent.boardFullImpl.GameStatus.GameStatus
 
 class IllegalMove extends CellReplacementStrategy {
 

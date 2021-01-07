@@ -1,33 +1,34 @@
 package caro.controller.controllerComponent.controllerMockImpl
 
-import caro.controller.controllerComponent.ControllerInerface
-import caro.model._
+import caro.controller.controllerComponent.ControllerInterface
+import caro.model.gridComponent.BoardInterface
+import caro.model.gridComponent.boardMockImpl.Board
 
-class Controller (var board:Board) extends ControllerInerface{
+class Controller (var board:BoardInterface) extends ControllerInterface{
 
-  board = Board()
+  board = new Board()
 
-  override def newBoard(p1: String, p2: String): Unit = Board(player1 = Player(p1), player2 = Player(p2))
+  override def newBoard(p1: String, p2: String): Unit = new Board()
 
-  override def boardToString: String = board.toString
+  override def boardToString: String = "board"
 
-  override def putCell(row: Int, col: Int, color: String): Unit = board.replaceCell(row, col, color)
+  override def putCell(row: Int, col: Int, color: String): Unit = {}
 
-  override def correctCell(row: Int, col: Int): Unit = board.replaceCell(row, col, board.lastColor)
+  override def correctCell(row: Int, col: Int): Unit = {}
 
-  override def getPlayerOneName: String = board.player1.getName
+  override def getPlayerOneName: String = "player1"
 
-  override def getPlayerTwoName: String = board.player2.getName
+  override def getPlayerTwoName: String = "player2"
 
-  override def playerOneToString: String = board.player1.toString
+  override def playerOneToString: String = "player1 stats"
 
-  override def playerTwoToString: String = board.player2.toString
+  override def playerTwoToString: String = "player 2 stats"
 
-  override def getBoardStatus: String = board.getStatus
+  override def getBoardStatus: String = "status"
 
-  override def getCellColor(row: Int, col: Int): String = board.getCell(row, col).getColor
+  override def getCellColor(row: Int, col: Int): String = "color"
 
-  override def getMoves: Int = board.moves
+  override def getMoves: Int = 4
 
   override def undo: Unit = {}
 

@@ -1,6 +1,6 @@
-package caro.model
+package caro.model.gridComponent.boardFullImpl
 
-import caro.model.GameStatus.{GameStatus, IDLE}
+import caro.model.gridComponent.boardFullImpl.GameStatus.GameStatus
 
 class LegalMove extends CellReplacementStrategy {
 
@@ -14,8 +14,8 @@ class LegalMove extends CellReplacementStrategy {
     }
   }
   override def newCell(row:Int, col:Int, color:String, thisboard:Board, status:GameStatus): Board = {
-    var cell = Cell(Some(color))
+    val cell = Cell(Some(color))
     thisboard.copy(thisboard.board.updated(row, thisboard.board(row).updated(col, cell)),
-      width = thisboard.updateWidth(col), height = thisboard.updatedHeight(row), moves = thisboard.moves + 1, status = status)
+      width = thisboard.updatedWidth(col), height = thisboard.updatedHeight(row), moves = thisboard.moves + 1, status = status)
   }
 }

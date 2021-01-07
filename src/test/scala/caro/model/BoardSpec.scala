@@ -2,7 +2,7 @@ package caro.model
 
 import org.scalatest.matchers._
 import org.scalatest.wordspec._
-
+import caro.model.gridComponent.boardFullImpl._
 
 class BoardSpec extends AnyWordSpec with should.Matchers {
 

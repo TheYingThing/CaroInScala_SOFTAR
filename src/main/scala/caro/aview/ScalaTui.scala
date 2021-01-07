@@ -1,11 +1,9 @@
 package caro.aview
 
-import caro.controller.controllerComponent.ControllerInerface
-import caro.controller.controllerComponent.controllerBaseImpl.Controller
-import caro.model.Player
+import caro.controller.controllerComponent.ControllerInterface
 import caro.util.Observer
 
-class ScalaTui(controller: ControllerInerface) extends Observer{
+class ScalaTui(controller: ControllerInterface) extends Observer{
   controller.add(this)
   val center = 9
 

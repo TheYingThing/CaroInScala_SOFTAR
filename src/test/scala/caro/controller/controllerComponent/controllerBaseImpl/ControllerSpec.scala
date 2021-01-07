@@ -1,6 +1,6 @@
 package caro.controller.controllerComponent.controllerBaseImpl
 
-import caro.model._
+import caro.model.gridComponent.boardFullImpl._
 import org.scalatest.matchers._
 import org.scalatest.wordspec._
 
@@ -12,7 +12,7 @@ class ControllerSpec extends AnyWordSpec with should.Matchers {
 
     "create a new Board empty with given names" in {
       cont.newBoard("bla","blub")
-      cont.board.player1.name should be ("bla")
+      cont.board.getPlayerOne.getName should be ("bla")
       cont.board.isEmpty should be (true)
     }
     "put a first tile" in {
@@ -96,9 +96,9 @@ class ControllerSpec extends AnyWordSpec with should.Matchers {
     }
 
     "handle undo and redo corecctly" in {
-      cont.undo
+      cont.undo()
       cont.getCellColor(8,9) should be("none")
-      cont.redo
+      cont.redo()
       cont.getCellColor(8, 9) should be ("red")
     }
 

@@ -1,5 +1,6 @@
 package caro.model
 
+import caro.model.gridComponent.boardFullImpl.{Board, LegalMove}
 import org.scalatest.matchers._
 import org.scalatest.wordspec._
 

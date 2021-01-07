@@ -1,10 +1,11 @@
 package caro.controller.controllerComponent.controllerBaseImpl
 
 import caro.controller.controllerComponent._
-import caro.model.{Board, Player}
+import caro.model.gridComponent.BoardInterface
+import caro.model.gridComponent.boardFullImpl.{Board, Player}
 import caro.util._
 
-class Controller(var board:Board) extends ControllerInerface {
+class Controller(var board:BoardInterface) extends ControllerInterface {
   private val undoManager = new UndoManager
   def newBoard(p1:String, p2:String):Unit = {
     val nplayer1:Player = Player(p1)
@@ -25,9 +26,9 @@ class Controller(var board:Board) extends ControllerInerface {
     notifyObservers()
   }
 
-  def getPlayerOneName:String = board.player1.getName
+  def getPlayerOneName:String = board.getPlayerOne.getName
 
-  def getPlayerTwoName:String = board.player2.getName
+  def getPlayerTwoName:String = board.getPlayerTwo.getName
 
   def undo(): Unit = {
     undoManager.undoStep()
@@ -39,13 +40,13 @@ class Controller(var board:Board) extends ControllerInerface {
     notifyObservers()
   }
 
-  override def playerOneToString: String = board.player1.toString
+  override def playerOneToString: String = board.getPlayerOne.toString
 
-  override def playerTwoToString: String = board.player2.toString
+  override def playerTwoToString: String = board.getPlayerTwo.toString
 
   override def getBoardStatus: String = board.getStatus
 
   override def getCellColor(row: Int, col: Int): String = board.getCell(row, col).getColor
 
-  override def getMoves: Int = board.moves
+  override def getMoves: Int = board.getMoves
 }

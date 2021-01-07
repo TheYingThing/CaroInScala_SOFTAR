@@ -4,6 +4,7 @@ import caro.aview.ScalaTui
 import caro.aview.gui.ScalaGui
 import caro.controller.controllerComponent.controllerBaseImpl.Controller
 import caro.model._
+import caro.model.gridComponent.boardFullImpl.Board
 
 import scala.io.StdIn.readLine
 

@@ -1,5 +1,6 @@
 package caro.model
 
+import caro.model.gridComponent.boardFullImpl.Player
 import org.scalatest.matchers._
 import org.scalatest.wordspec._
 

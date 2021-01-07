@@ -1,7 +1,7 @@
 package caro.aview
 
 import caro.controller.controllerComponent.controllerBaseImpl.Controller
-import caro.model._
+import caro.model.gridComponent.boardFullImpl.Board
 import org.scalatest.matchers._
 import org.scalatest.wordspec._
 
@@ -39,14 +39,14 @@ class ScalaTuiSpec extends AnyWordSpec with should.Matchers{
 
     "set a name for player1 on input 'player1 Sam'" in {
       tui.processInputLine("player1 Sam")
-      cont.board.player1.name should be("Sam")
-      cont.board.player2.name should be("player2")
+      cont.board.getPlayerOne.getName should be("Sam")
+      cont.board.getPlayerTwo.getName should be("player2")
     }
 
     "set a name for player2 on input 'player2 Mike'" in {
       tui.processInputLine("player2 Mike")
-      cont.board.player2.name should be("Mike")
-      cont.board.player1.name should be("Sam")
+      cont.board.getPlayerTwo.getName should be("Mike")
+      cont.board.getPlayerOne.getName should be("Sam")
     }
 
     "undo the most recent move on input 'undo'" in {

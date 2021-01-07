@@ -1,9 +1,8 @@
 package caro.controller.controllerComponent
 
-import caro.model.{Board, Cell, Player}
 import caro.util._
 
-trait ControllerInerface extends Observable {
+trait ControllerInterface extends Observable {
 
   def newBoard(p1:String, p2:String):Unit
   def boardToString:String
