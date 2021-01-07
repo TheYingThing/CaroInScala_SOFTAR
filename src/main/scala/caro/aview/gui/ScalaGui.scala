@@ -3,6 +3,8 @@ package caro.aview.gui
 import caro.controller._
 import caro.util.Observer
 import caro.aview.gui._
+import caro.controller.controllerComponent.controllerBaseImpl.Controller
+import caro.controller.controllerComponent._
 
 import java.awt.Color
 import java.awt.image.BufferedImage
@@ -16,7 +18,7 @@ import scala.swing._
 import scala.swing.event.{ButtonClicked, MouseClicked}
 
 
-class ScalaGui(controller:Controller) extends Frame with Observer{
+class ScalaGui(controller:ControllerInerface) extends Frame with Observer{
   controller.add(this)
 
   object player1 extends TextField{columns = 15}
@@ -31,8 +33,8 @@ class ScalaGui(controller:Controller) extends Frame with Observer{
       contents += new MenuItem(Action("Quit") {System.exit(0)})
     }
     contents += new Menu("Edit") {
-      contents += new MenuItem(Action("undo") {controller.undo()})
-      contents += new MenuItem(Action("redo") {controller.redo()})
+      contents += new MenuItem(Action("undo") {controller.undo})
+      contents += new MenuItem(Action("redo") {controller.redo})
     }
   }
 
@@ -56,13 +58,13 @@ class ScalaGui(controller:Controller) extends Frame with Observer{
         + "BlackGrey|GreyBlack:   4pts\n"
         + "BlackWhite|WhiteBlack: 2pts\n"
         + "GreyWhite|WhiteGrey:   1pts\n")
-      val boardStatus = new TextArea(controller.board.getStatus)
+      val boardStatus = new TextArea(controller.getBoardStatus)
       boardStatus.background = new Color(0, 0, 0, 0)
       boardStatus.foreground = Color.WHITE
-      val player1Stat = new TextArea(controller.board.player1.toString)
+      val player1Stat = new TextArea(controller.playerOneToString)
       player1Stat.background = new Color(0, 0, 0, 0)
       player1Stat.foreground = Color.WHITE
-      val player2Stat = new TextArea(controller.board.player2.toString)
+      val player2Stat = new TextArea(controller.playerTwoToString)
       player2Stat.background = new Color(0, 0, 0, 0)
       player2Stat.foreground = Color.WHITE
       val ruleTxt = new TextArea(rules)
@@ -77,7 +79,7 @@ class ScalaGui(controller:Controller) extends Frame with Observer{
         for {i <- 3 to 15} {
           contents += new BoxPanel(Orientation.Horizontal) {
             for {j <- 3 to 15}
-              contents += new CellButton(i, j, controller.board.getCell(i, j).getColor,  controller)
+              contents += new CellButton(i, j, controller.getCellColor(i, j),  controller)
           }
         }
       }
@@ -98,10 +100,10 @@ class ScalaGui(controller:Controller) extends Frame with Observer{
         contents += player2Stat
         player2Stat.editable = false
         player2Stat.border = BorderFactory.createEmptyBorder(10, 20, 0, 20)
-        if(controller.board.moves%2 == 0) {
+        if(controller.getMoves % 2 == 0) {
           player1Stat.background = new Color(255, 255, 255, 50)
           //player2Stat.background = Color.WHITE
-        } else if(controller.board.moves%2 != 0) {
+        } else if(controller.getMoves % 2 != 0) {
           player2Stat.background = new Color(255, 255, 255, 50)
           //player1Stat.background = Color.WHITE
         }
@@ -138,14 +140,14 @@ class ScalaGui(controller:Controller) extends Frame with Observer{
 }
 
 class BoardPanel(frame:Frame) extends BorderPanel {
-  val image:BufferedImage = ImageIO.read(new File("/home/ydang/SE/CaroInScala/src/main/scala/caro/resources/wood"))
+  val image:BufferedImage = ImageIO.read(new File("/home/rebecca/HTWG/AIN3/SE/CaroInScala/src/main/scala/caro/aview/gui/DSC01714.JPG"))
   override def paintComponent(g: Graphics2D): Unit = {
     super.paintComponent(g)
     g.drawImage(image, 0, 0, frame.size.width, frame.size.height, null)
   }
 }
 
-class CellButton(row:Int, col:Int, color:String, controller: Controller)  extends Button {
+class CellButton(row:Int, col:Int, color:String, controller: ControllerInerface)  extends Button {
   val redColor = new Color(173, 0, 0)
   val blackColor = new Color(0, 0, 0)
   val whiteColor = new Color(255, 255, 255)
@@ -170,19 +172,19 @@ class CellButton(row:Int, col:Int, color:String, controller: Controller)  extend
   val colorbuttons = new GridPanel(4, 2) {
     contents += red
     contents += new Label("") {
-      icon = new ImageIcon("/home/ydang/SE/CaroInScala/src/main/scala/caro/resources/redButton")
+      icon = new ImageIcon("/home/rebecca/HTWG/AIN3/SE/CaroInScala/src/main/scala/caro/resources/redButton")
     }
     contents += black
     contents += new Label("") {
-      icon = new ImageIcon("/home/ydang/SE/CaroInScala/src/main/scala/caro/resources/blackButton")
+      icon = new ImageIcon("/home/rebecca/HTWG/AIN3/SE/CaroInScala/src/main/scala/caro/resources/blackButton")
     }
     contents += white
     contents += new Label("") {
-      icon = new ImageIcon("/home/ydang/SE/CaroInScala/src/main/scala/caro/resources/whiteButton")
+      icon = new ImageIcon("/home/rebecca/HTWG/AIN3/SE/CaroInScala/src/main/scala/caro/resources/whiteButton")
     }
     contents += grey
     contents += new Label("") {
-      icon = new ImageIcon("/home/ydang/SE/CaroInScala/src/main/scala/caro/resources/greyButton")
+      icon = new ImageIcon("/home/rebecca/HTWG/AIN3/SE/CaroInScala/src/main/scala/caro/resources/greyButton")
     }
     val colors = new ButtonGroup(red, black, white, grey)
   }

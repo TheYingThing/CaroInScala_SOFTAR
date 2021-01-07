@@ -2,7 +2,7 @@ package caro
 
 import caro.aview.ScalaTui
 import caro.aview.gui.ScalaGui
-import caro.controller.Controller
+import caro.controller.controllerComponent.controllerBaseImpl.Controller
 import caro.model._
 
 import scala.io.StdIn.readLine

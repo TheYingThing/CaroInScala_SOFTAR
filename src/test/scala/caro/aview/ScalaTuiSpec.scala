@@ -1,6 +1,6 @@
 package caro.aview
 
-import caro.controller.Controller
+import caro.controller.controllerComponent.controllerBaseImpl.Controller
 import caro.model._
 import org.scalatest.matchers._
 import org.scalatest.wordspec._

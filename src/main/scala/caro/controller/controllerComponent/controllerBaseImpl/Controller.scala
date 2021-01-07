@@ -1,11 +1,10 @@
-package caro.controller
+package caro.controller.controllerComponent.controllerBaseImpl
 
+import caro.controller.controllerComponent._
 import caro.model.{Board, Player}
 import caro.util._
 
-import scala.swing.Publisher
-
-class Controller(var board:Board) extends Observable{
+class Controller(var board:Board) extends ControllerInerface {
   private val undoManager = new UndoManager
   def newBoard(p1:String, p2:String):Unit = {
     val nplayer1:Player = Player(p1)
@@ -26,6 +25,10 @@ class Controller(var board:Board) extends Observable{
     notifyObservers()
   }
 
+  def getPlayerOneName:String = board.player1.getName
+
+  def getPlayerTwoName:String = board.player2.getName
+
   def undo(): Unit = {
     undoManager.undoStep()
     notifyObservers()
@@ -36,5 +39,13 @@ class Controller(var board:Board) extends Observable{
     notifyObservers()
   }
 
+  override def playerOneToString: String = board.player1.toString
 
+  override def playerTwoToString: String = board.player2.toString
+
+  override def getBoardStatus: String = board.getStatus
+
+  override def getCellColor(row: Int, col: Int): String = board.getCell(row, col).getColor
+
+  override def getMoves: Int = board.moves
 }
