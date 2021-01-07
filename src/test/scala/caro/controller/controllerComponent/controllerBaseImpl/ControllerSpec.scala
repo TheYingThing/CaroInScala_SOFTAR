@@ -1,5 +1,6 @@
 package caro.controller.controllerComponent.controllerBaseImpl
 
+import caro.model.gridComponent.BoardInterface
 import caro.model.gridComponent.boardFullImpl._
 import org.scalatest.matchers._
 import org.scalatest.wordspec._
@@ -39,6 +40,12 @@ class ControllerSpec extends AnyWordSpec with should.Matchers {
 
       cont.correctCell(10, 9)
       cont.board.getCell(10, 9).getColor should be ("white")
+      cont.undo
+      cont.board.getCell(10, 9 ).getColor should be ("none")
+      cont.redo
+      cont.board.getCell(10, 9).getColor should be ("white")
+
+
     }
 
     "return the player names" in {
@@ -96,9 +103,9 @@ class ControllerSpec extends AnyWordSpec with should.Matchers {
     }
 
     "handle undo and redo corecctly" in {
-      cont.undo()
+      cont.undo
       cont.getCellColor(8,9) should be("none")
-      cont.redo()
+      cont.redo
       cont.getCellColor(8, 9) should be ("red")
     }
 
