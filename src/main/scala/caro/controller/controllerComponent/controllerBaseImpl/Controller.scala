@@ -21,11 +21,6 @@ class Controller(var board:BoardInterface) extends ControllerInterface {
     notifyObservers()
   }
 
-  def correctCell(row: Int, col:Int):Unit = {
-    undoManager.doStep(new CorrectionCommand(row, col, this))
-    notifyObservers()
-  }
-
   def getPlayerOneName:String = board.getPlayerOne.getName
 
   def getPlayerTwoName:String = board.getPlayerTwo.getName

@@ -38,7 +38,7 @@ class ControllerSpec extends AnyWordSpec with should.Matchers {
       cont.putCell(9, 11, "white")
       cont.board.getCell(9, 11) should be (Cell(None))
 
-      cont.correctCell(10, 9)
+      cont.putCell(10, 9, "white")
       cont.board.getCell(10, 9).getColor should be ("white")
       cont.undo
       cont.board.getCell(10, 9 ).getColor should be ("none")

@@ -7,7 +7,6 @@ trait ControllerInterface extends Observable {
   def newBoard(p1:String, p2:String):Unit
   def boardToString:String
   def putCell(row:Int, col:Int, color:String):Unit
-  def correctCell(row:Int, col:Int):Unit
   def getPlayerOneName:String
   def getPlayerTwoName:String
   def playerOneToString:String
