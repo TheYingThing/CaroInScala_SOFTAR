@@ -95,12 +95,14 @@ class ControllerSpec extends AnyWordSpec with should.Matchers {
       cont.getMoves should be(4)
     }
 
-    "handle undo and redo corecctly" in {
+    "handle undo and redo correctly" in {
       cont.undo()
       cont.getCellColor(8,9) should be("none")
       cont.redo()
       cont.getCellColor(8, 9) should be ("red")
     }
+
+
 
   }
 

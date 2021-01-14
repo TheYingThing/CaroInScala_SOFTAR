@@ -1,12 +1,18 @@
 package caro.controller.controllerComponent.controllerBaseImpl
 
+import caro.CaroModule
 import caro.controller.controllerComponent._
+import caro.model.fileIoComponent.FileIOInterface
 import caro.model.gridComponent.BoardInterface
 import caro.model.gridComponent.boardFullImpl.{Board, Player}
 import caro.util._
+import com.google.inject.{Guice, Inject}
+import net.codingwell.scalaguice.InjectorExtensions.ScalaInjector
 
-class Controller(var board:BoardInterface) extends ControllerInterface {
+class Controller @Inject() (var board:BoardInterface) extends ControllerInterface {
   private val undoManager = new UndoManager
+  val injector = Guice.createInjector(new CaroModule)
+  val fileIo = injector.instance[FileIOInterface]
   def newBoard(p1:String, p2:String):Unit = {
     val nplayer1:Player = Player(p1)
     val nplayer2:Player = Player(p2)
@@ -44,9 +50,19 @@ class Controller(var board:BoardInterface) extends ControllerInterface {
 
   override def playerTwoToString: String = board.getPlayerTwo.toString
 
-  override def getBoardStatus: String = board.getStatus
+  override def getBoardStatus: String = board.getStatusMessage
 
   override def getCellColor(row: Int, col: Int): String = board.getCell(row, col).getColor
 
   override def getMoves: Int = board.getMoves
+
+  def save: Unit = {
+    fileIo.save(board)
+    notifyObservers()
+  }
+
+  def load: Unit = {
+    board = fileIo.load
+    notifyObservers()
+  }
 }

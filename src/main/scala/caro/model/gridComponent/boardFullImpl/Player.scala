@@ -1,10 +1,11 @@
 package caro.model.gridComponent.boardFullImpl
 
 import caro.model.gridComponent.PlayerInterface
+import com.google.inject.Inject
 
 import scala.collection.immutable.ListMap
 
-case class Player(name: String,
+case class Player @Inject() (name: String,
                   tiles: ListMap[String, Int] = ListMap("red" -> 3, "black" -> 3, "grey" -> 3, "white" ->3),
                   points: Int = 0) extends PlayerInterface{
 
@@ -20,4 +21,10 @@ case class Player(name: String,
 
     output
   }
+
+  override def setPoints(points: Int): PlayerInterface = copy(points = points)
+
+  override def setTiles(tiles: ListMap[String, Int]): PlayerInterface = copy(tiles = tiles)
+
+  override def setName(name: String): PlayerInterface = copy(name = name)
 }
