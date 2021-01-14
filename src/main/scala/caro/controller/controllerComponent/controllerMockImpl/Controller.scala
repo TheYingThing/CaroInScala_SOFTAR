@@ -14,8 +14,6 @@ class Controller (var board:BoardInterface) extends ControllerInterface{
 
   override def putCell(row: Int, col: Int, color: String): Unit = {}
 
-  override def correctCell(row: Int, col: Int): Unit = {}
-
   override def getPlayerOneName: String = "player1"
 
   override def getPlayerTwoName: String = "player2"

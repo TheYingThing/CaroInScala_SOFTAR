@@ -19,9 +19,6 @@ class ScalaTui(controller: ControllerInterface) extends Observer{
       case "put" =>
         val cmd = command.toArray
         controller.putCell(cmd(1).toInt + 2 , cmd(2).toInt + 2, cmd(3))
-      case "correct" =>
-        val cmd = command.toArray
-        controller.correctCell(cmd(1).toInt + 2, cmd(2).toInt +2)
 
       case "quit" =>
       case _ => println("Not a valid Command!")
