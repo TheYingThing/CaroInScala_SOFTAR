@@ -20,4 +20,11 @@ case class Player(name: String,
 
     output
   }
+
+  object Player {
+    import play.api.libs.json._
+
+    implicit val playerWrites = Json.writes[Player]
+    implicit val playerReads = Json.reads[Player]
+  }
 }

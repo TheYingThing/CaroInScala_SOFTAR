@@ -220,5 +220,11 @@ case class Board(board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)), 
     newPoints
   }
 
+  object Board {
+    import play.api.libs.json._
+
+    implicit val boardWrites = Json.writes[Board]
+    implicit val boardReads = Json.reads[Board]
+  }
 
 }
