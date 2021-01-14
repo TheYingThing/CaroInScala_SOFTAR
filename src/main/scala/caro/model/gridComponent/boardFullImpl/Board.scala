@@ -1,19 +1,23 @@
 package caro.model.gridComponent.boardFullImpl
 
-import caro.model.gridComponent.BoardInterface
+
+import caro.model.gridComponent.{BoardInterface, PlayerInterface}
 import caro.model.gridComponent.boardFullImpl.GameStatus._
 
+import javax.inject.Inject
 import scala.collection.immutable.ListMap
 import scala.collection.mutable.ListBuffer
 import scala.util.{Failure, Success, Try}
 
-case class Board(board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)), width: Int = 0,
+case class Board (board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)), width: Int = 0,
                  height: Int = 0, moves: Int = 0, lastColor: String = "", status: GameStatus = IDLE,
                  player1: Player = Player("player1"), player2: Player = Player("player2")) extends BoardInterface{
   //3-15
   val maxSize: Int = 6
 
-  def getStatus: String = GameStatus.message(this.status)
+  def getStatus: GameStatus = status
+
+  override def getStatusMessage: String = GameStatus.message(this.status)
 
   def getLastColor: String = this.lastColor
 
@@ -28,6 +32,25 @@ case class Board(board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)), 
   def getPlayerTwo: Player = player2
 
   def getMoves: Int = moves
+
+  override def setStatus(status: GameStatus): BoardInterface = copy(status = status)
+
+  override def setLastColor(lastColor: String): BoardInterface = copy(lastColor = lastColor)
+
+  override def setWidth(width: Int): BoardInterface = copy(width = width)
+
+  override def setHeight(height: Int): BoardInterface = copy(height = height)
+
+  override def setMoves(moves: Int): BoardInterface = copy(moves = moves)
+
+  override def setPlayerOne(player1: Player): BoardInterface = copy(player1 = player1)
+
+  override def setPlayerTwo(player2: Player): BoardInterface = copy(player2 = player2)
+
+  override def setCell(row: Int, col: Int, color: String): BoardInterface = {
+    val newcell = Cell(Some(color))
+    copy(board.updated(row, board(row).updated(col, newcell)))
+  }
 
   def isEmpty: Boolean = {
     !(board exists (v => v exists (c => c.isOccupied)))

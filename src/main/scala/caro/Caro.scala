@@ -2,15 +2,18 @@ package caro
 
 import caro.aview.ScalaTui
 import caro.aview.gui.ScalaGui
+import caro.controller.controllerComponent.ControllerInterface
 import caro.controller.controllerComponent.controllerBaseImpl.Controller
 import caro.model._
 import caro.model.gridComponent.boardFullImpl.Board
+import com.google.inject.Guice
 
 import scala.io.StdIn.readLine
 
 object Caro {
   var board = new Board
-  val controller = new Controller(board)
+  val injector = Guice.createInjector(new CaroModule)
+  val controller = injector.getInstance(classOf[ControllerInterface])
   val tui = new ScalaTui(controller)
   val gui = new ScalaGui(controller)
 
