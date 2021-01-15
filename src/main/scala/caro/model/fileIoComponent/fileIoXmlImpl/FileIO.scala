@@ -13,9 +13,7 @@ import scala.xml.{Elem, NodeSeq, PrettyPrinter}
 
 class FileIO extends FileIOInterface{
 
-  override def load: BoardInterface = {
-    val injector = Guice.createInjector(new CaroModule)
-    val board = injector.getInstance(classOf[BoardInterface])
+  override def load: Board = {
 
     val file = scala.xml.XML.loadFile("board.xml")
     val boardval = (file \\ "board")
@@ -39,26 +37,20 @@ class FileIO extends FileIOInterface{
     val player1 = loadPlayer(player1val)
     val player2 = loadPlayer(player2val)
 
-    board.setPlayerOne(player1)
-    board.setPlayerTwo(player2)
-    board.setStatus(gamestatus)
-    board.setMoves(movesval)
-    board.setLastColor(lastColorval)
-    board.setWidth(widthval)
-    board.setHeight(heightval)
+    var board = Board(width = widthval, height = heightval, lastColor = lastColorval, status = gamestatus, moves = movesval, player1 = player1, player2 = player2)
 
     val cellNodes = (file \\ "cells")
     for (cell <- cellNodes) {
       val row: Int = (cell \ "@row").text.toInt
       val col: Int = (cell \ "@col").text.toInt
-      val color: String = cell.text.toString
-      board.setCell(row, col, color)
+      val color: String = cell.text
+      board = board.setCell(row, col, color)
     }
 
     board
   }
 
-  def loadPlayer(playerVal: NodeSeq) : PlayerInterface = {
+  def loadPlayer(playerVal: NodeSeq) : Player = {
     val injector = Guice.createInjector(new CaroModule)
 
     val tileval = (playerVal \ "@tiles")
@@ -68,14 +60,11 @@ class FileIO extends FileIOInterface{
     val greyval = (tileval \ "@grey").text.toInt
     val whiteval = (tileval \ "@white").text.toInt
 
-    val nameval = playerVal.text.toString
+    val nameval = playerVal.text
     val pointval = (playerVal \ "@points").text.toInt
     val tilesval = ListMap("red" -> redval, "black" -> blackval, "grey" -> greyval, "white" -> whiteval)
 
-    val player = injector.getInstance(classOf[PlayerInterface])
-    player.setName(nameval)
-    player.setPoints(pointval)
-    player.setTiles(tilesval)
+    val player = Player(name = nameval, tiles = tilesval, points = pointval)
     player
   }
 
@@ -91,8 +80,8 @@ class FileIO extends FileIOInterface{
     pw.close()
   }
 
-  def boardToXml(board: BoardInterface) = {
-    <board width={ board.getWidth.toString } height={ board.getHeight.toString } lastColor={ board.getLastColor.toString } status={board.getStatusMessage.toString}>
+  def boardToXml(board: BoardInterface): Elem = {
+    <board width={ board.getWidth.toString } height={ board.getHeight.toString } lastColor={ board.getLastColor} status={board.getStatus.toString}>
       <player1> { playerToXml(board.getPlayerOne) }</player1>
       <player2> { playerToXml(board.getPlayerTwo) }</player2>
       <cells>
@@ -106,13 +95,13 @@ class FileIO extends FileIOInterface{
     </board>
   }
 
-  def cellToXml(board: BoardInterface, row:Int, col:Int) = {
+  def cellToXml(board: BoardInterface, row:Int, col:Int): Elem = {
     <cell row={ row.toString } col={ col.toString } isOccupied={ board.getCell(row, col).isOccupied.toString }>
       { board.getCell(row, col).getColor }
     </cell>
   }
 
-  def playerToXml(player: PlayerInterface) = {
+  def playerToXml(player: PlayerInterface): Elem = {
     <player points={ player.getPoints.toString }>
       { player.getName }
       <tiles red={player.getTiles.get("red").toString} black={player.getTiles.get("black").toString}

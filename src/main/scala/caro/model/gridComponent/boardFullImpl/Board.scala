@@ -47,7 +47,7 @@ case class Board (board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
 
   override def setPlayerTwo(player2: Player): BoardInterface = copy(player2 = player2)
 
-  override def setCell(row: Int, col: Int, color: String): BoardInterface = {
+  def setCell(row: Int, col: Int, color: String): Board = {
     val newcell = Cell(Some(color))
     copy(board.updated(row, board(row).updated(col, newcell)))
   }
