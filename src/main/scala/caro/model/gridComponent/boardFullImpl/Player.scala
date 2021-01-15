@@ -27,4 +27,5 @@ case class Player @Inject() (name: String,
   override def setTiles(tiles: ListMap[String, Int]): PlayerInterface = copy(tiles = tiles)
 
   override def setName(name: String): PlayerInterface = copy(name = name)
+
 }

@@ -30,7 +30,9 @@ object Caro {
           + "\n\t'put <column> <row> <Tile color> - sets tile at position"
           + "\n\t'undo' - undo most recent move"
           + "\n\t'redo' - redo most recent undo"
-          + "\n\t'quit' - exit game")
+          + "\n\t'quit' - exit game"
+          + "\n\t'save' - save current game"
+          + "\n\t'load' - load saved game")
 
     var input: String = ""
 

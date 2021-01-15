@@ -1,7 +1,7 @@
 package caro.model.gridComponent
 
 import caro.model.gridComponent.boardFullImpl.GameStatus.GameStatus
-import caro.model.gridComponent.boardFullImpl.{Board, CellReplacementStrategy, Player}
+import caro.model.gridComponent.boardFullImpl.{CellReplacementStrategy, Player}
 
 import scala.collection.immutable.ListMap
 
@@ -16,14 +16,6 @@ trait BoardInterface {
   def getPlayerOne: PlayerInterface
   def getPlayerTwo: PlayerInterface
   def getMoves: Int
-  def setStatus(status: GameStatus): BoardInterface
-  def setLastColor(lastColor: String): BoardInterface
-  def setWidth(width: Int): BoardInterface
-  def setHeight(height: Int): BoardInterface
-  def setMoves(moves: Int): BoardInterface
-
-  def setPlayerOne(player1: Player): BoardInterface
-  def setPlayerTwo(player2: Player): BoardInterface
 
   def isEmpty: Boolean
   def rowEmpty(row: Int): Boolean
@@ -47,6 +39,7 @@ trait PlayerInterface {
   def setPoints(points: Int): PlayerInterface
   def setTiles(tiles: ListMap[String, Int]): PlayerInterface
   def setName(name: String): PlayerInterface
+
 }
 
 trait CellInterface {

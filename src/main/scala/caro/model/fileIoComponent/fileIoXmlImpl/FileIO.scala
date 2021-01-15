@@ -13,7 +13,7 @@ import scala.xml.{Elem, NodeSeq, PrettyPrinter}
 
 class FileIO extends FileIOInterface{
 
-  override def load: Board = {
+  override def load: BoardInterface = {
 
     val file = scala.xml.XML.loadFile("board.xml")
     val boardval = (file \\ "board")
@@ -37,13 +37,14 @@ class FileIO extends FileIOInterface{
     val player1 = loadPlayer(player1val)
     val player2 = loadPlayer(player2val)
 
-    var board = Board(width = widthval, height = heightval, lastColor = lastColorval, status = gamestatus, moves = movesval, player1 = player1, player2 = player2)
+    var board = Board(width = widthval, height = heightval, lastColor = lastColorval, status = gamestatus, moves = movesval,
+      player1 = player1, player2 = player2)
 
     val cellNodes = (file \\ "cells")
     for (cell <- cellNodes) {
       val row: Int = (cell \ "@row").text.toInt
       val col: Int = (cell \ "@col").text.toInt
-      val color: String = cell.text
+      val color: String = cell.text.toString
       board = board.setCell(row, col, color)
     }
 
@@ -51,7 +52,6 @@ class FileIO extends FileIOInterface{
   }
 
   def loadPlayer(playerVal: NodeSeq) : Player = {
-    val injector = Guice.createInjector(new CaroModule)
 
     val tileval = (playerVal \ "@tiles")
 
