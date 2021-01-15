@@ -16,4 +16,6 @@ trait ControllerInterface extends Observable {
   def getMoves:Int
   def undo:Unit
   def redo:Unit
+  def save:Unit
+  def load:Unit
 }

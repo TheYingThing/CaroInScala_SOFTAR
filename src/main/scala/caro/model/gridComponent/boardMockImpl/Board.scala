@@ -1,11 +1,11 @@
 package caro.model.gridComponent.boardMockImpl
 
-import caro.model.gridComponent.boardFullImpl.GameStatus.GameStatus
+import caro.model.gridComponent.boardFullImpl.GameStatus.{GameStatus, IDLE}
 import caro.model.gridComponent.boardFullImpl.{Cell, CellReplacementStrategy, GameStatus, Player}
 import caro.model.gridComponent.{BoardInterface, CellInterface, PlayerInterface}
 
 class Board() extends BoardInterface{
-  override def getStatus: String =  "Idle"
+  override def getStatus: GameStatus =  IDLE
 
   override def getLastColor: String = "red"
 
@@ -39,5 +39,7 @@ class Board() extends BoardInterface{
   override def replaceCell(row: Int, col: Int, color: String): BoardInterface = new Board()
 
   override def allRules(row: Int, col: Int, color: String): Boolean = true
+
+  override def getStatusMessage: String = ???
 
 }

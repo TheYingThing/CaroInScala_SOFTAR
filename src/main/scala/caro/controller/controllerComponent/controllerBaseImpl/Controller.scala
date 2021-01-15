@@ -6,6 +6,7 @@ import caro.model.fileIoComponent.FileIOInterface
 import caro.model.gridComponent.BoardInterface
 import caro.model.gridComponent.boardFullImpl.{Board, Player}
 import caro.util._
+import com.google.inject.name.Named
 import com.google.inject.{Guice, Inject}
 import net.codingwell.scalaguice.InjectorExtensions.ScalaInjector
 
@@ -16,6 +17,7 @@ class Controller @Inject() (var board:BoardInterface) extends ControllerInterfac
   def newBoard(p1:String, p2:String):Unit = {
     val nplayer1:Player = Player(p1)
     val nplayer2:Player = Player(p2)
+    board = injector.getInstance(classOf[BoardInterface])
     board = Board(player1 = nplayer1, player2 = nplayer2)
     notifyObservers()
   }

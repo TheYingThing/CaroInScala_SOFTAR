@@ -3,8 +3,11 @@ package caro.model.fileIoComponent.fileIoJsonImpl
 import caro.CaroModule
 import caro.model.fileIoComponent.FileIOInterface
 import caro.model.gridComponent._
-import caro.model.gridComponent.boardFullImpl.Cell
+import caro.model.gridComponent.boardFullImpl.{Board, Cell, Player}
+import caro.model.gridComponent.boardFullImpl.GameStatus._
 import com.google.inject.Guice
+import com.google.inject.name.Names
+import net.codingwell.scalaguice.InjectorExtensions.ScalaInjector
 import play.api.libs.json.JsPath.\\
 import play.api.libs.json.{JsArray, JsValue, Json, Writes}
 
@@ -15,24 +18,43 @@ import scala.language.postfixOps
 class FileIO extends FileIOInterface {
   override def load: BoardInterface = {
 
-    var board:BoardInterface = null
     val source:String = Source.fromFile("board.json").getLines.mkString
     val json: JsValue = Json.parse(source)
-    val injector = Guice.createInjector(new CaroModule)
 
     val moves = (json \ "moves").as[Int]
     val height = (json \ "height").as[Int]
     val width = (json \ "width").as[Int]
     val lastColor = (json \ "lastColor").as[String]
-    val cell = (json \ "cell")
     val status = (json \ "status").as[String]
+    var gamestatus : GameStatus = null
+    status match {
+      case "IDLE" => gamestatus = IDLE
+      case "NOCOLORSLEFT" => gamestatus = NOCOLORSLEFT
+      case "ILLEGALMOVE" => gamestatus = ILLEGALMOVE
+      case "UNVALIDCOLOR" => gamestatus = UNVALIDCOLOR
+    }
 
-    val player1val = (json \ "player1" \ "player")
-    val player2val = (json \ "player2" \ "player")
+
+    val player1val = (json \ "player1").as[JsValue]
+    val player2val = (json \ "player2").as[JsValue]
+    val player1 = loadPlayer(player1val)
+    val player2 = loadPlayer(player2val)
+
+    var board = Board(width = width, height = height, moves = moves, lastColor = lastColor, status = gamestatus,
+      player1 = player1, player2 = player2)
+
+    for (i <- 0 until 19 * 19 ) {
+      val row = (json \\ "row")(i).as[Int]
+      val col = (json \\ "col")(i).as[Int]
+      val cell = (json \\ "cell")(i)
+      val color = (cell \ "color").as[String]
+      board = board.setCell(row, col , color)
+    }
+
     board
     }
 
-  def loadPlayer(playerVal: JsArray): PlayerInterface = {
+  def loadPlayer(playerVal: JsValue): Player = {
     val tileVal = (playerVal \"tiles")
     val redVal = (tileVal \ "red").as[Int]
     val blackVal = (tileVal \ "black").as[Int]
@@ -43,9 +65,10 @@ class FileIO extends FileIOInterface {
     val pointVal = (playerVal \ "points").as[Int]
     val tilesVal = ListMap("red" -> redVal, "black" -> blackVal, "grey" -> greyVal, "white" -> whiteVal)
 
-    val injector = Guice.createInjector(new CaroModule)
 
+    val player = Player(name = nameVal, tiles = tilesVal, points = pointVal)
 
+    player
   }
 
 
@@ -84,11 +107,26 @@ class FileIO extends FileIOInterface {
               "cell"-> Json.toJson(board.getCell(row, col))
             )
           }
-        )
+        ),
+        "player1" -> playerToJson(board.getPlayerOne),
+        "player2" -> playerToJson(board.getPlayerTwo)
       )
     )
   }
 
-  def playerToJson
+  def playerToJson(player:PlayerInterface) = {
+    Json.obj(
+      "player" -> Json.obj(
+        "points" -> player.getPoints,
+        "name" -> player.getName,
+        "tiles" -> Json.obj(
+          "red" -> player.getTiles.get("red"),
+          "black" -> player.getTiles.get("black"),
+          "grey" -> player.getTiles.get("grey"),
+          "white" -> player.getTiles.get("white")
+        )
+      )
+    )
+  }
 
 }

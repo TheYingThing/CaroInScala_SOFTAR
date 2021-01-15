@@ -33,21 +33,7 @@ case class Board (board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
 
   def getMoves: Int = moves
 
-  override def setStatus(status: GameStatus): BoardInterface = copy(status = status)
-
-  override def setLastColor(lastColor: String): BoardInterface = copy(lastColor = lastColor)
-
-  override def setWidth(width: Int): BoardInterface = copy(width = width)
-
-  override def setHeight(height: Int): BoardInterface = copy(height = height)
-
-  override def setMoves(moves: Int): BoardInterface = copy(moves = moves)
-
-  override def setPlayerOne(player1: Player): BoardInterface = copy(player1 = player1)
-
-  override def setPlayerTwo(player2: Player): BoardInterface = copy(player2 = player2)
-
-  override def setCell(row: Int, col: Int, color: String): BoardInterface = {
+  def setCell(row: Int, col: Int, color: String): Board = {
     val newcell = Cell(Some(color))
     copy(board.updated(row, board(row).updated(col, newcell)))
   }
@@ -242,12 +228,14 @@ case class Board (board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
     neighbors.foreach(f => newPoints += combinations(f))
     newPoints
   }
-
+/*
   object Board {
     import play.api.libs.json._
 
     implicit val boardWrites = Json.writes[Board]
     implicit val boardReads = Json.reads[Board]
   }
+
+ */
 
 }

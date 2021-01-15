@@ -14,8 +14,6 @@ import scala.xml.{Elem, NodeSeq, PrettyPrinter}
 class FileIO extends FileIOInterface{
 
   override def load: BoardInterface = {
-    val injector = Guice.createInjector(new CaroModule)
-    val board = injector.getInstance(classOf[BoardInterface])
 
     val file = scala.xml.XML.loadFile("board.xml")
     val boardval = (file \\ "board")
@@ -39,27 +37,21 @@ class FileIO extends FileIOInterface{
     val player1 = loadPlayer(player1val)
     val player2 = loadPlayer(player2val)
 
-    board.setPlayerOne(player1)
-    board.setPlayerTwo(player2)
-    board.setStatus(gamestatus)
-    board.setMoves(movesval)
-    board.setLastColor(lastColorval)
-    board.setWidth(widthval)
-    board.setHeight(heightval)
+    var board = Board(width = widthval, height = heightval, lastColor = lastColorval, status = gamestatus, moves = movesval,
+      player1 = player1, player2 = player2)
 
     val cellNodes = (file \\ "cells")
     for (cell <- cellNodes) {
       val row: Int = (cell \ "@row").text.toInt
       val col: Int = (cell \ "@col").text.toInt
       val color: String = cell.text.toString
-      board.setCell(row, col, color)
+      board = board.setCell(row, col, color)
     }
 
     board
   }
 
-  def loadPlayer(playerVal: NodeSeq) : PlayerInterface = {
-    val injector = Guice.createInjector(new CaroModule)
+  def loadPlayer(playerVal: NodeSeq) : Player = {
 
     val tileval = (playerVal \ "@tiles")
 
@@ -72,10 +64,7 @@ class FileIO extends FileIOInterface{
     val pointval = (playerVal \ "@points").text.toInt
     val tilesval = ListMap("red" -> redval, "black" -> blackval, "grey" -> greyval, "white" -> whiteval)
 
-    val player = injector.getInstance(classOf[PlayerInterface])
-    player.setName(nameval)
-    player.setPoints(pointval)
-    player.setTiles(tilesval)
+    val player = Player(name = nameval, tiles = tilesval, points = pointval)
     player
   }
 

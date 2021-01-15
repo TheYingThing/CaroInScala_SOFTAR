@@ -32,4 +32,8 @@ class Controller (var board:BoardInterface) extends ControllerInterface{
 
   override def redo: Unit = {}
 
+  override def save: Unit = {}
+
+  override def load: Unit = {}
+
 }
