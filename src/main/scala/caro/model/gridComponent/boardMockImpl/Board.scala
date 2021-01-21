@@ -1,8 +1,8 @@
 package caro.model.gridComponent.boardMockImpl
 
 import caro.model.gridComponent.boardFullImpl.GameStatus.{GameStatus, IDLE}
-import caro.model.gridComponent.boardFullImpl.{Cell, CellReplacementStrategy, GameStatus, Player}
-import caro.model.gridComponent.{BoardInterface, CellInterface, PlayerInterface}
+import caro.model.gridComponent.boardFullImpl.{Board, Cell, CellReplacementStrategy, GameStatus, Player}
+import caro.model.gridComponent.{BoardInterface, CellInterface, PlayerInterface, boardFullImpl}
 
 class Board() extends BoardInterface{
   override def getStatus: GameStatus =  IDLE
@@ -40,6 +40,8 @@ class Board() extends BoardInterface{
 
   override def allRules(row: Int, col: Int, color: String): Boolean = true
 
-  override def getStatusMessage: String = ???
+  override def getStatusMessage: String = "status"
 
+  override def setPlayerOne(player: Player): boardFullImpl.Board = Board()
+  override def setPlayerTwo(player: Player): boardFullImpl.Board = Board()
 }

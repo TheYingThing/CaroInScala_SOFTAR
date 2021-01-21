@@ -33,8 +33,20 @@ case class Board (board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
 
   def getMoves: Int = moves
 
+  def setPlayerOne(player:Player): Board = {
+    copy(player1 = player)
+  }
+
+  def setPlayerTwo(player:Player): Board = {
+    copy(player2 = player)
+  }
+
   def setCell(row: Int, col: Int, color: String): Board = {
-    val newcell = Cell(Some(color))
+    var newcell:Cell = null
+    if (color.equals("none"))
+      newcell = Cell(None)
+    else
+      newcell = Cell(Some(color))
     copy(board.updated(row, board(row).updated(col, newcell)))
   }
 
@@ -116,7 +128,7 @@ case class Board (board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
       replace(legal, row, col, color, GameStatus.IDLE)
 
     } else {
-      println("row: " + (row + 2) + " col: " + (col + 2))
+      println("row: " + row + " col: " + col)
       println("\nillegal move, minus 10 points")
       val illegal = new IllegalMove()
       replace(illegal, row, col, color, GameStatus.ILLEGALMOVE)
@@ -183,11 +195,17 @@ case class Board (board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
   }
 
   def sameColor(row: Int, col: Int, color: String): Boolean = {
-    getNeighbors(row, col).forall(n => n.getColor != color)
+    val gn = getNeighbors(row, col).forall(n => n.getColor != color)
+    if(!gn)
+      println("samecolor")
+    gn
   }
 
   def onEdge(row: Int, col: Int): Boolean = {
-    getNeighbors(row, col).exists(n => n.isOccupied)
+    val oe = getNeighbors(row, col).exists(n => n.isOccupied)
+    if(!oe)
+      println("onEdge")
+    oe
   }
 
   def diagonal(row: Int, col: Int, color: String): Boolean = {
@@ -195,26 +213,39 @@ case class Board (board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
     val diag2 = getDiagonals(row, col)(1).sliding(3).toList
     val d1 = diag1.exists(l => l.forall(c => c.getColor == color)) //true when theres a sequence of 3 same colors
     val d2 = diag2.exists(l => l.forall(c => c.getColor == color))
-    !(d1 || d2)
+    val d = !(d1 || d2)
+    if(!d)
+      println("diagonal")
+    d
   }
 
   //returns true if theres less than two of the same color
   def twoColor(row: Int, col: Int, color: String): Boolean = {
     val counter: Int = getNeighbors(row, col).count(n => n.getColor == color)
-    counter < 2
+    val tc = counter < 2
+    if(!tc)
+      println("twoColor")
+    tc
   }
 
   //return true when theres no neighbor that has two neighbors that are of the same color as the tile to be laid
   def maxColor(row: Int, col: Int, color: String): Boolean = {
-    twoColor(row - 1, col, color) && twoColor(row + 1, col, color) && twoColor(row, col + 1, color) && twoColor(row, col - 1, color)
+    val mc = twoColor(row - 1, col, color) && twoColor(row + 1, col, color) && twoColor(row, col + 1, color) && twoColor(row, col - 1, color)
+    if(!mc)
+      println("maxColor")
+    mc
   }
 
   //return true when tile can be laid
   def maxField(row: Int, col: Int): Boolean = {
-    if (this.getHeight == maxSize && this.rowEmpty(row))
+    if (this.getHeight == maxSize && this.rowEmpty(row)) {
+      println("maxField")
       return false
-    if (this.getWidth == maxSize && this.colEmpty(col))
+    }
+    if (this.getWidth == maxSize && this.colEmpty(col)) {
+      println("maxField")
       return false
+    }
     true
   }
 

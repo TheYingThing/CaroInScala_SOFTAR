@@ -6,20 +6,25 @@ import caro.controller.controllerComponent.ControllerInterface
 import caro.controller.controllerComponent.controllerBaseImpl.Controller
 import caro.model._
 import caro.model.gridComponent.boardFullImpl.Board
-import com.google.inject.Guice
+import com.google.inject.{Guice, Injector}
 
 import scala.io.StdIn.readLine
 
 object Caro {
+  val UICONFIG: String = System.getenv("UI_CONFIG")
+
   var board = new Board
-  val injector = Guice.createInjector(new CaroModule)
-  val controller = injector.getInstance(classOf[ControllerInterface])
+  val injector: Injector = Guice.createInjector(new CaroModule)
+  val controller: ControllerInterface = injector.getInstance(classOf[ControllerInterface])
   val tui = new ScalaTui(controller)
-  val gui = new ScalaGui(controller)
 
   def main(args: Array[String]): Unit = {
-    gui.update
-    gui.visible = true
+
+    if(UICONFIG.equals("gui")) {
+      val gui = new ScalaGui(controller)
+      gui.update
+      gui.visible = true
+    }
 
     println("Welcome to Caro!\n")
 
@@ -39,7 +44,6 @@ object Caro {
     Thread.sleep(1000)
 
     do {
-
       printf("\nEnter your command: \n")
       input = readLine()
       tui.processInputLine(input)

@@ -7,18 +7,19 @@ import caro.model.gridComponent.BoardInterface
 import caro.model.gridComponent.boardFullImpl.{Board, Player}
 import caro.util._
 import com.google.inject.name.Named
-import com.google.inject.{Guice, Inject}
+import com.google.inject.{Guice, Inject, Injector}
 import net.codingwell.scalaguice.InjectorExtensions.ScalaInjector
 
 class Controller @Inject() (var board:BoardInterface) extends ControllerInterface {
   private val undoManager = new UndoManager
-  val injector = Guice.createInjector(new CaroModule)
-  val fileIo = injector.instance[FileIOInterface]
+  val injector: Injector = Guice.createInjector(new CaroModule)
+  val fileIo: FileIOInterface = injector.instance[FileIOInterface]
   def newBoard(p1:String, p2:String):Unit = {
     val nplayer1:Player = Player(p1)
     val nplayer2:Player = Player(p2)
     board = injector.getInstance(classOf[BoardInterface])
-    board = Board(player1 = nplayer1, player2 = nplayer2)
+    board = board.setPlayerOne(nplayer1)
+    board = board.setPlayerTwo(nplayer2)
     notifyObservers()
   }
 

@@ -1,7 +1,7 @@
 package caro.model.gridComponent
 
 import caro.model.gridComponent.boardFullImpl.GameStatus.GameStatus
-import caro.model.gridComponent.boardFullImpl.{CellReplacementStrategy, Player}
+import caro.model.gridComponent.boardFullImpl.{Board, CellReplacementStrategy, Player}
 
 import scala.collection.immutable.ListMap
 
@@ -16,6 +16,9 @@ trait BoardInterface {
   def getPlayerOne: PlayerInterface
   def getPlayerTwo: PlayerInterface
   def getMoves: Int
+
+  def setPlayerOne(player: Player): Board
+  def setPlayerTwo(player: Player): Board
 
   def isEmpty: Boolean
   def rowEmpty(row: Int): Boolean
