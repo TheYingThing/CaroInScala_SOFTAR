@@ -1,23 +1,35 @@
 package caro.aview
 
-import caro.model.{Board, Cell, Tile}
+import caro.controller.controllerComponent.ControllerInterface
+import caro.util.Observer
 
-class ScalaTui {
-  def processInputLine(input: String, board:Board): Board = {
-    input match {
-      case "board" => board
-      case "new" => new Board
-      case _ => input.split(" ").toList match {
-        case first::color::Nil =>
-          if (first.equals("first")) {
-            board.replaceCell(6, 6, color)
-          } else {
-            board
-          }
-        case row::column::color::Nil => board.replaceCell(row.toInt - 1 , column.toInt - 1, color)
-        case _ => board
-      }
+class ScalaTui(controller: ControllerInterface) extends Observer{
+  controller.add(this)
+  val center = 9
+
+  def processInputLine(input: String):Unit = {
+    val command = input.split(" ").toList
+    command.head match {
+      case "board" => update
+      case "first" => controller.putCell(center, center, command.tail.head)
+      case "player1" => controller.newBoard(command.tail.head, controller.getPlayerTwoName)
+      case "player2" => controller.newBoard(controller.getPlayerOneName, command.tail.head)
+      case "undo" => controller.undo
+      case "redo" => controller.redo
+      case "put" =>
+        val cmd = command.toArray
+        controller.putCell(cmd(1).toInt + 2 , cmd(2).toInt + 2, cmd(3))
+
+      case "save" => controller.save
+      case "load" => controller.load
+      case "quit" =>
+      case _ => println("Not a valid Command!")
     }
+  }
+
+  override def update: Boolean = {
+    println(controller.boardToString)
+    true
   }
 }
 
