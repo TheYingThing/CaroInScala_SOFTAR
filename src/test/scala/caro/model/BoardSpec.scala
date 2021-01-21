@@ -1,5 +1,6 @@
 package caro.model
 
+import caro.model.gridComponent.boardFullImpl.GameStatus.IDLE
 import org.scalatest.matchers._
 import org.scalatest.wordspec._
 import caro.model.gridComponent.boardFullImpl._
@@ -26,10 +27,17 @@ class BoardSpec extends AnyWordSpec with should.Matchers {
       "place a tile if it's in the center" in {
         emptyBoard.replaceCell(9, 9, "black").getCell(9, 9).getColor should be("black")
       }
+      "set a cell when loading an old game" in {
+        var loadBoard = Board()
+        loadBoard = loadBoard.setCell(8, 8, "black")
+        loadBoard = loadBoard.setCell(9,9, "none")
+        loadBoard.getCell(8, 8) should be (Cell(Some("black")))
+        loadBoard.getCell(9,9) should be(Cell(None))
+      }
     }
 
     //---------------filled-------------------
-    "filled with " should {
+    "filled" should {
       var testBoard = Board()
       testBoard = testBoard.replaceCell(9,9, "red")
       testBoard  = testBoard.replaceCell(8,9, "black")
@@ -53,6 +61,13 @@ class BoardSpec extends AnyWordSpec with should.Matchers {
         testBoard.getHeight should be(3)
         testBoard.getWidth should be(2)
       }
+      "return the current Game Status" in {
+        testBoard.getStatus should be(GameStatus.IDLE)
+      }
+      "return an empty String for lastColor if all moves have been legal so far" in {
+        testBoard.getLastColor should be ("")
+      }
+
       "be able to print current state as String" in {
         testBoard.toString should be (
           "    1     2     3     4     5     6     7     8     9     10    11    12    13    \n" +
@@ -97,8 +112,8 @@ class BoardSpec extends AnyWordSpec with should.Matchers {
         playerBoard.updatePlayer(11, 12, "white", playerwhite)._1 should be(playerwhite)
       }
     }
-    //------------------------rules.txt-----------------------------------------
-    "being tested for rules.txt" should {
+    //------------------------rules-----------------------------------------
+    "being tested for rules" should {
       var board: Board =  Board()
 
       board = board.replaceCell(9, 9, "black")
@@ -172,7 +187,7 @@ class BoardSpec extends AnyWordSpec with should.Matchers {
 
         miniBoard.maxField(4, 5) should be(true)
       }
-      "check all rules.txt at once" in {
+      "check all rules at once" in {
         board.allRules(6,7, "red") should be (false)
       }
       "return true if a cell is placed in center of empty board" in {

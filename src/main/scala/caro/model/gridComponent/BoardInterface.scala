@@ -39,9 +39,6 @@ trait PlayerInterface {
   def getPoints: Int
   def getTiles: ListMap[String, Int]
   def getName: String
-  def setPoints(points: Int): PlayerInterface
-  def setTiles(tiles: ListMap[String, Int]): PlayerInterface
-  def setName(name: String): PlayerInterface
 
 }
 
