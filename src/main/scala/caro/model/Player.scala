@@ -11,4 +11,5 @@ case class Player(name: String) {
   def getPoints:Int = points
   def layTile(color: String):Player = this
   override def toString:String = name
+  val score:Int = 0
 }
