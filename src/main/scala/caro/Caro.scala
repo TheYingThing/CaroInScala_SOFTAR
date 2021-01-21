@@ -3,8 +3,6 @@ package caro
 import caro.aview.ScalaTui
 import caro.aview.gui.ScalaGui
 import caro.controller.controllerComponent.ControllerInterface
-import caro.controller.controllerComponent.controllerBaseImpl.Controller
-import caro.model._
 import caro.model.gridComponent.boardFullImpl.Board
 import com.google.inject.{Guice, Injector}
 

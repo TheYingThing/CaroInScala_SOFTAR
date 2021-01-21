@@ -1,6 +1,6 @@
 package caro.controller.controllerComponent.controllerBaseImpl
 
-import caro.model.gridComponent.BoardInterface
+
 import caro.model.gridComponent.boardFullImpl._
 import org.scalatest.matchers._
 import org.scalatest.wordspec._
@@ -107,6 +107,18 @@ class ControllerSpec extends AnyWordSpec with should.Matchers {
       cont.getCellColor(8,9) should be("none")
       cont.redo()
       cont.getCellColor(8, 9) should be ("red")
+    }
+
+    "save a board" in {
+      cont.save()
+      scala.xml.XML.loadFile("board.xml") should not be null
+    }
+
+    "load a board" in {
+      cont.newBoard("", "")
+      cont.getCellColor(8, 9) should be("none")
+      cont.load()
+      cont.getCellColor(8, 9) should be("red")
     }
 
   }
