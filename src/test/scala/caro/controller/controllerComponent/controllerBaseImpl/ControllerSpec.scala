@@ -5,6 +5,8 @@ import caro.model.gridComponent.boardFullImpl._
 import org.scalatest.matchers._
 import org.scalatest.wordspec._
 
+import scala.io.Source
+
 class ControllerSpec extends AnyWordSpec with should.Matchers {
 
   "A Controller" should {
@@ -111,7 +113,8 @@ class ControllerSpec extends AnyWordSpec with should.Matchers {
 
     "save a board" in {
       cont.save()
-      scala.xml.XML.loadFile("board.xml") should not be null
+      //scala.xml.XML.loadFile("board.xml") should not be null
+      Source.fromFile("board.json").getLines.mkString should not be null
     }
 
     "load a board" in {
