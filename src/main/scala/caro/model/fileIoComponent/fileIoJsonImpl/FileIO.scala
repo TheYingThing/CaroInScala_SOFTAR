@@ -70,14 +70,6 @@ class FileIO extends FileIOInterface {
     player
   }
 
-
-  implicit val playerWrites = new Writes[PlayerInterface] {
-    def writes(player: PlayerInterface): JsValue =Json.obj(
-      "name" -> player.getName,
-      "points" -> player.getPoints,
-      "tiles" -> Json.toJsFieldJsValueWrapper(player.getTiles)
-    )
-  }
   override def save(board: BoardInterface): Unit = {
     import java.io._
     val pw = new PrintWriter(new File("board.json"))
