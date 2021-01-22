@@ -12,9 +12,10 @@ import scala.util.{Failure, Success, Try}
 case class Board (board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)), width: Int = 0,
                  height: Int = 0, moves: Int = 0, lastColor: String = "", status: GameStatus = IDLE,
                  player1: Player = Player("player1"), player2: Player = Player("player2")) extends BoardInterface{
-  //3-15
+
   val maxSize: Int = 6
 
+  //---------------------GETTERS------------------------
   def getStatus: GameStatus = status
 
   override def getStatusMessage: String = GameStatus.message(this.status)
@@ -33,6 +34,8 @@ case class Board (board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
 
   def getMoves: Int = moves
 
+  //--------------------SETTERS--------------------
+
   def setPlayerOne(player:Player): Board = {
     copy(player1 = player)
   }
@@ -50,6 +53,8 @@ case class Board (board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
     copy(board.updated(row, board(row).updated(col, newcell)))
   }
 
+  //-----------------CHECKS--------------------
+
   def isEmpty: Boolean = {
     !(board exists (v => v exists (c => c.isOccupied)))
   }
@@ -66,6 +71,8 @@ case class Board (board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
     }
     occ
   }
+
+  //----------------------BOARDFUNCTIONS------------------------------------------------------------------------------
 
   def validColor(color: String, player: Player): Try[Int] = {
     Try(player.getTiles(color))
@@ -116,7 +123,6 @@ case class Board (board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
     updateField(row, this.getHeight, rowEmpty)
   }
 
-
   def replace(strategy: CellReplacementStrategy, row: Int, col: Int, color: String, status: GameStatus): Board = {
     strategy.newBoard(row, col, color, this, status)
   }
@@ -134,7 +140,6 @@ case class Board (board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
       replace(illegal, row, col, color, GameStatus.ILLEGALMOVE)
     }
   }
-
 
   override def toString: String = {
     var output = "    "
@@ -195,17 +200,12 @@ case class Board (board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
   }
 
   def sameColor(row: Int, col: Int, color: String): Boolean = {
-    val gn = getNeighbors(row, col).forall(n => n.getColor != color)
-    if(!gn)
-      println("samecolor")
-    gn
+    getNeighbors(row, col).forall(n => n.getColor != color)
+
   }
 
   def onEdge(row: Int, col: Int): Boolean = {
-    val oe = getNeighbors(row, col).exists(n => n.isOccupied)
-    if(!oe)
-      println("onEdge")
-    oe
+    getNeighbors(row, col).exists(n => n.isOccupied)
   }
 
   def diagonal(row: Int, col: Int, color: String): Boolean = {
@@ -213,37 +213,27 @@ case class Board (board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
     val diag2 = getDiagonals(row, col)(1).sliding(3).toList
     val d1 = diag1.exists(l => l.forall(c => c.getColor == color)) //true when theres a sequence of 3 same colors
     val d2 = diag2.exists(l => l.forall(c => c.getColor == color))
-    val d = !(d1 || d2)
-    if(!d)
-      println("diagonal")
-    d
+    !(d1 || d2)
   }
 
   //returns true if theres less than two of the same color
   def twoColor(row: Int, col: Int, color: String): Boolean = {
     val counter: Int = getNeighbors(row, col).count(n => n.getColor == color)
-    val tc = counter < 2
-    if(!tc)
-      println("twoColor")
-    tc
+    counter < 2
+
   }
 
   //return true when theres no neighbor that has two neighbors that are of the same color as the tile to be laid
   def maxColor(row: Int, col: Int, color: String): Boolean = {
-    val mc = twoColor(row - 1, col, color) && twoColor(row + 1, col, color) && twoColor(row, col + 1, color) && twoColor(row, col - 1, color)
-    if(!mc)
-      println("maxColor")
-    mc
+    twoColor(row - 1, col, color) && twoColor(row + 1, col, color) && twoColor(row, col + 1, color) && twoColor(row, col - 1, color)
   }
 
   //return true when tile can be laid
   def maxField(row: Int, col: Int): Boolean = {
     if (this.getHeight == maxSize && this.rowEmpty(row)) {
-      println("maxField")
       return false
     }
     if (this.getWidth == maxSize && this.colEmpty(col)) {
-      println("maxField")
       return false
     }
     true

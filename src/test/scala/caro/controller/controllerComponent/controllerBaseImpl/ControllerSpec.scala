@@ -16,6 +16,7 @@ class ControllerSpec extends AnyWordSpec with should.Matchers {
       cont.board.getPlayerOne.getName should be ("bla")
       cont.board.isEmpty should be (true)
     }
+
     "put a first tile" in {
       cont.putCell(9, 9, "black")
       cont.board.getCell(9, 9).getColor should be("black")
@@ -44,8 +45,6 @@ class ControllerSpec extends AnyWordSpec with should.Matchers {
       cont.board.getCell(10, 9 ).getColor should be ("none")
       cont.redo()
       cont.board.getCell(10, 9).getColor should be ("white")
-
-
     }
 
     "return the player names" in {
@@ -87,13 +86,14 @@ class ControllerSpec extends AnyWordSpec with should.Matchers {
         "\nwhite: 2" +
         "\nScore: 2\n")
     }
-    "return the GameStatus" in {
 
+    "return the GameStatus" in {
       cont.putCell(8,8,"red")
       cont.getBoardStatus should be("\nIllegal Move! Minus 10 Points!\n")
       cont.putCell(8,9, "red")
       cont.getBoardStatus should be("")
     }
+
     "return the color of a cell" in {
       cont.getCellColor(9,9) should be ("black")
     }
