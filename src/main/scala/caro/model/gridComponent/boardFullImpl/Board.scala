@@ -19,6 +19,8 @@ case class Board (board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
 
   override def getStatusMessage: String = GameStatus.message(this.status)
 
+  def getStatusAsString: String = status.toString
+
   def getLastColor: String = this.lastColor
 
   def getCell(row: Int, col: Int): Cell = board(row)(col)

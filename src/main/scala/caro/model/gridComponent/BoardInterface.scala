@@ -9,6 +9,7 @@ trait BoardInterface {
 
   def getStatusMessage: String
   def getStatus: GameStatus
+  def getStatusAsString: String
   def getLastColor: String
   def getCell(row: Int, col:Int): CellInterface
   def getWidth: Int
