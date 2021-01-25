@@ -14,8 +14,8 @@ class CaroModule extends AbstractModule with ScalaModule {
 
     bind[BoardInterface].toInstance(Board())
     bind[ControllerInterface].to[controllerBaseImpl.Controller]
-    //bind[FileIOInterface].to[fileIoXmlImpl.FileIO]
-    bind[FileIOInterface].to[fileIoJsonImpl.FileIO]
+    bind[FileIOInterface].to[fileIoXmlImpl.FileIO]
+    //bind[FileIOInterface].to[fileIoJsonImpl.FileIO]
 
 
 

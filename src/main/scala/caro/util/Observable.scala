@@ -1,6 +1,19 @@
 package caro.util
 
+/**
+ * triat Observable.
+ * defines 1-n dependency between objects
+ * when object changes, all dependants are notified and updated
+ * @author Ying-Ling Dang
+ *         Rebecca Braun
+ */
+
 trait Observer {
+
+  /**
+   * updates dependants of object
+   * @return true if update is possible, else return false
+   */
   def update:Boolean
 }
 
