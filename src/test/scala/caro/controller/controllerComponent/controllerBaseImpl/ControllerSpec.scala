@@ -118,8 +118,6 @@ class ControllerSpec extends AnyWordSpec with should.Matchers {
     }
 
     "load a board" in {
-      cont.newBoard("", "")
-      cont.getCellColor(8, 9) should be("none")
       cont.load()
       cont.getCellColor(8, 9) should be("red")
     }
