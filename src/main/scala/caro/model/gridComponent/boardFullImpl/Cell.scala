@@ -2,7 +2,7 @@ package caro.model.gridComponent.boardFullImpl
 
 import caro.model.gridComponent.CellInterface
 
-case class Cell(color: Option[String]) extends CellInterface{
+case class Cell(color: Option[String]) extends CellInterface {
   def isOccupied: Boolean = color.isDefined
 
   def getColor: String = {
@@ -12,10 +12,4 @@ case class Cell(color: Option[String]) extends CellInterface{
     }
   }
 
-  object Cell {
-    import play.api.libs.json._
-
-    implicit val cellWrites: OWrites[Cell] = Json.writes[Cell]
-    implicit val cellReads: Reads[Cell] = Json.reads[Cell]
-  }
 }

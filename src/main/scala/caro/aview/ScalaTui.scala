@@ -14,14 +14,14 @@ class ScalaTui(controller: ControllerInterface) extends Observer{
       case "first" => controller.putCell(center, center, command.tail.head)
       case "player1" => controller.newBoard(command.tail.head, controller.getPlayerTwoName)
       case "player2" => controller.newBoard(controller.getPlayerOneName, command.tail.head)
-      case "undo" => controller.undo
-      case "redo" => controller.redo
+      case "undo" => controller.undo()
+      case "redo" => controller.redo()
       case "put" =>
         val cmd = command.toArray
         controller.putCell(cmd(1).toInt + 2 , cmd(2).toInt + 2, cmd(3))
 
-      case "save" => controller.save
-      case "load" => controller.load
+      case "save" => controller.save()
+      case "load" => controller.load()
       case "quit" =>
       case _ => println("Not a valid Command!")
     }

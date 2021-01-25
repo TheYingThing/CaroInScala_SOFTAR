@@ -26,8 +26,6 @@ case class Cell() {
       0
     }
   }
-
-
 }
 
 case class Grid() {
