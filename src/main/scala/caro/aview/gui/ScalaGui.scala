@@ -137,7 +137,7 @@ class ScalaGui(controller:ControllerInterface) extends Frame with Observer{
 }
 
 class BoardPanel(frame:Frame) extends BorderPanel {
-  val image:BufferedImage = ImageIO.read(new File("/home/rebecca/HTWG/AIN3/SE/CaroInScala/src/main/scala/caro/aview/gui/wood.jpg"))
+  val image:BufferedImage = ImageIO.read(new File("/home/ydang/SE/CaroInScala/src/main/scala/caro/resources/wood"))
   override def paintComponent(g: Graphics2D): Unit = {
     super.paintComponent(g)
     g.drawImage(image, 0, 0, frame.size.width, frame.size.height, null)
@@ -169,19 +169,19 @@ class CellButton(row:Int, col:Int, color:String, controller: ControllerInterface
   val colorbuttons: GridPanel = new GridPanel(4, 2) {
     contents += red
     contents += new Label("") {
-      icon = new ImageIcon("/home/rebecca/HTWG/AIN3/SE/CaroInScala/src/main/scala/caro/resources/redButton")
+      icon = new ImageIcon("/home/ydang/SE/CaroInScala/src/main/scala/caro/resources/redButton")
     }
     contents += black
     contents += new Label("") {
-      icon = new ImageIcon("/home/rebecca/HTWG/AIN3/SE/CaroInScala/src/main/scala/caro/resources/blackButton")
+      icon = new ImageIcon("/home/ydang/SE/CaroInScala/src/main/scala/caro/resources/blackButton")
     }
     contents += white
     contents += new Label("") {
-      icon = new ImageIcon("/home/rebecca/HTWG/AIN3/SE/CaroInScala/src/main/scala/caro/resources/whiteButton")
+      icon = new ImageIcon("/home/ydang/SE/CaroInScala/src/main/scala/caro/resources/whiteButton")
     }
     contents += grey
     contents += new Label("") {
-      icon = new ImageIcon("/home/rebecca/HTWG/AIN3/SE/CaroInScala/src/main/scala/caro/resources/greyButton")
+      icon = new ImageIcon("/home/ydang/SE/CaroInScala/src/main/scala/caro/resources/greyButton")
     }
     val colors = new ButtonGroup(red, black, white, grey)
   }

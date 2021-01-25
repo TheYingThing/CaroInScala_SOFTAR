@@ -63,8 +63,6 @@ class FileIO extends FileIOInterface {
     val nameVal = ((playerVal \ "player") \ "name").get.as[String]
     val pointVal = ((playerVal \ "player") \ "points").get.toString.toInt
     val tilesVal = ListMap("red" -> redVal, "black" -> blackVal, "grey" -> greyVal, "white" -> whiteVal)
-
-
     val player = Player(name = nameVal, tiles = tilesVal, points = pointVal)
 
     player

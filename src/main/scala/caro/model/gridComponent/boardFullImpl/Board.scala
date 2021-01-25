@@ -155,7 +155,6 @@ case class Board (board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
           output = output + box
         } else {
           output = output + " " + this.getCell(i, j).getColor.padTo(5, ' ')
-
         }
       }
     }
