@@ -9,7 +9,7 @@ import com.google.inject.Guice
 import com.google.inject.name.Names
 import net.codingwell.scalaguice.InjectorExtensions.ScalaInjector
 import play.api.libs.json.JsPath.\\
-import play.api.libs.json.{JsArray, JsValue, Json, Writes}
+import play.api.libs.json.{JsArray, JsObject, JsValue, Json, Writes}
 
 import scala.collection.immutable.ListMap
 import scala.io.Source
@@ -82,7 +82,7 @@ class FileIO extends FileIOInterface {
     )
   }
 
-  def boardToJson(board: BoardInterface) = {
+  def boardToJson(board: BoardInterface): JsObject = {
     Json.obj(
       "board" -> Json.obj(
         "cells" -> Json.toJson(
@@ -108,7 +108,7 @@ class FileIO extends FileIOInterface {
     )
   }
 
-  def playerToJson(player:PlayerInterface) = {
+  def playerToJson(player:PlayerInterface): JsObject = {
     Json.obj(
       "player" -> Json.obj(
         "points" -> player.getPoints,

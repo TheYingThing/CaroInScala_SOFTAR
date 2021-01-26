@@ -35,8 +35,8 @@ class FileIO extends FileIOInterface{
     val player1 = loadPlayer(player1val)
     val player2 = loadPlayer(player2val)
 
-    var board = Board(width = widthval, height = heightval, lastColor = lastColorval, status = gamestatus, moves = movesval,
-      player1 = player1, player2 = player2)
+    var board = Board(width = widthval, height = heightval, lastColor = lastColorval, status = gamestatus,
+      moves = movesval, player1 = player1, player2 = player2)
 
     val cellNodes = (file \ "cells") \ "cell"
     for (cell <- cellNodes) {
@@ -80,7 +80,8 @@ class FileIO extends FileIOInterface{
   }
 
   def boardToXml(board: BoardInterface): Elem = {
-    <board moves={ board.getMoves.toString } width={ board.getWidth.toString } height={ board.getHeight.toString } lastColor={ board.getLastColor} status={board.getStatus.toString}>
+    <board moves={ board.getMoves.toString } width={ board.getWidth.toString } height={ board.getHeight.toString }
+           lastColor={ board.getLastColor} status={board.getStatus.toString}>
       <player1> { playerToXml(board.getPlayerOne) }</player1>
       <player2> { playerToXml(board.getPlayerTwo) }</player2>
       <cells>
