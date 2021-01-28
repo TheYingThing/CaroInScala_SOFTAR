@@ -5,7 +5,6 @@ import caro.model.gridComponent.boardFullImpl.GameStatus.{GameStatus, IDLE, ILLE
 import caro.model.gridComponent.{BoardInterface, PlayerInterface}
 import caro.model.gridComponent.boardFullImpl.{Board, Player}
 
-
 import scala.collection.immutable.ListMap
 import scala.xml.{Elem, NodeSeq, PrettyPrinter}
 
@@ -72,6 +71,7 @@ class FileIO extends FileIOInterface{
 
   def saveString(board: BoardInterface): Unit = {
     import java.io._
+    new File("board.xml").delete()
     val pw = new PrintWriter(new File("board.xml"))
     val pp = new PrettyPrinter(120, 4)
     val xml = pp.format(boardToXml(board))
