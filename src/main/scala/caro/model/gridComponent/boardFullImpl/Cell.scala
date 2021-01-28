@@ -12,4 +12,11 @@ case class Cell(color: Option[String]) extends CellInterface {
     }
   }
 
+  object Cell {
+    import play.api.libs.json._
+
+    implicit val cellWrites = Json.writes[Cell]
+    implicit val cellReads = Json.reads[Cell]
+  }
 }
+
