@@ -117,8 +117,8 @@ class ControllerSpec extends AnyWordSpec with should.Matchers {
 
       cont3.putCell(9,9,"red")
       cont3.save()
-      scala.xml.XML.loadFile("board.xml") should not be null
-      //Source.fromFile("board.json").getLines.mkString should not be null
+      //scala.xml.XML.loadFile("board.xml") should not be null
+      Source.fromFile("board.json").getLines.mkString should not be null
     }
 
     "load a board" in {
