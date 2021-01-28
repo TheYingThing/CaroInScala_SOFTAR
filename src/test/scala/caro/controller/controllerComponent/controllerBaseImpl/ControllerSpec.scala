@@ -111,17 +111,21 @@ class ControllerSpec extends AnyWordSpec with should.Matchers {
       cont.getCellColor(8, 9) should be ("red")
     }
 
+    val board3 = new  Board()
+    val cont3 = new Controller(board3)
     "save a board" in {
-      cont.save()
-      //scala.xml.XML.loadFile("board.xml") should not be null
-      Source.fromFile("board.json").getLines.mkString should not be null
+
+      cont3.putCell(9,9,"red")
+      cont3.save()
+      scala.xml.XML.loadFile("board.xml") should not be null
+      //Source.fromFile("board.json").getLines.mkString should not be null
     }
 
     "load a board" in {
-      cont.newBoard("", "")
-      cont.board.getCell(8, 9).getColor should be("none")
-      cont.load()
-      cont.board.getCell(8, 9).getColor should be("red")
+      cont3.newBoard("", "")
+      cont3.board.getCell(9, 9).getColor should be("none")
+      cont3.load()
+      cont3.board.getCell(9, 9).getColor should be("red")
     }
 
   }

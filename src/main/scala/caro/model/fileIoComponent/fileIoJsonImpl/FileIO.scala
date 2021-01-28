@@ -71,6 +71,7 @@ class FileIO extends FileIOInterface {
   override def save(board: BoardInterface): Unit = {
     import java.io._
     val pw = new PrintWriter(new File("board.json"))
+
     pw.write(Json.prettyPrint(boardToJson(board)))
     pw.close
   }
