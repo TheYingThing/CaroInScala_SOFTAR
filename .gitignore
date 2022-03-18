@@ -14,7 +14,7 @@ target/
 .vscode/settings.json
 
 # Maven
-log/
+log
 
 # Gradle
 .gradle/
@@ -30,6 +30,7 @@ src_managed/
 project/boot/
 project/plugins/project/
 project/project/
+project/target/
 logs/
 project/.sbtserver
 .sbtserver/
