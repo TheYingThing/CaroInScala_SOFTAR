@@ -1,3 +1,3 @@
 # CaroInScala#
-[![Build Status](https://travis-ci.org/TheYingThing/CaroInScala.svg?branch=master)](https://travis-ci.org/TheYingThing/CaroInScala)
-[![Coverage Status](https://coveralls.io/repos/github/TheYingThing/CaroInScala_SOFTAR/badge.svg?branch=master)](https://coveralls.io/github/TheYingThing/CaroInScala_SOFTAR?branch=master)
+[![Build Status](https://app.travis-ci.com/TheYingThing/CaroInScala_SOFTAR.svg?branch=w1_migration_tests)](https://app.travis-ci.com/TheYingThing/CaroInScala_SOFTAR)
+[![Coverage Status](https://coveralls.io/repos/github/TheYingThing/CaroInScala_SOFTAR/badge.svg?branch=w1_migration_tests)](https://coveralls.io/github/TheYingThing/CaroInScala_SOFTAR?branch=w1_migration_tests)
