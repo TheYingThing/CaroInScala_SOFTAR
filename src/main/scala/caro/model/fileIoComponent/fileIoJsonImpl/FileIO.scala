@@ -76,7 +76,7 @@ class FileIO extends FileIOInterface {
     pw.close
   }
 
-  implicit val cellWrites = new Writes[CellInterface] {
+  implicit val cellWrites: Writes[CellInterface] = new Writes[CellInterface] {
     def writes(cell: CellInterface) = Json.obj(
       "color" -> cell.getColor,
       "isOccupied" -> cell.isOccupied

@@ -13,7 +13,7 @@ import net.codingwell.scalaguice.InjectorExtensions.ScalaInjector
 class Controller @Inject() (var board:BoardInterface) extends ControllerInterface {
   private val undoManager = new UndoManager
   val injector: Injector = Guice.createInjector(new CaroModule)
-  val fileIo: FileIOInterface = injector.instance[FileIOInterface]
+  val fileIo: FileIOInterface = injector.getInstance(classOf[FileIOInterface])
   def newBoard(p1:String, p2:String):Unit = {
     val nplayer1:Player = Player(p1)
     val nplayer2:Player = Player(p2)

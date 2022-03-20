@@ -3,7 +3,7 @@ name := "CaroInScala"
 version := "0.1"
 
 scalaVersion := "3.0.0"
-crossScalaVersions ++= Seq("2.13.8", "3.0.0")
+//crossScalaVersions ++= Seq("2.13.8", "3.0.0")
 
 libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.11"
 

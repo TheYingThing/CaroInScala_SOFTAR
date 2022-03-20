@@ -27,12 +27,12 @@ class ScalaGui(controller:ControllerInterface) extends Frame with Observer{
     contents += new Menu("Game") {
       contents += new MenuItem(Action("New") {controller.newBoard(p1 = player1.text, p2 = player2.text)})
       contents += new MenuItem(Action("Quit") {System.exit(0)})
-      contents += new MenuItem(Action("Save") {controller.save})
-      contents += new MenuItem(Action("Load") {controller.load})
+      contents += new MenuItem(Action("Save") {controller.save()})
+      contents += new MenuItem(Action("Load") {controller.load()})
     }
     contents += new Menu("Edit") {
-      contents += new MenuItem(Action("undo") {controller.undo})
-      contents += new MenuItem(Action("redo") {controller.redo})
+      contents += new MenuItem(Action("undo") {controller.undo()})
+      contents += new MenuItem(Action("redo") {controller.redo()})
     }
   }
 

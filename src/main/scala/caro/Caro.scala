@@ -41,11 +41,12 @@ object Caro {
 
     Thread.sleep(1000)
 
-    do {
+    while
       printf("\nEnter your command: \n")
       input = readLine()
       tui.processInputLine(input)
-    } while(input != "quit")
+      input != "quit"
+    do()
 
   }
 
