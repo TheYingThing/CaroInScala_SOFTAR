@@ -20,3 +20,5 @@ libraryDependencies += "com.typesafe.play" %% "play-json" % "2.10.0-RC5"
 libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "2.0.1"
 
 resolvers += Resolver.url("scoverage-bintray", url("https://dl.bintray.com/sksamuel/sbt-plugins/"))(Resolver.ivyStylePatterns)
+
+coverageExcludedPackages := "*.gui.*"
