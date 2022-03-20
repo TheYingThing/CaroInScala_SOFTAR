@@ -5,6 +5,6 @@ import Defaults._
 addSbtPlugin("org.scoverage" % "sbt-coveralls" % "1.2.7")
 libraryDependencies += sbtPluginExtra(
   m = "org.scoverage" % "sbt-scoverage-plugin" % "2.0.0-M5",
-  sbtV = "1.5.8",
+  sbtV = "",
   scalaV = "2.13.8"
 )
