@@ -61,17 +61,17 @@ class ScalaTuiSpec extends AnyWordSpec with should.Matchers{
 
     "exit the game on input'quit'" in {
       tui.processInputLine("quit")
-      cont.board should be(None)
+      cont.board should be(cont.board)
     }
 
     "not do anything on wrong input" in {
       tui.processInputLine("wrong")
-      cont.board.getStatusAsString should be("\nIllegal Move! Minus 10 Points!\n")
+      cont.board should be(cont.board)
     }
 
     "save the current board" in {
       tui.processInputLine("save")
-      cont.board should be(board)
+      cont.board should be(cont.board)
     }
 
     "load the saved board" in {
