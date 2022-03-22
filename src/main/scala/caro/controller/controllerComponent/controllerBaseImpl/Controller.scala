@@ -54,12 +54,12 @@ class Controller @Inject() (var board:BoardInterface) extends ControllerInterfac
 
   override def getMoves: Int = board.getMoves
 
-  def save: Unit = {
+  def save(): Unit = {
     fileIo.save(board)
     notifyObservers()
   }
 
-  def load: Unit = {
+  def load(): Unit = {
     board = fileIo.load
     notifyObservers()
   }
