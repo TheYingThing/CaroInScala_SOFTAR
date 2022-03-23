@@ -4,8 +4,7 @@ import caro.model.gridComponent.boardFullImpl.Cell
 import org.scalatest.matchers._
 import org.scalatest.wordspec._
 
-
-class CellSpec extends AnyWordSpec with should.Matchers {
+class CellSpec extends AnyWordSpec with should.Matchers{
 
   "A Cell" when {
     "no Color set" should {
@@ -28,7 +27,4 @@ class CellSpec extends AnyWordSpec with should.Matchers {
       }
     }
   }
-
-
-
 }

@@ -11,12 +11,4 @@ case class Cell(color: Option[String]) extends CellInterface {
       case None => "none"
     }
   }
-
-  object Cell {
-    import play.api.libs.json._
-
-    implicit val cellWrites: OWrites[Cell] = Json.writes[Cell]
-    implicit val cellReads: Reads[Cell] = Json.reads[Cell]
-  }
 }
-
