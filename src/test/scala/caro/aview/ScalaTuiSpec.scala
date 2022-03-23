@@ -5,7 +5,7 @@ import caro.model.gridComponent.boardFullImpl.Board
 import org.scalatest.matchers._
 import org.scalatest.wordspec._
 
-class ScalaTuiSpec extends AnyWordSpec with should.Matchers{
+class ScalaTuiSpec extends AnyWordSpec with should.Matchers {
 
   "A Caro Tui" should {
     val board = Board()
@@ -29,7 +29,7 @@ class ScalaTuiSpec extends AnyWordSpec with should.Matchers{
 
     "set a tile on input 'first red'" in {
       tui.processInputLine("first red")
-      cont.board.getCell(9, 9).getColor should be ("red")
+      cont.board.getCell(9, 9).getColor should be("red")
     }
 
     "set a tile on input 'put 9 10 black'" in {
@@ -78,7 +78,7 @@ class ScalaTuiSpec extends AnyWordSpec with should.Matchers{
       tui.processInputLine("player1 boy")
       cont.board.getCell(9, 10).getColor should be("none")
       tui.processInputLine("load")
-      cont.board.getCell(9,10).getColor should be("black")
+      cont.board.getCell(9, 10).getColor should be("black")
     }
-   }
+  }
 }
