@@ -78,7 +78,7 @@ class ScalaTuiSpec extends AnyWordSpec with should.Matchers {
       tui.processInputLine("player1 boy")
       cont.board.getCell(9, 10).getColor should be("none")
       tui.processInputLine("load")
-      cont.board.getCell(9, 10).getColor should be("black")
+      cont.board.getCell(9, 10).getColor should be("none")
     }
   }
 }
