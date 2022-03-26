@@ -1,9 +1,9 @@
 package caro.model.fileIoComponent.fileIoXmlImpl
 
 import caro.model.fileIoComponent.FileIOInterface
-import caro.model.gridComponent.boardFullImpl.GameStatus.{GameStatus, IDLE, ILLEGALMOVE, NOCOLORSLEFT, UNVALIDCOLOR}
+import caro.model.gridComponent.boardFullImpl.GameStatus
 import caro.model.gridComponent.{BoardInterface, PlayerInterface}
-import caro.model.gridComponent.boardFullImpl.{Board, Player}
+import caro.model.gridComponent.boardFullImpl.{Board, GameStatus, Player}
 
 import scala.collection.immutable.ListMap
 import scala.xml.{Elem, NodeSeq, PrettyPrinter}
@@ -21,12 +21,13 @@ class FileIO extends FileIOInterface{
     val lastColorval = (boardval \ "@lastColor").text
     val movesval = (boardval \ "@moves").text.toInt
     val statusval = (boardval \ "@status").text
-    var gamestatus: GameStatus = null
-    statusval match {
-      case "IDLE" => gamestatus = IDLE
-      case "NOCOLORSLEFT" => gamestatus = NOCOLORSLEFT
-      case "ILLEGALMOVE" => gamestatus = ILLEGALMOVE
-      case "UNVALIDCOLOR" => gamestatus = UNVALIDCOLOR
+    val gamestatus: GameStatus = {
+      statusval match {
+        case "IDLE" => GameStatus.IDLE
+        case "NOCOLORSLEFT" => GameStatus.NOCOLORSLEFT
+        case "ILLEGALMOVE" => GameStatus.ILLEGALMOVE
+        case "UNVALIDCOLOR" => GameStatus.INVALIDCOLOR
+      }
     }
 
     val player1val = (boardval \ "player1") \ "player"
@@ -81,7 +82,7 @@ class FileIO extends FileIOInterface{
 
   def boardToXml(board: BoardInterface): Elem = {
     <board moves={ board.getMoves.toString } width={ board.getWidth.toString } height={ board.getHeight.toString }
-           lastColor={ board.getLastColor} status={board.getStatus.toString}>
+           lastColor={ board.getLastColor} status={board.getStatusAsString}>
       <player1> { playerToXml(board.getPlayerOne) }</player1>
       <player2> { playerToXml(board.getPlayerTwo) }</player2>
       <cells>

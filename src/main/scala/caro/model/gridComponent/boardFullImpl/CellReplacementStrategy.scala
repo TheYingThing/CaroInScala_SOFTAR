@@ -1,6 +1,6 @@
 package caro.model.gridComponent.boardFullImpl
 
-import caro.model.gridComponent.boardFullImpl.GameStatus.GameStatus
+import caro.model.gridComponent.boardFullImpl.GameStatus._
 
 /**
  * CellReplacementStrategy declares methodes to be called when trying to replace a Cell on the current Board.

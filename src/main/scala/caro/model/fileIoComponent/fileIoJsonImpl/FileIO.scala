@@ -2,9 +2,9 @@ package caro.model.fileIoComponent.fileIoJsonImpl
 
 import caro.CaroModule
 import caro.model.fileIoComponent.FileIOInterface
-import caro.model.gridComponent._
-import caro.model.gridComponent.boardFullImpl.{Board, Cell, Player}
-import caro.model.gridComponent.boardFullImpl.GameStatus._
+import caro.model.gridComponent.*
+import caro.model.gridComponent.boardFullImpl.{Board, Cell, GameStatus, Player}
+import caro.model.gridComponent.boardFullImpl.GameStatus
 import com.google.inject.Guice
 import com.google.inject.name.Names
 import net.codingwell.scalaguice.InjectorExtensions.ScalaInjector
@@ -25,21 +25,18 @@ class FileIO extends FileIOInterface {
     val height = (json \ "board" \ "height").get.toString.toInt
     val width = (json \ "board" \ "width").get.toString.toInt
     val lastColor = (json \ "board" \ "lastColor").get.toString
-    val status = (json \ "board" \ "status").get.as[String]
-    var gamestatus : GameStatus = null
-    status match {
-      case "IDLE" => gamestatus = IDLE
-      case "NOCOLORSLEFT" => gamestatus = NOCOLORSLEFT
-      case "ILLEGALMOVE" => gamestatus = ILLEGALMOVE
-      case "UNVALIDCOLOR" => gamestatus = UNVALIDCOLOR
+    val status = (json \ "board" \ "status").get.toString
+    val gameStatus: GameStatus = {
+      GameStatus.values.foreach(f: GameStatus => g)
     }
+
 
     val player1val = (json \ "board" \ "player1").get.as[JsValue]
     val player2val = (json \ "board" \ "player2").get.as[JsValue]
     val player1 = loadPlayer(player1val)
     val player2 = loadPlayer(player2val)
 
-    var board = Board(width = width, height = height, moves = moves, lastColor = lastColor, status = gamestatus,
+    var board = Board(width = width, height = height, moves = moves, lastColor = lastColor, status = gameStatus,
       player1 = player1, player2 = player2)
 
     for (i <- 0 until 18 * 18 ) {

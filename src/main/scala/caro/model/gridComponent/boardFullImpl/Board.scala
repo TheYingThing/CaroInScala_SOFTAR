@@ -2,7 +2,7 @@ package caro.model.gridComponent.boardFullImpl
 
 
 import caro.model.gridComponent.{BoardInterface, PlayerInterface}
-import caro.model.gridComponent.boardFullImpl.GameStatus._
+import caro.model.gridComponent.boardFullImpl.GameStatus
 
 import javax.inject.Inject
 import scala.collection.immutable.ListMap
@@ -10,7 +10,7 @@ import scala.collection.mutable.ListBuffer
 import scala.util.{Failure, Success, Try}
 
 case class Board (board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)), width: Int = 0,
-                 height: Int = 0, moves: Int = 0, lastColor: String = "", status: GameStatus = IDLE,
+                 height: Int = 0, moves: Int = 0, lastColor: String = "", status: GameStatus = GameStatus.IDLE,
                  player1: Player = Player("player1"), player2: Player = Player("player2")) extends BoardInterface{
 
   val maxSize: Int = 6
@@ -18,9 +18,9 @@ case class Board (board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
   //---------------------GETTERS------------------------
   def getStatus: GameStatus = status
 
-  override def getStatusMessage: String = GameStatus.message(this.status)
+  override def getStatusMessage: String = this.status.getMessage
 
-  def getStatusAsString: String = status.toString
+  def getStatusAsString: String = status.getString(this.status)
 
   def getLastColor: String = this.lastColor
 
@@ -100,7 +100,7 @@ case class Board (board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
         (player.copy(tiles = ntiles, points = npoints), GameStatus.IDLE)
       }
       case Failure(exception) => {
-        (player, GameStatus.UNVALIDCOLOR)
+        (player, GameStatus.INVALIDCOLOR)
       }
     }
   }
@@ -164,7 +164,7 @@ case class Board (board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
       output = output + "\n" + player2.getName + " it's your turn!\n"
     }
     output = output + player1.toString + "\n" + player2.toString
-    output = output + message(this.status)
+    output = output + this.status.getMessage
     output
   }
 
