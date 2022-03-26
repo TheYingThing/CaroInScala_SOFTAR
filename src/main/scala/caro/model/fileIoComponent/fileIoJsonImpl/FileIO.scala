@@ -27,9 +27,13 @@ class FileIO extends FileIOInterface {
     val lastColor = (json \ "board" \ "lastColor").get.toString
     val status = (json \ "board" \ "status").get.toString
     val gameStatus: GameStatus = {
-      GameStatus.values.foreach(f: GameStatus => g)
+      status match {
+        case "IDLE" => GameStatus.IDLE
+        case "NOCOLORSLEFT" => GameStatus.NOCOLORSLEFT
+        case "ILLEGALMOVE" => GameStatus.ILLEGALMOVE
+        case "INVALIDCOLOR" => GameStatus.INVALIDCOLOR
+      }
     }
-
 
     val player1val = (json \ "board" \ "player1").get.as[JsValue]
     val player2val = (json \ "board" \ "player2").get.as[JsValue]
@@ -46,7 +50,6 @@ class FileIO extends FileIOInterface {
       val color = (cell \ "color").get.as[String]
       board = board.setCell(row, col , color)
     }
-
     board
   }
 
@@ -120,6 +123,4 @@ class FileIO extends FileIOInterface {
       )
     )
   }
-
 }
-

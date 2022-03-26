@@ -14,8 +14,8 @@ class CaroModule extends AbstractModule {
 
     bind(classOf[BoardInterface]).toInstance(Board())
     bind(classOf[ControllerInterface]).to(classOf[controllerBaseImpl.Controller])
-    //bind(classOf[FileIOInterface]).to(classOf[fileIoXmlImpl.FileIO])
-    bind(classOf[FileIOInterface]).to(classOf[fileIoJsonImpl.FileIO])
+    bind(classOf[FileIOInterface]).to(classOf[fileIoXmlImpl.FileIO])
+    //bind(classOf[FileIOInterface]).to(classOf[fileIoJsonImpl.FileIO])
 
   }
 }
