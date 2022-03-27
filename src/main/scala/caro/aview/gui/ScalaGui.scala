@@ -14,25 +14,46 @@ import scala.swing._
 import scala.swing.event.ButtonClicked
 
 
-class ScalaGui(controller:ControllerInterface) extends Frame with Observer{
+class ScalaGui(controller: ControllerInterface) extends Frame with Observer :
   controller.add(this)
 
-  object player1 extends TextField{columns = 15}
-  object player2 extends TextField{columns = 15}
-  object accept extends Button{"accept"}
+  object player1 extends TextField {
+    columns = 15
+  }
+
+  object player2 extends TextField {
+    columns = 15
+  }
+
+  object accept extends Button {
+    "accept"
+  }
+
   val boardColor = new Color(100, 200, 200)
 
 
   menuBar = new MenuBar {
     contents += new Menu("Game") {
-      contents += new MenuItem(Action("New") {controller.newBoard(p1 = player1.text, p2 = player2.text)})
-      contents += new MenuItem(Action("Quit") {System.exit(0)})
-      contents += new MenuItem(Action("Save") {controller.save()})
-      contents += new MenuItem(Action("Load") {controller.load()})
+      contents += new MenuItem(Action("New") {
+        controller.newBoard(p1 = player1.text, p2 = player2.text)
+      })
+      contents += new MenuItem(Action("Quit") {
+        System.exit(0)
+      })
+      contents += new MenuItem(Action("Save") {
+        controller.save()
+      })
+      contents += new MenuItem(Action("Load") {
+        controller.load()
+      })
     }
     contents += new Menu("Edit") {
-      contents += new MenuItem(Action("undo") {controller.undo()})
-      contents += new MenuItem(Action("redo") {controller.redo()})
+      contents += new MenuItem(Action("undo") {
+        controller.undo()
+      })
+      contents += new MenuItem(Action("redo") {
+        controller.redo()
+      })
     }
   }
 
@@ -73,14 +94,18 @@ class ScalaGui(controller:ControllerInterface) extends Frame with Observer{
 
       val gameboard: BoxPanel = new BoxPanel(Orientation.Vertical) {
         background = new Color(0, 0, 0, 0)
-        for {i <- 3 to 15} {
+        for
+          i <- 3 to 15
+        do
           contents += new BoxPanel(Orientation.Horizontal) {
-            for {j <- 3 to 15}
-              contents += new CellButton(i, j, controller.getCellColor(i, j),  controller)
+            for
+              j <- 3 to 15
+            do
+              contents += new CellButton(i, j, controller.getCellColor(i, j), controller)
           }
-        }
       }
-      val setPlayer: FlowPanel = new FlowPanel(){
+
+      val setPlayer: FlowPanel = new FlowPanel() {
         contents += player1
         contents += new Label("Player 1")
         contents += player2
@@ -97,13 +122,13 @@ class ScalaGui(controller:ControllerInterface) extends Frame with Observer{
         contents += player2Stat
         player2Stat.editable = false
         player2Stat.border = BorderFactory.createEmptyBorder(10, 20, 0, 20)
-        if(controller.getMoves % 2 == 0) {
+        if controller.getMoves % 2 == 0 then
           player1Stat.background = new Color(255, 255, 255, 50)
-          //player2Stat.background = Color.WHITE
-        } else if(controller.getMoves % 2 != 0) {
+        //player2Stat.background = Color.WHITE
+        else if controller.getMoves % 2 != 0 then
           player2Stat.background = new Color(255, 255, 255, 50)
-          //player1Stat.background = Color.WHITE
-        }
+        //player1Stat.background = Color.WHITE
+        end if
       }
 
       val messageBoard: BoxPanel = new BoxPanel(Orientation.Vertical) {
@@ -134,17 +159,18 @@ class ScalaGui(controller:ControllerInterface) extends Frame with Observer{
   reactions += {
     case ButtonClicked(`accept`) => controller.newBoard(p1 = player1.text, p2 = player2.text)
   }
-}
+end ScalaGui
 
-class BoardPanel(frame:Frame) extends BorderPanel {
-  val image:BufferedImage = ImageIO.read(new File("src/main/scala/caro/resources/wood"))
+class BoardPanel(frame: Frame) extends BorderPanel :
+  val image: BufferedImage = ImageIO.read(new File("src/main/scala/caro/resources/wood"))
+
   override def paintComponent(g: Graphics2D): Unit = {
     super.paintComponent(g)
     g.drawImage(image, 0, 0, frame.size.width, frame.size.height, null)
   }
-}
+end BoardPanel
 
-class CellButton(row:Int, col:Int, color:String, controller: ControllerInterface)  extends Button {
+class CellButton(row: Int, col: Int, color: String, controller: ControllerInterface) extends Button :
   val redColor = new Color(173, 0, 0)
   val blackColor = new Color(0, 0, 0)
   val whiteColor = new Color(255, 255, 255)
@@ -153,7 +179,7 @@ class CellButton(row:Int, col:Int, color:String, controller: ControllerInterface
   var currentColor: Color = boardColor
   val s = new Dimension(60, 60)
 
-  color match {
+  color.trim match {
     case "red" => currentColor = redColor
     case "black" => currentColor = blackColor
     case "white" => currentColor = whiteColor
@@ -186,13 +212,13 @@ class CellButton(row:Int, col:Int, color:String, controller: ControllerInterface
     val colors = new ButtonGroup(red, black, white, grey)
   }
 
-  val popupMenu: PopupMenu = new PopupMenu{
+  val popupMenu: PopupMenu = new PopupMenu {
     contents += colorbuttons
   }
-    if (row ==9 && col == 9) {
-      text = "Go"
-      font = new Font("Arial", 1, 9)
-    }
+  if row == 9 && col == 9 then
+    text = "Go"
+    font = new Font("Arial", 1, 9)
+  end if
   background = currentColor
   minimumSize = s
   maximumSize = s
@@ -202,24 +228,17 @@ class CellButton(row:Int, col:Int, color:String, controller: ControllerInterface
   reactions += {
     case e: ButtonClicked => popupMenu.show(this, 0, this.bounds.height)
 
-        if(grey.selected) {
-          controller.putCell(row , col, "grey")
+      if grey.selected then
+        controller.putCell(row, col, "grey")
 
-        } else if(red.selected) {
-          controller.putCell(row, col, "red")
-        }
-        else if(black.selected) {
-          controller.putCell(row, col, "black")
-        }
-        else if(white.selected) {
-          controller.putCell(row, col, "white")
-        }
+      else if red.selected then
+        controller.putCell(row, col, "red")
 
+      else if black.selected then
+        controller.putCell(row, col, "black")
+
+      else if white.selected then
+        controller.putCell(row, col, "white")
+      end if
   }
-
-
-
-
-
-
-}
+end CellButton

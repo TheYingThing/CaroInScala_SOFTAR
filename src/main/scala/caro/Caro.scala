@@ -8,7 +8,7 @@ import com.google.inject.{Guice, Injector}
 
 import scala.io.StdIn.readLine
 
-object Caro {
+object Caro:
   val UICONFIG: String = System.getenv("UI_CONFIG")
 
   var board = new Board
@@ -18,24 +18,23 @@ object Caro {
 
   def main(args: Array[String]): Unit = {
 
-    if(UICONFIG.equals("gui")) {
+    if UICONFIG.equals("gui") then
       val gui = new ScalaGui(controller)
       gui.update
       gui.visible = true
-    }
 
     println("Welcome to Caro!\n")
 
     print("\nCommands:"
-          + "\n\t'player1|player2 <name>' - set player names"
-          + "\n\t'first <Tile color>' - start with this color tile"
-          + "\n\t'board' - prints current board"
-          + "\n\t'put <column> <row> <Tile color> - sets tile at position"
-          + "\n\t'undo' - undo most recent move"
-          + "\n\t'redo' - redo most recent undo"
-          + "\n\t'quit' - exit game"
-          + "\n\t'save' - save current game"
-          + "\n\t'load' - load saved game")
+      + "\n\t'player1|player2 <name>' - set player names"
+      + "\n\t'first <Tile color>' - start with this color tile"
+      + "\n\t'board' - prints current board"
+      + "\n\t'put <column> <row> <Tile color> - sets tile at position"
+      + "\n\t'undo' - undo most recent move"
+      + "\n\t'redo' - redo most recent undo"
+      + "\n\t'quit' - exit game"
+      + "\n\t'save' - save current game"
+      + "\n\t'load' - load saved game")
 
     var input: String = ""
 
@@ -46,8 +45,6 @@ object Caro {
       input = readLine()
       tui.processInputLine(input)
       input != "quit"
-    do()
-
+    do ()
   }
-
-}
+end Caro

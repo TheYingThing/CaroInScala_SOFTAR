@@ -2,7 +2,7 @@ package caro.controller.controllerComponent.controllerBaseImpl
 
 import caro.model.gridComponent.BoardInterface
 import caro.util.Command
-class ReplaceCommand(row:Int, col:Int, color:String, controller:Controller) extends Command {
+class ReplaceCommand(row:Int, col:Int, color:String, controller:Controller) extends Command :
   val oldboard:BoardInterface = controller.board
   override def doStep(): Unit = {
     controller.board = controller.board.replaceCell(row, col, color)
@@ -15,4 +15,4 @@ class ReplaceCommand(row:Int, col:Int, color:String, controller:Controller) exte
   override def redoStep(): Unit = {
     controller.board = controller.board.replaceCell(row, col, color)
   }
-}
+end ReplaceCommand

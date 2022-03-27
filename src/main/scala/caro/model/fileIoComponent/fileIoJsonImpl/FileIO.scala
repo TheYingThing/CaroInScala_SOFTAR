@@ -15,10 +15,10 @@ import scala.collection.immutable.ListMap
 import scala.io.Source
 import scala.language.postfixOps
 
-class FileIO extends FileIOInterface {
+class FileIO extends FileIOInterface :
   override def load: BoardInterface = {
 
-    val source:String = Source.fromFile("board.json").getLines.mkString
+    val source: String = Source.fromFile("board.json").getLines.mkString
     val json: JsValue = Json.parse(source)
 
     val moves = (json \ "board" \ "moves").get.toString.toInt
@@ -43,13 +43,15 @@ class FileIO extends FileIOInterface {
     var board = Board(width = width, height = height, moves = moves, lastColor = lastColor, status = gameStatus,
       player1 = player1, player2 = player2)
 
-    for (i <- 0 until 18 * 18 ) {
-      val row = (json \\ "row")(i).as[Int]
-      val col = (json \\ "col")(i).as[Int]
-      val cell = (json \\ "cell")(i)
+    for
+      i <- 0 until 18 * 18
+    do
+      val row = (json \\ "row") (i).as[Int]
+      val col = (json \\ "col") (i).as[Int]
+      val cell = (json \\ "cell") (i)
       val color = (cell \ "color").get.as[String]
-      board = board.setCell(row, col , color)
-    }
+      board = board.setCell(row, col, color)
+
     board
   }
 
@@ -87,16 +89,15 @@ class FileIO extends FileIOInterface {
     Json.obj(
       "board" -> Json.obj(
         "cells" -> Json.toJson(
-          for {
+          for
             row <- 0 until 19
             col <- 0 until 19
-          } yield {
+           yield
             Json.obj(
               "row" -> row,
               "col" -> col,
               "cell" -> Json.toJson(board.getCell(row, col))
             )
-          }
         ),
         "player1" -> playerToJson(board.getPlayerOne),
         "player2" -> playerToJson(board.getPlayerTwo),
@@ -109,7 +110,7 @@ class FileIO extends FileIOInterface {
     )
   }
 
-  def playerToJson(player:PlayerInterface): JsObject = {
+  def playerToJson(player: PlayerInterface): JsObject = {
     Json.obj(
       "player" -> Json.obj(
         "points" -> player.getPoints,
@@ -123,4 +124,4 @@ class FileIO extends FileIOInterface {
       )
     )
   }
-}
+end FileIO
