@@ -32,6 +32,7 @@ class FileIO extends FileIOInterface :
         case "NOCOLORSLEFT" => GameStatus.NOCOLORSLEFT
         case "ILLEGALMOVE" => GameStatus.ILLEGALMOVE
         case "INVALIDCOLOR" => GameStatus.INVALIDCOLOR
+        case _ => GameStatus.IDLE
       }
     }
 
