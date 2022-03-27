@@ -8,7 +8,7 @@ import caro.model.gridComponent.boardFullImpl.{Board, GameStatus, Player}
 import scala.collection.immutable.ListMap
 import scala.xml.{Elem, NodeSeq, PrettyPrinter}
 
-class FileIO extends FileIOInterface{
+class FileIO extends FileIOInterface :
 
   override def load: BoardInterface = {
 
@@ -16,10 +16,10 @@ class FileIO extends FileIOInterface{
     file.attribute("tiles")
     val boardval = file \\ "board"
 
-    val heightval = (boardval \ "@height").text.toInt
-    val widthval = (boardval \ "@width").text.toInt
+    val heightval = (boardval \ "@height").text.trim.toInt
+    val widthval = (boardval \ "@width").text.trim.toInt
     val lastColorval = (boardval \ "@lastColor").text
-    val movesval = (boardval \ "@moves").text.toInt
+    val movesval = (boardval \ "@moves").text.trim.toInt
     val statusval = (boardval \ "@status").text
     val gamestatus: GameStatus = {
       statusval match {
@@ -39,27 +39,28 @@ class FileIO extends FileIOInterface{
       moves = movesval, player1 = player1, player2 = player2)
 
     val cellNodes = (file \ "cells") \ "cell"
-    for (cell <- cellNodes) {
-      val row: Int = (cell \ "@row").text.toInt
-      val col: Int = (cell \ "@col").text.toInt
+    for
+      cell <- cellNodes
+    do
+      val row: Int = (cell \ "@row").text.trim.toInt
+      val col: Int = (cell \ "@col").text.trim.toInt
       val color: String = (cell \ "color").text
-      board = board.setCell(row , col, color)
-    }
+      board = board.setCell(row, col, color)
 
     board
   }
 
-  def loadPlayer(playerVal: NodeSeq) : Player = {
+  def loadPlayer(playerVal: NodeSeq): Player = {
 
     val tileval = playerVal \ "tiles"
 
     val nameval = (playerVal \ "name").text
-    val pointval = (playerVal \ "points").text.toInt
+    val pointval = (playerVal \ "points").text.trim.toInt
 
-    val redval = (tileval \ "red").text.toInt
-    val blackval = (tileval \ "black").text.toInt
-    val greyval = (tileval \ "grey").text.toInt
-    val whiteval = (tileval \ "white").text.toInt
+    val redval = (tileval \ "red").text.trim.toInt
+    val blackval = (tileval \ "black").text.trim.toInt
+    val greyval = (tileval \ "grey").text.trim.toInt
+    val whiteval = (tileval \ "white").text.trim.toInt
 
     val tilesval = ListMap("red" -> redval, "black" -> blackval, "grey" -> greyval, "white" -> whiteval)
 
@@ -81,37 +82,53 @@ class FileIO extends FileIOInterface{
   }
 
   def boardToXml(board: BoardInterface): Elem = {
-    <board moves={ board.getMoves.toString } width={ board.getWidth.toString } height={ board.getHeight.toString }
-           lastColor={ board.getLastColor} status={board.getStatusAsString}>
-      <player1> { playerToXml(board.getPlayerOne) }</player1>
-      <player2> { playerToXml(board.getPlayerTwo) }</player2>
+    <board moves={board.getMoves.toString} width={board.getWidth.toString} height={board.getHeight.toString}
+           lastColor={board.getLastColor} status={board.getStatusAsString}>
+      <player1>
+        {playerToXml(board.getPlayerOne)}
+      </player1>
+      <player2>
+        {playerToXml(board.getPlayerTwo)}
+      </player2>
       <cells>
-        {
-          for {
-            row <- 0 until 18
-            col <- 0 until 18
-          } yield cellToXml(board, row, col)
-        }
+        {for
+        row <- 0 until 18
+        col <- 0 until 18
+      yield cellToXml(board, row, col)}
       </cells>
     </board>
   }
 
-  def cellToXml(board: BoardInterface, row:Int, col:Int): Elem = {
-    <cell row={ row.toString } col={ col.toString } isOccupied={ board.getCell(row, col).isOccupied.toString }>
-      <color>{board.getCell(row, col).getColor}</color>
+  def cellToXml(board: BoardInterface, row: Int, col: Int): Elem = {
+    <cell row={row.toString} col={col.toString} isOccupied={board.getCell(row, col).isOccupied.toString}>
+      <color>
+        {board.getCell(row, col).getColor}
+      </color>
     </cell>
   }
 
   def playerToXml(player: PlayerInterface): Elem = {
-    <player >
-      <name>{player.getName}</name>
-      <points>{player.getPoints.toString}</points>
+    <player>
+      <name>
+        {player.getName}
+      </name>
+      <points>
+        {player.getPoints.toString}
+      </points>
       <tiles>
-        <red>{player.getTiles("red").toString}</red>
-        <black>{player.getTiles("black").toString}</black>
-        <grey>{player.getTiles("grey").toString}</grey>
-        <white>{player.getTiles("white").toString}</white>
+        <red>
+          {player.getTiles("red").toString}
+        </red>
+        <black>
+          {player.getTiles("black").toString}
+        </black>
+        <grey>
+          {player.getTiles("grey").toString}
+        </grey>
+        <white>
+          {player.getTiles("white").toString}
+        </white>
       </tiles>
     </player>
   }
-}
+end FileIO
