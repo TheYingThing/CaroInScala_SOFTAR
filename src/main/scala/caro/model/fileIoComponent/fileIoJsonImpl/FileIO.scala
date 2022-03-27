@@ -12,13 +12,16 @@ import play.api.libs.json.JsPath.\\
 import play.api.libs.json.{JsArray, JsObject, JsValue, Json, Writes}
 
 import scala.collection.immutable.ListMap
-import scala.io.Source
+import scala.io.{BufferedSource, Source}
 import scala.language.postfixOps
 
 class FileIO extends FileIOInterface :
   override def load: BoardInterface = {
 
-    val source: String = Source.fromFile("board.json").getLines.mkString
+    val bufferedSource: BufferedSource = Source.fromFile("board.json")
+    val source: String = bufferedSource.getLines().mkString
+    bufferedSource.close()
+
     val json: JsValue = Json.parse(source)
 
     val moves = (json \ "board" \ "moves").get.toString.toInt
