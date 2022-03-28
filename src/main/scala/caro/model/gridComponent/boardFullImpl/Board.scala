@@ -130,7 +130,7 @@ case class Board(board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)), 
   def replaceCell(row: Int, col: Int, color: String): Board = {
 
     if allRules(row, col, color) then
-      val legal = new LegalMove()
+      val legal = LegalMove()
       replace(legal, row, col, color, GameStatus.IDLE)
     else 
       println("row: " + row + " col: " + col)
