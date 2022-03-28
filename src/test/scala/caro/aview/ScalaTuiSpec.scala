@@ -70,6 +70,7 @@ class ScalaTuiSpec extends AnyWordSpec with should.Matchers {
     }
 
     "save the current board" in {
+      cont.board.getCell(9,10).getColor should be("black")
       tui.processInputLine("save")
       cont.board should be(cont.board)
     }
