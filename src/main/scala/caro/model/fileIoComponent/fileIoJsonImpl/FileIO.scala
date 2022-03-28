@@ -92,7 +92,7 @@ class FileIO extends FileIOInterface :
   def boardToJson(board: BoardInterface): JsObject = {
     Json.obj(
       "board" -> Json.obj(
-        "cells" -> Json.toJson(
+        "cells" -> Json.arr(
           for
             row <- 0 until 19
             col <- 0 until 19
