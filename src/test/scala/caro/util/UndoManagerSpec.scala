@@ -1,7 +1,7 @@
 package caro.util
 
-import org.scalatest.matchers._
-import org.scalatest.wordspec._
+import org.scalatest.matchers.*
+import org.scalatest.wordspec.*
 
 class UndoManagerSpec extends AnyWordSpec with should.Matchers {
 

@@ -1,7 +1,7 @@
 package caro.util
 
-import org.scalatest.matchers._
-import org.scalatest.wordspec._
+import org.scalatest.matchers.*
+import org.scalatest.wordspec.*
 
 class incrCommand extends Command {
   var state:Int =0

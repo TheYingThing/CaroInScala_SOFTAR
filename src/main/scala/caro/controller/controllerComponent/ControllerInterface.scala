@@ -1,6 +1,6 @@
 package caro.controller.controllerComponent
 
-import caro.util._
+import caro.util.*
 
 /**
  * ControllerInterface includes all methods needed to play and manage the game.

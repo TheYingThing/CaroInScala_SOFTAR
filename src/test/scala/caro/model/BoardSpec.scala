@@ -1,9 +1,9 @@
 package caro.model
 
+import caro.model.gridComponent.boardFullImpl.*
 import caro.model.gridComponent.boardFullImpl.GameStatus.IDLE
-import org.scalatest.matchers._
-import org.scalatest.wordspec._
-import caro.model.gridComponent.boardFullImpl._
+import org.scalatest.matchers.*
+import org.scalatest.wordspec.*
 
 class BoardSpec extends AnyWordSpec with should.Matchers {
 

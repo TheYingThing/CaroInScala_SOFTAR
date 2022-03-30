@@ -1,8 +1,8 @@
 package caro.model
 
 import caro.model.gridComponent.boardFullImpl.{Board, LegalMove}
-import org.scalatest.matchers._
-import org.scalatest.wordspec._
+import org.scalatest.matchers.*
+import org.scalatest.wordspec.*
 
 class LegalMoveSpec extends AnyWordSpec with should.Matchers {
 

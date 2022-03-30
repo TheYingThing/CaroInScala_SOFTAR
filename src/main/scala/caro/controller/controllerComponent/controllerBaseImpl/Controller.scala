@@ -1,11 +1,11 @@
 package caro.controller.controllerComponent.controllerBaseImpl
 
 import caro.CaroModule
-import caro.controller.controllerComponent._
+import caro.controller.controllerComponent.*
 import caro.model.fileIoComponent.FileIOInterface
 import caro.model.gridComponent.BoardInterface
 import caro.model.gridComponent.boardFullImpl.{Board, Player}
-import caro.util._
+import caro.util.*
 import com.google.inject.name.Named
 import com.google.inject.{Guice, Inject, Injector}
 import net.codingwell.scalaguice.InjectorExtensions.ScalaInjector

@@ -1,9 +1,9 @@
 package caro.controller.controllerComponent.controllerBaseImpl
 
 
-import caro.model.gridComponent.boardFullImpl._
-import org.scalatest.matchers._
-import org.scalatest.wordspec._
+import caro.model.gridComponent.boardFullImpl.*
+import org.scalatest.matchers.*
+import org.scalatest.wordspec.*
 
 import scala.io.Source
 

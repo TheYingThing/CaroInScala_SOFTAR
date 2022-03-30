@@ -1,8 +1,8 @@
 package caro.model
 
 import caro.model.gridComponent.boardFullImpl.Cell
-import org.scalatest.matchers._
-import org.scalatest.wordspec._
+import org.scalatest.matchers.*
+import org.scalatest.wordspec.*
 
 class CellSpec extends AnyWordSpec with should.Matchers{
 

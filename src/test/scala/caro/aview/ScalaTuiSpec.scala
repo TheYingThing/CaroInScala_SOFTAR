@@ -2,8 +2,8 @@ package caro.aview
 
 import caro.controller.controllerComponent.controllerBaseImpl.Controller
 import caro.model.gridComponent.boardFullImpl.Board
-import org.scalatest.matchers._
-import org.scalatest.wordspec._
+import org.scalatest.matchers.*
+import org.scalatest.wordspec.*
 
 class ScalaTuiSpec extends AnyWordSpec with should.Matchers {
 
