@@ -3,16 +3,17 @@ package caro.util
 import org.scalatest.matchers.*
 import org.scalatest.wordspec.*
 
-class incrCommand extends Command {
+class incrCommand extends Command :
   var state:Int =0
   override def doStep(): Unit = state+=1
 
   override def undoStep(): Unit = state-=1
 
   override def redoStep(): Unit = state+=1
-}
+  
+end incrCommand
 
-class CommandSpec extends AnyWordSpec with should.Matchers {
+class CommandSpec extends AnyWordSpec with should.Matchers :
   "A Command" should {
 
     "have a do step" in {
@@ -43,4 +44,4 @@ class CommandSpec extends AnyWordSpec with should.Matchers {
       command.state should be(1)
     }
   }
-}
+end CommandSpec

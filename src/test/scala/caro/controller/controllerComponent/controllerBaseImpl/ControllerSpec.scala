@@ -7,7 +7,7 @@ import org.scalatest.wordspec.*
 
 import scala.io.Source
 
-class ControllerSpec extends AnyWordSpec with should.Matchers {
+class ControllerSpec extends AnyWordSpec with should.Matchers :
 
   "A Controller" should {
     val board = Board()
@@ -128,4 +128,5 @@ class ControllerSpec extends AnyWordSpec with should.Matchers {
       cont3.board.getCell(9, 9).getColor.trim should be("red")
     }
   }
-}
+end ControllerSpec
+

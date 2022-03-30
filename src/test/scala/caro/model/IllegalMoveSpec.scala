@@ -4,7 +4,7 @@ import caro.model.gridComponent.boardFullImpl.{Board, IllegalMove}
 import org.scalatest.matchers.*
 import org.scalatest.wordspec.*
 
-class IllegalMoveSpec extends AnyWordSpec with should.Matchers {
+class IllegalMoveSpec extends AnyWordSpec with should.Matchers :
   "An illegal move" when {
     var test = Board()
     test = test.replaceCell(9, 9, "red")
@@ -44,4 +44,4 @@ class IllegalMoveSpec extends AnyWordSpec with should.Matchers {
       }
     }
   }
-}
+end IllegalMoveSpec

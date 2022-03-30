@@ -5,7 +5,7 @@ import caro.model.gridComponent.boardFullImpl.Board
 import org.scalatest.matchers.*
 import org.scalatest.wordspec.*
 
-class ScalaTuiSpec extends AnyWordSpec with should.Matchers {
+class ScalaTuiSpec extends AnyWordSpec with should.Matchers :
 
   "A Caro Tui" should {
     val board = Board()
@@ -81,4 +81,4 @@ class ScalaTuiSpec extends AnyWordSpec with should.Matchers {
       cont.board.getCell(9, 10).getColor.trim should be("black")
     }
   }
-}
+end ScalaTuiSpec
