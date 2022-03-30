@@ -5,7 +5,7 @@ import org.scalatest.wordspec.*
 
 import scala.language.postfixOps
 
-class ObservableSpec extends AnyWordSpec with should.Matchers {
+class ObservableSpec extends AnyWordSpec with should.Matchers :
 
   "An Observer" should {
 
@@ -31,5 +31,4 @@ class ObservableSpec extends AnyWordSpec with should.Matchers {
       observable.subscribers should not contain (observer)
     }
   }
-}
-
+end ObservableSpec

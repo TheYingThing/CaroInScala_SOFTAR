@@ -1,8 +1,8 @@
 package caro.model.gridComponent.boardFullImpl
 
 
-import caro.model.gridComponent.{BoardInterface, PlayerInterface}
 import caro.model.gridComponent.boardFullImpl.GameStatus
+import caro.model.gridComponent.{BoardInterface, PlayerInterface}
 
 import javax.inject.Inject
 import scala.collection.immutable.ListMap

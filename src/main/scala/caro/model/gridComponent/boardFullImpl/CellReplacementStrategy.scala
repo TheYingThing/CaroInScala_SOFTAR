@@ -1,6 +1,6 @@
 package caro.model.gridComponent.boardFullImpl
 
-import caro.model.gridComponent.boardFullImpl.GameStatus._
+import caro.model.gridComponent.boardFullImpl.GameStatus.*
 
 /**
  * CellReplacementStrategy declares methodes to be called when trying to replace a Cell on the current Board.
@@ -11,7 +11,7 @@ import caro.model.gridComponent.boardFullImpl.GameStatus._
  *
  */
 
-trait CellReplacementStrategy {
+trait CellReplacementStrategy :
 
   /**
    * newBoard updates the board after a move
@@ -51,4 +51,5 @@ trait CellReplacementStrategy {
    * @return an updated Board
    */
   def newCell(row: Int, col: Int, color: String, thisboard: Board, status: GameStatus): Board
-}
+
+end CellReplacementStrategy

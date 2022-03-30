@@ -1,12 +1,12 @@
 package caro
 
+import caro.controller.controllerComponent.*
+import caro.model.fileIoComponent.*
+import caro.model.gridComponent.boardFullImpl.{Board, Player}
+import caro.model.gridComponent.{BoardInterface, PlayerInterface}
 import com.google.inject.AbstractModule
 import com.google.inject.name.Names
 import net.codingwell.scalaguice.ScalaModule
-import caro.controller.controllerComponent._
-import caro.model.fileIoComponent._
-import caro.model.gridComponent.{BoardInterface, PlayerInterface}
-import caro.model.gridComponent.boardFullImpl.{Board, Player}
 
 
 class CaroModule extends AbstractModule :
