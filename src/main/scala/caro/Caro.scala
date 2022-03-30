@@ -16,7 +16,7 @@ object Caro:
   val controller: ControllerInterface = injector.getInstance(classOf[ControllerInterface])
   val tui = new ScalaTui(controller)
 
-  def main(args: Array[String]): Unit = {
+  @main def run(): Unit = {
 
     if UICONFIG.equals("gui") then
       val gui = new ScalaGui(controller)
