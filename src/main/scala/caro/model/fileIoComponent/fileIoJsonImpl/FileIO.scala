@@ -2,9 +2,9 @@ package caro.model.fileIoComponent.fileIoJsonImpl
 
 import caro.CaroModule
 import caro.model.fileIoComponent.FileIOInterface
-import caro.model.gridComponent._
-import caro.model.gridComponent.boardFullImpl.{Board, Cell, Player}
-import caro.model.gridComponent.boardFullImpl.GameStatus._
+import caro.model.gridComponent.*
+import caro.model.gridComponent.boardFullImpl.{Board, Cell, GameStatus, Player}
+import caro.model.gridComponent.boardFullImpl.GameStatus
 import com.google.inject.Guice
 import com.google.inject.name.Names
 import net.codingwell.scalaguice.InjectorExtensions.ScalaInjector
@@ -12,26 +12,31 @@ import play.api.libs.json.JsPath.\\
 import play.api.libs.json.{JsArray, JsObject, JsValue, Json, Writes}
 
 import scala.collection.immutable.ListMap
-import scala.io.Source
+import scala.io.{BufferedSource, Source}
 import scala.language.postfixOps
 
-class FileIO extends FileIOInterface {
+class FileIO extends FileIOInterface :
   override def load: BoardInterface = {
 
-    val source:String = Source.fromFile("board.json").getLines.mkString
+    val bufferedSource: BufferedSource = Source.fromFile("board.json")
+    val source: String = bufferedSource.getLines().mkString
+    bufferedSource.close()
+
     val json: JsValue = Json.parse(source)
 
     val moves = (json \ "board" \ "moves").get.toString.toInt
     val height = (json \ "board" \ "height").get.toString.toInt
     val width = (json \ "board" \ "width").get.toString.toInt
     val lastColor = (json \ "board" \ "lastColor").get.toString
-    val status = (json \ "board" \ "status").get.as[String]
-    var gamestatus : GameStatus = null
-    status match {
-      case "IDLE" => gamestatus = IDLE
-      case "NOCOLORSLEFT" => gamestatus = NOCOLORSLEFT
-      case "ILLEGALMOVE" => gamestatus = ILLEGALMOVE
-      case "UNVALIDCOLOR" => gamestatus = UNVALIDCOLOR
+    val status = (json \ "board" \ "status").get.toString
+    val gameStatus: GameStatus = {
+      status match {
+        case "IDLE" => GameStatus.IDLE
+        case "NOCOLORSLEFT" => GameStatus.NOCOLORSLEFT
+        case "ILLEGALMOVE" => GameStatus.ILLEGALMOVE
+        case "INVALIDCOLOR" => GameStatus.INVALIDCOLOR
+        case _ => GameStatus.IDLE
+      }
     }
 
     val player1val = (json \ "board" \ "player1").get.as[JsValue]
@@ -39,16 +44,17 @@ class FileIO extends FileIOInterface {
     val player1 = loadPlayer(player1val)
     val player2 = loadPlayer(player2val)
 
-    var board = Board(width = width, height = height, moves = moves, lastColor = lastColor, status = gamestatus,
+    var board = Board(width = width, height = height, moves = moves, lastColor = lastColor, status = gameStatus,
       player1 = player1, player2 = player2)
 
-    for (i <- 0 until 18 * 18 ) {
-      val row = (json \\ "row")(i).as[Int]
-      val col = (json \\ "col")(i).as[Int]
-      val cell = (json \\ "cell")(i)
+    for
+      i <- 0 until 18 * 18
+    do
+      val row = (json \\ "row") (i).as[Int]
+      val col = (json \\ "col") (i).as[Int]
+      val cell = (json \\ "cell") (i)
       val color = (cell \ "color").get.as[String]
-      board = board.setCell(row, col , color)
-    }
+      board = board.setCell(row, col, color)
 
     board
   }
@@ -76,7 +82,7 @@ class FileIO extends FileIOInterface {
     pw.close
   }
 
-  implicit val cellWrites = new Writes[CellInterface] {
+  implicit val cellWrites: Writes[CellInterface] = new Writes[CellInterface] {
     def writes(cell: CellInterface) = Json.obj(
       "color" -> cell.getColor,
       "isOccupied" -> cell.isOccupied
@@ -86,17 +92,16 @@ class FileIO extends FileIOInterface {
   def boardToJson(board: BoardInterface): JsObject = {
     Json.obj(
       "board" -> Json.obj(
-        "cells" -> Json.toJson(
-          for {
+        "cells" -> Json.arr(
+          for
             row <- 0 until 19
             col <- 0 until 19
-          } yield {
+           yield
             Json.obj(
               "row" -> row,
               "col" -> col,
               "cell" -> Json.toJson(board.getCell(row, col))
             )
-          }
         ),
         "player1" -> playerToJson(board.getPlayerOne),
         "player2" -> playerToJson(board.getPlayerTwo),
@@ -109,7 +114,7 @@ class FileIO extends FileIOInterface {
     )
   }
 
-  def playerToJson(player:PlayerInterface): JsObject = {
+  def playerToJson(player: PlayerInterface): JsObject = {
     Json.obj(
       "player" -> Json.obj(
         "points" -> player.getPoints,
@@ -123,6 +128,4 @@ class FileIO extends FileIOInterface {
       )
     )
   }
-
-}
-
+end FileIO

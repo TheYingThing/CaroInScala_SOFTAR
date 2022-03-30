@@ -3,11 +3,11 @@ package caro.aview
 import caro.controller.controllerComponent.ControllerInterface
 import caro.util.Observer
 
-class ScalaTui(controller: ControllerInterface) extends Observer{
+class ScalaTui(controller: ControllerInterface) extends Observer :
   controller.add(this)
   val center = 9
 
-  def processInputLine(input: String):Unit = {
+  def processInputLine(input: String): Unit = {
     val command = input.split(" ").toList
     command.head match {
       case "board" => update
@@ -18,7 +18,7 @@ class ScalaTui(controller: ControllerInterface) extends Observer{
       case "redo" => controller.redo()
       case "put" =>
         val cmd = command.toArray
-        controller.putCell(cmd(1).toInt + 2 , cmd(2).toInt + 2, cmd(3))
+        controller.putCell(cmd(1).toInt + 2, cmd(2).toInt + 2, cmd(3))
 
       case "save" => controller.save()
       case "load" => controller.load()
@@ -31,5 +31,4 @@ class ScalaTui(controller: ControllerInterface) extends Observer{
     println(controller.boardToString)
     true
   }
-}
-
+end ScalaTui

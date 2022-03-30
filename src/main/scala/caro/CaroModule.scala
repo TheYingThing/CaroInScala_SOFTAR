@@ -9,13 +9,12 @@ import caro.model.gridComponent.{BoardInterface, PlayerInterface}
 import caro.model.gridComponent.boardFullImpl.{Board, Player}
 
 
-class CaroModule extends AbstractModule with ScalaModule {
-  override def configure():Unit = {
+class CaroModule extends AbstractModule :
+  override def configure(): Unit = {
 
-    bind[BoardInterface].toInstance(Board())
-    bind[ControllerInterface].to[controllerBaseImpl.Controller]
-    bind[FileIOInterface].to[fileIoXmlImpl.FileIO]
-    //bind[FileIOInterface].to[fileIoJsonImpl.FileIO]
-
+    bind(classOf[BoardInterface]).toInstance(Board())
+    bind(classOf[ControllerInterface]).to(classOf[controllerBaseImpl.Controller])
+//    bind(classOf[FileIOInterface]).to(classOf[fileIoXmlImpl.FileIO])
+    bind(classOf[FileIOInterface]).to(classOf[fileIoJsonImpl.FileIO])
   }
-}
+end CaroModule

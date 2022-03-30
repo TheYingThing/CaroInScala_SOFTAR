@@ -5,7 +5,7 @@ import caro.model.gridComponent.boardFullImpl.Board
 import org.scalatest.matchers._
 import org.scalatest.wordspec._
 
-class ScalaTuiSpec extends AnyWordSpec with should.Matchers{
+class ScalaTuiSpec extends AnyWordSpec with should.Matchers {
 
   "A Caro Tui" should {
     val board = Board()
@@ -29,7 +29,7 @@ class ScalaTuiSpec extends AnyWordSpec with should.Matchers{
 
     "set a tile on input 'first red'" in {
       tui.processInputLine("first red")
-      cont.board.getCell(9, 9).getColor should be ("red")
+      cont.board.getCell(9, 9).getColor should be("red")
     }
 
     "set a tile on input 'put 9 10 black'" in {
@@ -59,23 +59,26 @@ class ScalaTuiSpec extends AnyWordSpec with should.Matchers{
       cont.board.getCell(9, 10).getColor should be("black")
     }
 
+    "save the current board" in {
+      tui.processInputLine("save")
+      cont.board should be(cont.board)
+    }
+
     "exit the game on input'quit'" in {
-      tui.processInputLine("quit") should be()
+      tui.processInputLine("quit")
+      cont.board should be(cont.board)
     }
 
     "not do anything on wrong input" in {
-      tui.processInputLine("wrong") should be()
-    }
-
-    "save the current board" in {
-      tui.processInputLine("save") should be()
+      tui.processInputLine("wrong")
+      cont.board should be(cont.board)
     }
 
     "load the saved board" in {
       tui.processInputLine("player1 boy")
       cont.board.getCell(9, 10).getColor should be("none")
       tui.processInputLine("load")
-      cont.board.getCell(9,10).getColor should be("black")
+      cont.board.getCell(9, 10).getColor.trim should be("black")
     }
-   }
+  }
 }

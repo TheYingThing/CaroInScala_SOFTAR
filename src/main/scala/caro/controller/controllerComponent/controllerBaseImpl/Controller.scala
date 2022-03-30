@@ -10,13 +10,14 @@ import com.google.inject.name.Named
 import com.google.inject.{Guice, Inject, Injector}
 import net.codingwell.scalaguice.InjectorExtensions.ScalaInjector
 
-class Controller @Inject() (var board:BoardInterface) extends ControllerInterface {
+class Controller @Inject()(var board: BoardInterface) extends ControllerInterface :
   private val undoManager = new UndoManager
   val injector: Injector = Guice.createInjector(new CaroModule)
-  val fileIo: FileIOInterface = injector.instance[FileIOInterface]
-  def newBoard(p1:String, p2:String):Unit = {
-    val nplayer1:Player = Player(p1)
-    val nplayer2:Player = Player(p2)
+  val fileIo: FileIOInterface = injector.getInstance(classOf[FileIOInterface])
+
+  def newBoard(p1: String, p2: String): Unit = {
+    val nplayer1: Player = Player(p1)
+    val nplayer2: Player = Player(p2)
     board = injector.getInstance(classOf[BoardInterface])
     board = board.setPlayerOne(nplayer1)
     board = board.setPlayerTwo(nplayer2)
@@ -25,14 +26,14 @@ class Controller @Inject() (var board:BoardInterface) extends ControllerInterfac
 
   def boardToString: String = board.toString
 
-  def putCell(row: Int, col: Int, color:String):Unit = {
+  def putCell(row: Int, col: Int, color: String): Unit = {
     undoManager.doStep(new ReplaceCommand(row, col, color, this))
     notifyObservers()
   }
 
-  def getPlayerOneName:String = board.getPlayerOne.getName
+  def getPlayerOneName: String = board.getPlayerOne.getName
 
-  def getPlayerTwoName:String = board.getPlayerTwo.getName
+  def getPlayerTwoName: String = board.getPlayerTwo.getName
 
   def undo(): Unit = {
     undoManager.undoStep()
@@ -54,13 +55,13 @@ class Controller @Inject() (var board:BoardInterface) extends ControllerInterfac
 
   override def getMoves: Int = board.getMoves
 
-  def save: Unit = {
+  def save(): Unit = {
     fileIo.save(board)
     notifyObservers()
   }
 
-  def load: Unit = {
+  def load(): Unit = {
     board = fileIo.load
     notifyObservers()
   }
-}
+end Controller

@@ -1,6 +1,6 @@
 package caro.model.gridComponent
 
-import caro.model.gridComponent.boardFullImpl.GameStatus.GameStatus
+import caro.model.gridComponent.boardFullImpl.GameStatus
 import caro.model.gridComponent.boardFullImpl.{Board, CellReplacementStrategy, Player}
 
 import scala.collection.immutable.ListMap

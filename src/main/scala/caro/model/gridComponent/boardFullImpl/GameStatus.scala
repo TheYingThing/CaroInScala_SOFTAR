@@ -1,17 +1,19 @@
 package caro.model.gridComponent.boardFullImpl
 
-object GameStatus extends Enumeration {
-  type GameStatus = Value
-  val NOCOLORSLEFT, ILLEGALMOVE, UNVALIDCOLOR, IDLE = Value
+enum GameStatus(message:String):
+  case IDLE extends GameStatus("")
+  case NOCOLORSLEFT extends GameStatus("\nNo Tiles of this Color left!\n")
+  case ILLEGALMOVE extends GameStatus("\nIllegal Move! Minus 10 Points!\n")
+  case INVALIDCOLOR extends GameStatus("\nNot a valid Color!\n")
 
-  val map: Map[GameStatus, String] = Map[GameStatus, String](
-    IDLE -> "",
-    NOCOLORSLEFT -> "\nNo Tiles of this Color left!\n",
-    ILLEGALMOVE -> "\nIllegal Move! Minus 10 Points!\n",
-    UNVALIDCOLOR -> "\nNot a valid Color!\n"
-  )
+  def getMessage: String = message
 
-  def message(gameStatus: GameStatus): String = {
-    map(gameStatus)
+  def getString(gameStatus: GameStatus): String = {
+    gameStatus match {
+      case IDLE => "IDLE"
+      case NOCOLORSLEFT => "NOCOLORSLEFT"
+      case ILLEGALMOVE => "ILLEGALMOVE"
+      case INVALIDCOLOR => "INVALIDCOLOR"
+    }
   }
-}
+end GameStatus

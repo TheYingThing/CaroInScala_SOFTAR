@@ -35,6 +35,7 @@ logs/
 project/.sbtserver
 .sbtserver/
 
+
 # Scala-IDE specific
 .scala_dependencies
 .worksheet
@@ -46,3 +47,8 @@ project/.sbtserver
 
 # Application backup
 grid.json
+
+#IO Files
+.bsp/
+board.xml
+board.json
