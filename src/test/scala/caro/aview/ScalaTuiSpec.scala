@@ -59,6 +59,11 @@ class ScalaTuiSpec extends AnyWordSpec with should.Matchers {
       cont.board.getCell(9, 10).getColor should be("black")
     }
 
+    "save the current board" in {
+      tui.processInputLine("save")
+      cont.board should be(cont.board)
+    }
+
     "exit the game on input'quit'" in {
       tui.processInputLine("quit")
       cont.board should be(cont.board)
@@ -66,12 +71,6 @@ class ScalaTuiSpec extends AnyWordSpec with should.Matchers {
 
     "not do anything on wrong input" in {
       tui.processInputLine("wrong")
-      cont.board should be(cont.board)
-    }
-
-    "save the current board" in {
-      cont.board.getCell(9,10).getColor should be("black")
-      tui.processInputLine("save")
       cont.board should be(cont.board)
     }
 

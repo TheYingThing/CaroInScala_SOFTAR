@@ -189,7 +189,7 @@ case class Board(board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)), 
     val r2 = row + 3
     val buftop = ListBuffer.empty[Cell]
     val bufbottom = ListBuffer.empty[Cell]
-    for 
+    for
       i <- 0 to 6
     do 
       buftop += getCell(r1 + i, c + i)
