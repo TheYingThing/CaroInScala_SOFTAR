@@ -9,7 +9,7 @@ import caro.util.*
  *         Rebecca Braun
  */
 
-trait ControllerInterface extends Observable {
+trait ControllerInterface extends Observable :
 
   /**
    * Method newBoard creates a new Board.
@@ -103,4 +103,6 @@ trait ControllerInterface extends Observable {
    * loads a saved board from a file
    */
   def load():Unit
-}
+
+end ControllerInterface
+

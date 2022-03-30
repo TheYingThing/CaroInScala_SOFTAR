@@ -11,7 +11,7 @@ import caro.model.gridComponent.boardFullImpl.GameStatus.*
  *
  */
 
-trait CellReplacementStrategy {
+trait CellReplacementStrategy :
 
   /**
    * newBoard updates the board after a move
@@ -51,4 +51,5 @@ trait CellReplacementStrategy {
    * @return an updated Board
    */
   def newCell(row: Int, col: Int, color: String, thisboard: Board, status: GameStatus): Board
-}
+
+end CellReplacementStrategy
