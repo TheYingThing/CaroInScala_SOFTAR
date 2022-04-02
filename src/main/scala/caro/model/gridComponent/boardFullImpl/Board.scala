@@ -9,9 +9,23 @@ import scala.collection.immutable.ListMap
 import scala.collection.mutable.ListBuffer
 import scala.util.{Failure, Success, Try}
 
-case class Board(board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)), width: Int = 0,
-                 height: Int = 0, moves: Int = 0, lastColor: String = "", status: GameStatus = GameStatus.IDLE,
-                 player1: Player = Player("player1"), player2: Player = Player("player2")) extends BoardInterface :
+case class Board(board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)), 
+                 width: Int = 0,
+                 height: Int = 0, 
+                 moves: Int = 0, 
+                 lastColor: String = "", 
+                 status: GameStatus = GameStatus.IDLE,
+                 player1: Player = Player("player1"), 
+                 player2: Player = Player("player2"))
+  extends BoardInterface(
+    Vector.fill(19, 19)(Cell(None)),
+    0,
+    0,
+    0,
+    "",
+    GameStatus.IDLE, 
+    Player("player1"),
+    Player("player2")) :
 
   val maxSize: Int = 6
 
@@ -47,11 +61,7 @@ case class Board(board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)), 
   }
 
   def setCell(row: Int, col: Int, color: String): Board = {
-    var newcell: Cell = null
-    if color.equals("none") then
-      newcell = Cell(None)
-    else
-      newcell = Cell(Some(color))
+    val newcell: Cell = if(color.equals("none")) Cell(None) else Cell(Some(color))
     copy(board.updated(row, board(row).updated(col, newcell)))
   }
 
@@ -67,11 +77,10 @@ case class Board(board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)), 
 
   def colEmpty(col: Int): Boolean = {
     var occ = true
-    for
-      i <- 3 to 15
-    do
-      if getCell(i, col).isOccupied then
+    (3 to 15).toList.foreach(x => {
+      if getCell(x, col).isOccupied then
         occ = false
+    })
     occ
   }
 
@@ -106,12 +115,7 @@ case class Board(board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)), 
 
   def updateField(int: Int, current: Int, empty: Int => Boolean): Int = {
     val currentValue = current
-    var newValue = 0
-
-    if this.isEmpty || empty(int) then
-      newValue = currentValue + 1
-    else 
-      newValue = currentValue
+    val newValue = if (this.isEmpty || empty(int)) currentValue + 1 else currentValue
     newValue
   }
 
@@ -142,22 +146,17 @@ case class Board(board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)), 
   override def toString: String = {
     var output = "    "
     val box = " |___|"
-    for 
-      k <- 1 to 13
-    do
-      output = output + k.toString.padTo(6, ' ')
-    for 
-      i <- 3 to 15
-    do
-      output = output + "\n" + (i - 2).toString.padTo(3, ' ')
-      for 
-        j <- 3 to 15
-      do 
-        if this.getCell(i, j).getColor.equals("none") then
-          output = output + box
-        else
-          output = output + " " + this.getCell(i, j).getColor.padTo(5, ' ')
-    
+    val i = (3 to 15).toList
+
+    (1 to 13).toList.foreach(x => output = output + x.toString.padTo(6, ' '))
+    i.foreach(x => {
+      output = output + "\n" + (x - 2).toString.padTo(3, ' ')
+      i.foreach(y => {
+        val color = this.getCell(x, y).getColor
+        output = if (color.equals("none")) output + box else output + " " + color.padTo(5, ' ')
+      })
+    })
+
     if moves % 2 == 0 then
       output = output + "\n" + player1.getName + " it's your turn!\n"
     else
@@ -189,12 +188,10 @@ case class Board(board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)), 
     val r2 = row + 3
     val buftop = ListBuffer.empty[Cell]
     val bufbottom = ListBuffer.empty[Cell]
-    for
-      i <- 0 to 6
-    do 
-      buftop += getCell(r1 + i, c + i)
-      bufbottom += getCell(r2 - i, c + i)
-    
+    (0 to 6).toList.foreach(x => {
+      buftop += getCell(r1 + x, c + x)
+      bufbottom += getCell(r2 - x, c + x)
+    })
     var top = buftop.toList
     var bottom = bufbottom.toList
     top = top.take(3) ++ top.drop(4)

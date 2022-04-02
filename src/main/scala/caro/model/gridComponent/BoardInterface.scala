@@ -1,7 +1,6 @@
 package caro.model.gridComponent
 
-import caro.model.gridComponent.boardFullImpl.GameStatus
-import caro.model.gridComponent.boardFullImpl.{Board, CellReplacementStrategy, Player}
+import caro.model.gridComponent.boardFullImpl.{Board, Cell, CellReplacementStrategy, GameStatus, Player}
 
 import scala.collection.immutable.ListMap
 
@@ -13,7 +12,14 @@ import scala.collection.immutable.ListMap
  * @author Ying-Ling Dang
  *         Rebecca Braun
  */
-trait BoardInterface {
+trait BoardInterface(board: Vector[Vector[Cell]],
+                     width: Int,
+                     height: Int,
+                     moves: Int,
+                     lastColor: String,
+                     status: GameStatus,
+                     player1: Player, 
+                     player2: Player) {
 
   //-----------------------------GETTERS---------------------------------------------------------
 
@@ -179,57 +185,4 @@ trait BoardInterface {
    */
   def allRules(row: Int, col: Int, color: String): Boolean
 
-}
-
-/**
- * PlayerInterface declares methods to be implemented in the Player case classes
- * Current implementations are :
- * @see caro.model.gridComponent.boardFullImpl.Player
- *
- * @author Ying-Ling Dang
- *         Rebecca Braun
- */
-trait PlayerInterface {
-
-  /**
-   * Getter for the player's points.
-   * @return points as Int
-   */
-  def getPoints: Int
-
-  /**
-   * Getter for the remaining amount of tiles for each color that can still be placed
-   * @return tiles as ListMap[String, Int]
-   */
-  def getTiles: ListMap[String, Int]
-
-  /**
-   * Getter for the player name
-   * @return name as String
-   */
-  def getName: String
-
-}
-
-/**
- * CellInterface declares methods to be implemented in the Cell case classes
- * Current implementations are :
- * @see caro.model.gridComponent.boardFullImpl.Cell
- *
- * @author Ying-Ling Dang
- *         Rebecca Braun
- */
-trait CellInterface {
-
-  /**
-   * Checks if color of Cell has been set.
-   * @return true if color has been set, false if color is None
-   */
-  def isOccupied: Boolean
-
-  /**
-   * Getter for color of Cell
-   * @return color as String
-   */
-  def getColor: String
 }
