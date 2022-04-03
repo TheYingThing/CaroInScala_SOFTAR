@@ -54,7 +54,7 @@ class FileIO extends FileIOInterface :
       val col = (json \\ "col") (i).as[Int]
       val cell = (json \\ "cell") (i)
       val color = (cell \ "color").get.as[String]
-      board = board.setCell(row, col, color)
+      board = board.updateCell(row, col, color)
 
     board
   }

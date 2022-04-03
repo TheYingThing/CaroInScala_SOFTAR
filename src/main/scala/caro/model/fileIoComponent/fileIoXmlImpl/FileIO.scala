@@ -1,9 +1,8 @@
 package caro.model.fileIoComponent.fileIoXmlImpl
 
 import caro.model.fileIoComponent.FileIOInterface
-import caro.model.gridComponent.boardFullImpl.GameStatus
-import caro.model.gridComponent.{BoardInterface, PlayerInterface}
 import caro.model.gridComponent.boardFullImpl.{Board, GameStatus, Player}
+import caro.model.gridComponent.{BoardInterface, PlayerInterface}
 
 import scala.collection.immutable.ListMap
 import scala.xml.{Elem, NodeSeq, PrettyPrinter}
@@ -45,7 +44,7 @@ class FileIO extends FileIOInterface :
       val row: Int = (cell \ "@row").text.trim.toInt
       val col: Int = (cell \ "@col").text.trim.toInt
       val color: String = (cell \ "color").text.trim
-      board = board.setCell(row, col, color)
+      board = board.updateCell(row, col, color)
 
     board
   }
@@ -72,7 +71,7 @@ class FileIO extends FileIOInterface :
   override def save(board: BoardInterface): Unit = saveString(board)
 
   def saveString(board: BoardInterface): Unit = {
-    import java.io._
+    import java.io.*
     new File("board.xml").delete()
     val pw = new PrintWriter(new File("board.xml"))
     val pp = new PrettyPrinter(120, 4)

@@ -19,8 +19,8 @@ class Controller @Inject()(var board: BoardInterface) extends ControllerInterfac
     val nplayer1: Player = Player(p1)
     val nplayer2: Player = Player(p2)
     board = injector.getInstance(classOf[BoardInterface])
-    board = board.setPlayerOne(nplayer1)
-    board = board.setPlayerTwo(nplayer2)
+    board = board.updatePlayerOne(nplayer1)
+    board = board.updatePlayerTwo(nplayer2)
     notifyObservers()
   }
 
@@ -31,9 +31,9 @@ class Controller @Inject()(var board: BoardInterface) extends ControllerInterfac
     notifyObservers()
   }
 
-  def getPlayerOneName: String = board.getPlayerOne.getName
+  def getPlayerOneName: String = board.playerOneName
 
-  def getPlayerTwoName: String = board.getPlayerTwo.getName
+  def getPlayerTwoName: String = board.playerTwoName
 
   def undo(): Unit = {
     undoManager.undoStep()
@@ -45,9 +45,8 @@ class Controller @Inject()(var board: BoardInterface) extends ControllerInterfac
     notifyObservers()
   }
 
-  override def playerOneToString: String = board.getPlayerOne.toString
-
-  override def playerTwoToString: String = board.getPlayerTwo.toString
+  override def playerOneToString: String = board.playerOneAsString
+  override def playerTwoToString: String = board.playerTwoAsString
 
   override def getBoardStatus: String = board.getStatusMessage
 

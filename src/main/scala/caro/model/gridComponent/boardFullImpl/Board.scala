@@ -1,21 +1,21 @@
 package caro.model.gridComponent.boardFullImpl
 
-
-import caro.model.gridComponent.{BoardInterface, PlayerInterface}
 import caro.model.gridComponent.boardFullImpl.GameStatus
+import caro.model.gridComponent.boardFullImpl.Rules
+import caro.model.gridComponent.{BoardInterface, PlayerInterface, RulesInterface}
 
 import javax.inject.Inject
 import scala.collection.immutable.ListMap
 import scala.collection.mutable.ListBuffer
 import scala.util.{Failure, Success, Try}
 
-case class Board(board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)), 
+case class Board(board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
                  width: Int = 0,
-                 height: Int = 0, 
-                 moves: Int = 0, 
-                 lastColor: String = "", 
+                 height: Int = 0,
+                 moves: Int = 0,
+                 lastColor: String = "",
                  status: GameStatus = GameStatus.IDLE,
-                 player1: Player = Player("player1"), 
+                 player1: Player = Player("player1"),
                  player2: Player = Player("player2"))
   extends BoardInterface(
     Vector.fill(19, 19)(Cell(None)),
@@ -29,6 +29,8 @@ case class Board(board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
 
   val maxSize: Int = 6
 
+  val rules: Rules = Rules(this)
+
   //---------------------GETTERS------------------------
   def getStatus: GameStatus = status
 
@@ -37,6 +39,8 @@ case class Board(board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
   def getStatusAsString: String = status.getString(this.status)
 
   def getLastColor: String = this.lastColor
+
+  def getCellColor(row: Int, col: Int): String = board(row)(col).getColor
 
   def getCell(row: Int, col: Int): Cell = board(row)(col)
 
@@ -50,18 +54,26 @@ case class Board(board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
 
   def getMoves: Int = moves
 
+  def playerOneName: String = player1.name
+
+  def playerTwoName: String = player2.name
+
+  def playerOneAsString: String = player1.toString
+
+  def playerTwoAsString: String = player2.toString
+
   //--------------------SETTERS--------------------
 
-  def setPlayerOne(player: Player): Board = {
+  def updatePlayerOne(player: Player): Board = {
     copy(player1 = player)
   }
 
-  def setPlayerTwo(player: Player): Board = {
+  def updatePlayerTwo(player: Player): Board = {
     copy(player2 = player)
   }
 
-  def setCell(row: Int, col: Int, color: String): Board = {
-    val newcell: Cell = if(color.equals("none")) Cell(None) else Cell(Some(color))
+  def updateCell(row: Int, col: Int, color: String): Board = {
+    val newcell: Cell = if (color.equals("none")) Cell(None) else Cell(Some(color))
     copy(board.updated(row, board(row).updated(col, newcell)))
   }
 
@@ -78,7 +90,7 @@ case class Board(board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
   def colEmpty(col: Int): Boolean = {
     var occ = true
     (3 to 15).toList.foreach(x => {
-      if getCell(x, col).isOccupied then
+      if board(x)(col).isOccupied then
         occ = false
     })
     occ
@@ -93,22 +105,21 @@ case class Board(board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
   def updatePlayer(row: Int, col: Int, color: String, player: Player): (Player, GameStatus) = {
     val oldValue: Try[Int] = validColor(color, player)
     oldValue match {
-      case Success(value) => 
+      case Success(value) =>
         if value == 0 then
           return (player, GameStatus.NOCOLORSLEFT)
-        
+
         val ntiles = player.getTiles.updated(color, value - 1)
         var npoints = 0
         if this.isEmpty then
           npoints = player.getPoints + 10
-        else 
-          if ntiles(color) == 0 then
-            npoints = player.getPoints + (newPoints(row, col, color) * 2)
-          else
-            npoints = player.getPoints + newPoints(row, col, color)
-        
+        else if ntiles(color) == 0 then
+          npoints = player.getPoints + (newPoints(row, col, color) * 2)
+        else
+          npoints = player.getPoints + newPoints(row, col, color)
+
         (player.copy(tiles = ntiles, points = npoints), GameStatus.IDLE)
-      
+
       case Failure(exception) => (player, GameStatus.INVALIDCOLOR)
     }
   }
@@ -120,11 +131,11 @@ case class Board(board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
   }
 
   def updatedWidth(col: Int): Int = {
-    updateField(col, this.getWidth, colEmpty)
+    updateField(col, this.width, colEmpty)
   }
 
   def updatedHeight(row: Int): Int = {
-    updateField(row, this.getHeight, rowEmpty)
+    updateField(row, this.height, rowEmpty)
   }
 
   def replace(strategy: CellReplacementStrategy, row: Int, col: Int, color: String, status: GameStatus): Board = {
@@ -136,7 +147,7 @@ case class Board(board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
     if allRules(row, col, color) then
       val legal = LegalMove()
       replace(legal, row, col, color, GameStatus.IDLE)
-    else 
+    else
       println("row: " + row + " col: " + col)
       println("\nillegal move, minus 10 points")
       val illegal = new IllegalMove()
@@ -152,7 +163,7 @@ case class Board(board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
     i.foreach(x => {
       output = output + "\n" + (x - 2).toString.padTo(3, ' ')
       i.foreach(y => {
-        val color = this.getCell(x, y).getColor
+        val color = this.board(x)(y).getColor
         output = if (color.equals("none")) output + box else output + " " + color.padTo(5, ' ')
       })
     })
@@ -161,80 +172,15 @@ case class Board(board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
       output = output + "\n" + player1.getName + " it's your turn!\n"
     else
       output = output + "\n" + player2.getName + " it's your turn!\n"
-    
+
     output = output + player1.toString + "\n" + player2.toString
     output = output + this.status.getMessage
     output
   }
 
   //----------------------------RULES----------------------------------------------------------------------------------
-  //all return true if you can fill the cell
-
   def allRules(row: Int, col: Int, color: String): Boolean = {
-    if this.isEmpty && row == 9 && col == 9 || color == "none" then
-      true
-    else
-      sameColor(row, col, color) && onEdge(row, col) && diagonal(row, col, color) && maxColor(row, col, color) && maxField(row, col) && (!this.getCell(row, col).isOccupied)
-  }
-
-  //rechts, links, oben, unten
-  def getNeighbors(row: Int, col: Int): List[Cell] = {
-    getCell(row, col + 1) :: getCell(row, col - 1) :: getCell(row - 1, col) :: getCell(row + 1, col) :: Nil
-  }
-
-  def getDiagonals(row: Int, col: Int): List[List[Cell]] = {
-    val r1 = row - 3
-    val c = col - 3
-    val r2 = row + 3
-    val buftop = ListBuffer.empty[Cell]
-    val bufbottom = ListBuffer.empty[Cell]
-    (0 to 6).toList.foreach(x => {
-      buftop += getCell(r1 + x, c + x)
-      bufbottom += getCell(r2 - x, c + x)
-    })
-    var top = buftop.toList
-    var bottom = bufbottom.toList
-    top = top.take(3) ++ top.drop(4)
-    bottom = bottom.take(3) ++ bottom.drop(4)
-    top :: bottom :: Nil
-  }
-
-  def sameColor(row: Int, col: Int, color: String): Boolean = {
-    getNeighbors(row, col).forall(n => n.getColor != color)
-  }
-
-  def onEdge(row: Int, col: Int): Boolean = {
-    getNeighbors(row, col).exists(n => n.isOccupied)
-  }
-
-  def diagonal(row: Int, col: Int, color: String): Boolean = {
-    val diag1 = getDiagonals(row, col).head.sliding(3).toList
-    val diag2 = getDiagonals(row, col)(1).sliding(3).toList
-    val d1 = diag1.exists(l => l.forall(c => c.getColor == color)) //true when theres a sequence of 3 same colors
-    val d2 = diag2.exists(l => l.forall(c => c.getColor == color))
-    !(d1 || d2)
-  }
-
-  //returns true if theres less than two of the same color
-  def twoColor(row: Int, col: Int, color: String): Boolean = {
-    val counter: Int = getNeighbors(row, col).count(n => n.getColor == color)
-    counter < 2
-  }
-
-  //return true when theres no neighbor that has two neighbors that are of the same color as the tile to be laid
-  def maxColor(row: Int, col: Int, color: String): Boolean = {
-    twoColor(row - 1, col, color) && twoColor(row + 1, col, color) && twoColor(row, col + 1, color) && twoColor(row, col - 1, color)
-  }
-
-  //return true when tile can be laid
-  def maxField(row: Int, col: Int): Boolean = {
-    if this.getHeight == maxSize && this.rowEmpty(row) then 
-      return false
-    end if 
-    
-    if this.getWidth == maxSize && this.colEmpty(col) then 
-      return false
-    true
+    rules.allRules(row, col, color)
   }
 
   //-----------------------POINTS----------------------------------------------------------------------------
@@ -242,9 +188,9 @@ case class Board(board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
     val combinations: Map[String, Int] = ListMap("redblack" -> 10, "blackred" -> 10, "redgrey" -> 8, "greyred" -> 8,
       "redwhite" -> 6, "whitered" -> 6, "blackgrey" -> 4, "greyblack" -> 4, "blackwhite" -> 2, "whiteblack" -> 2,
       "greywhite" -> 1, "whitegrey" -> 1).withDefaultValue(0)
-    val neighbors: List[String] = this.getNeighbors(row, col).map(c => c.getColor + color)
+    val neighbors: List[String] = rules.getNeighbors(row, col).map(c => c.getColor + color)
     var newPoints = 0
     neighbors.foreach(f => newPoints += combinations(f))
     newPoints
   }
-end Board
+
