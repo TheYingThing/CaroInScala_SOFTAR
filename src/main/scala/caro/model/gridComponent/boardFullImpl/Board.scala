@@ -112,11 +112,11 @@ case class Board(board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
         val ntiles = player.getTiles.updated(color, value - 1)
         var npoints = 0
         if this.isEmpty then
-          npoints = player.getPoints + 10
+          npoints = player.points + 10
         else if ntiles(color) == 0 then
-          npoints = player.getPoints + (newPoints(row, col, color) * 2)
+          npoints = player.points + (newPoints(row, col, color) * 2)
         else
-          npoints = player.getPoints + newPoints(row, col, color)
+          npoints = player.points + newPoints(row, col, color)
 
         (player.copy(tiles = ntiles, points = npoints), GameStatus.IDLE)
 
@@ -138,20 +138,13 @@ case class Board(board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
     updateField(row, this.height, rowEmpty)
   }
 
-  def replace(strategy: CellReplacementStrategy, row: Int, col: Int, color: String, status: GameStatus): Board = {
+  def replace(strategy: CellReplacementStrategy, status: GameStatus)(row: Int, col: Int, color: String): Board = {
     strategy.newBoard(row, col, color, this, status)
   }
 
   def replaceCell(row: Int, col: Int, color: String): Board = {
-
-    if allRules(row, col, color) then
-      val legal = LegalMove()
-      replace(legal, row, col, color, GameStatus.IDLE)
-    else
-      println("row: " + row + " col: " + col)
-      println("\nillegal move, minus 10 points")
-      val illegal = new IllegalMove()
-      replace(illegal, row, col, color, GameStatus.ILLEGALMOVE)
+    val move = if(allRules(row, col, color)) replace(LegalMove(), GameStatus.IDLE)_ else replace(IllegalMove(), GameStatus.ILLEGALMOVE)_
+    move(row, col, color)
   }
 
   override def toString: String = {
@@ -168,10 +161,8 @@ case class Board(board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
       })
     })
 
-    if moves % 2 == 0 then
-      output = output + "\n" + player1.getName + " it's your turn!\n"
-    else
-      output = output + "\n" + player2.getName + " it's your turn!\n"
+    val player = if (moves % 2 == 0) player1.name else player2.name
+    output = output + "\n" + player + " it's your turn!\n"
 
     output = output + player1.toString + "\n" + player2.toString
     output = output + this.status.getMessage
@@ -193,4 +184,3 @@ case class Board(board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
     neighbors.foreach(f => newPoints += combinations(f))
     newPoints
   }
-
