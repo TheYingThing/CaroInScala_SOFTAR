@@ -42,9 +42,8 @@ case class Rules(board: Board) extends RulesInterface(board:Board):
   def diagonal(row: Int, col: Int, color: String): Boolean = {
     val diag1 = getDiagonals(row, col).head.sliding(3).toList
     val diag2 = getDiagonals(row, col)(1).sliding(3).toList
-    val d1 = diag1.exists(l => l.forall(c => c.getColor == color)) //true when theres a sequence of 3 same colors
-    val d2 = diag2.exists(l => l.forall(c => c.getColor == color))
-    !(d1 || d2)
+    !(diag1.exists(l => l.forall(c => c.getColor == color)) || diag2.exists(l => l.forall(c => c.getColor == color))) //true when theres a sequence of 3 same colors
+
   }
 
   //returns true if theres less than two of the same color
