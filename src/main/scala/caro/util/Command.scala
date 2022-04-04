@@ -6,7 +6,7 @@ package caro.util
  * @author Ying-Ling Dang
  */
 
-trait Command {
+trait Command :
 
   /**
    * methode to define step to be done
@@ -22,4 +22,5 @@ trait Command {
    * methode to define step to be redone
    */
   def redoStep():Unit
-}
+
+end Command

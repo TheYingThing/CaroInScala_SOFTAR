@@ -1,11 +1,11 @@
 package caro.model
 
+import caro.model.gridComponent.boardFullImpl.*
 import caro.model.gridComponent.boardFullImpl.GameStatus.IDLE
-import org.scalatest.matchers._
-import org.scalatest.wordspec._
-import caro.model.gridComponent.boardFullImpl._
+import org.scalatest.matchers.*
+import org.scalatest.wordspec.*
 
-class BoardSpec extends AnyWordSpec with should.Matchers {
+class BoardSpec extends AnyWordSpec with should.Matchers :
 
   "A Board is a two-dimensional Vector that contains Cells as the playingfield. A Board" when {
 
@@ -145,5 +145,5 @@ class BoardSpec extends AnyWordSpec with should.Matchers {
       }
     }
   }
-}
+end BoardSpec
 

@@ -1,9 +1,9 @@
 package caro.util
 
-import org.scalatest.matchers._
-import org.scalatest.wordspec._
+import org.scalatest.matchers.*
+import org.scalatest.wordspec.*
 
-class UndoManagerSpec extends AnyWordSpec with should.Matchers {
+class UndoManagerSpec extends AnyWordSpec with should.Matchers :
 
   "An UndoManager" should {
     val undoManager = new UndoManager
@@ -34,4 +34,4 @@ class UndoManagerSpec extends AnyWordSpec with should.Matchers {
       command.state should be(1)
     }
   }
-}
+end UndoManagerSpec
