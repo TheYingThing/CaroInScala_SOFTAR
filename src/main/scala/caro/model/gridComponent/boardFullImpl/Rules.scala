@@ -60,11 +60,7 @@ case class Rules(board: Board) extends RulesInterface(board:Board):
 
   //return true when tile can be laid
   def maxField(row: Int, col: Int): Boolean = {
-    if board.getHeight == maxSize && board.rowEmpty(row) then
-      return false
-    end if
-
-    if board.getWidth == maxSize && board.colEmpty(col) then
+    if (board.getHeight == maxSize && board.rowEmpty(row)) || (board.getWidth == maxSize && board.colEmpty(col)) then
       return false
     true
   }
