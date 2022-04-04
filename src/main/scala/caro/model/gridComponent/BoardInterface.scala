@@ -179,7 +179,7 @@ trait BoardInterface(board: Vector[Vector[Cell]],
    * @param status   GameStatus
    * @return returns BoardInterface with replaced Cell
    */
-  def replace(strategy: CellReplacementStrategy, row: Int, col: Int, color: String, status: GameStatus): BoardInterface
+  def replace(strategy: CellReplacementStrategy, status: GameStatus)(row: Int, col: Int, color: String): BoardInterface
 
   /**
    * Replaces Cell at specified row and column with a new Cell of the specified color.
