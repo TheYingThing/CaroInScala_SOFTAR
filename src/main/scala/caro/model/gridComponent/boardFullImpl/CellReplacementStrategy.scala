@@ -3,7 +3,7 @@ package caro.model.gridComponent.boardFullImpl
 import caro.model.gridComponent.boardFullImpl.GameStatus.*
 
 /**
- * CellReplacementStrategy declares methodes to be called when trying to replace a Cell on the current Board.
+ * CellReplacementStrategy declares methods to be called when trying to replace a Cell on the current Board.
  * The methods are implemented by case classes LegalMove and IllegalMove.
  *
  * @author Ying-Ling Dang

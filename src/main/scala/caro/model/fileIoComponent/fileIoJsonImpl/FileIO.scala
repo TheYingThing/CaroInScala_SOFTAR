@@ -52,9 +52,8 @@ class FileIO extends FileIOInterface :
     do
       val row = (json \\ "row") (i).as[Int]
       val col = (json \\ "col") (i).as[Int]
-      val cell = (json \\ "cell") (i)
-      val color = (cell \ "color").get.as[String]
-      board = board.setCell(row, col, color)
+      val color = (json \\ "color") (i).as[String]
+      board = board.updateCell(row, col, color)
 
     board
   }
@@ -82,13 +81,6 @@ class FileIO extends FileIOInterface :
     pw.close
   }
 
-  implicit val cellWrites: Writes[CellInterface] = new Writes[CellInterface] {
-    def writes(cell: CellInterface) = Json.obj(
-      "color" -> cell.getColor,
-      "isOccupied" -> cell.isOccupied
-    )
-  }
-
   def boardToJson(board: BoardInterface): JsObject = {
     Json.obj(
       "board" -> Json.obj(
@@ -100,7 +92,8 @@ class FileIO extends FileIOInterface :
             Json.obj(
               "row" -> row,
               "col" -> col,
-              "cell" -> Json.toJson(board.getCell(row, col))
+              "color" -> board.getCell(row, col).getColor,
+              "isOccupied" -> board.getCell(row, col).isOccupied
             )
         ),
         "player1" -> playerToJson(board.getPlayerOne),

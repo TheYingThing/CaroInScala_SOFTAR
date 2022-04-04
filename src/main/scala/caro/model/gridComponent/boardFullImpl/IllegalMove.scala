@@ -6,12 +6,8 @@ import caro.model.gridComponent.boardFullImpl.GameStatus
 class IllegalMove extends CellReplacementStrategy :
 
   override def replacePlayer(row:Int, col:Int, color:String, thisboard:Board, status:GameStatus): Board = {
-    var round: Round = new EvenRound
-    if thisboard.moves % 2 == 0 then 
-      round.handle(thisboard, color,status)
-    else
-      round = new OddRound
-      round.handle(thisboard, color,status)
+    val round: Round = if (thisboard.moves % 2 == 0) EvenRound() else OddRound()
+    round.handle(thisboard, color, status)
   }
   override def newCell(row:Int, col:Int, color:String, thisboard:Board, status:GameStatus): Board = {
     thisboard.copy(status = status)

@@ -1,23 +1,31 @@
 package caro.model.gridComponent
 
-import caro.model.gridComponent.boardFullImpl.{Board, CellReplacementStrategy, GameStatus, Player}
+import caro.model.gridComponent.boardFullImpl.*
 
 import scala.collection.immutable.ListMap
 
 /**
  * BoardInterface declares methods to be implemented in the Board case classes
  * Current implementations are :
- * @see caro.model.gridComponent.boardFullImpl.Board
  *
+ * @see caro.model.gridComponent.boardFullImpl.Board
  * @author Ying-Ling Dang
  *         Rebecca Braun
  */
-trait BoardInterface {
+trait BoardInterface(board: Vector[Vector[Cell]],
+                     width: Int,
+                     height: Int,
+                     moves: Int,
+                     lastColor: String,
+                     status: GameStatus,
+                     player1: Player, 
+                     player2: Player) {
 
   //-----------------------------GETTERS---------------------------------------------------------
 
   /**
    * getter for the status-message
+   *
    * @return message of current status as String
    */
   def getStatusMessage: String
@@ -42,11 +50,13 @@ trait BoardInterface {
 
   /**
    * returns the Cell at the specified row and column
+   *
    * @param row row-number as Int
    * @param col column-number as Int
    * @return Cell
    */
-  def getCell(row: Int, col:Int): CellInterface
+
+  def getCell(row: Int, col: Int): CellInterface
 
   /**
    * returns the cumulative width of all currently placed tiles
@@ -78,33 +88,45 @@ trait BoardInterface {
    */
   def getMoves: Int
 
+  def playerOneName: String
 
+  def playerTwoName: String
+
+  def playerOneAsString: String
+
+  def playerTwoAsString: String
   //-------------------------------SETTERS-----------------------------------------------
 
   /**
    * creates new blank board with player as new player1. Player2 remains unchanged.
+   *
    * @param player Player to be set as player1
    * @return blank board with new player1
    */
-  def setPlayerOne(player: Player): Board
+  def updatePlayerOne(player: Player): BoardInterface
 
   /**
    * creates new blank board with player as new player2. Player1 remains unchanged.
+   *
    * @param player Player to be set as player2
    * @return blank board with new player2
    */
-  def setPlayerTwo(player: Player): Board
+  def updatePlayerTwo(player: Player): BoardInterface
+
+  def updateCell(row: Int, col: Int, color: String): BoardInterface
 
   //--------------------------------CHECKS-------------------------------------------
 
   /**
    * checks if board contains any filled Cells
+   *
    * @return true if empty
    */
   def isEmpty: Boolean
 
   /**
    * checks if specified row contains any filled Cells
+   *
    * @param row row-number as Int
    * @return true if empty
    */
@@ -112,6 +134,7 @@ trait BoardInterface {
 
   /**
    * checks if specified column contains any filled Cells
+   *
    * @param col column-number as Int
    * @return true if empty
    */
@@ -122,9 +145,9 @@ trait BoardInterface {
    * Creates new Player with updated Player-stats after a move. Returns GameStatus according
    * to type of move that was initiated.
    *
-   * @param row row-number of placed Cell as int
-   * @param col col-number of placed Cell as int
-   * @param color color of placed Cell as String
+   * @param row    row-number of placed Cell as int
+   * @param col    col-number of placed Cell as int
+   * @param color  color of placed Cell as String
    * @param player player who executed the move as Player
    * @return tuple of updated player as PlayerInterface and respective GameStatus
    */
@@ -132,6 +155,7 @@ trait BoardInterface {
 
   /**
    * Updates the width of all currently filled Cells after a move.
+   *
    * @param col column-number of placed Cell as int
    * @return new field-width as int
    */
@@ -139,6 +163,7 @@ trait BoardInterface {
 
   /**
    * Updates the height of all currently filled Cells after a move.
+   *
    * @param row row-number of placed Cell as int
    * @return new field-height as int
    */
@@ -148,20 +173,20 @@ trait BoardInterface {
    * Helper method. Executes placement of a cell according to given strategy.
    *
    * @param strategy CellReplacementStrategy that is to execute
-   * @param row row-number as int
-   * @param col column-number as int
-   * @param color color to fill Cell with as String
-   * @param status GameStatus
+   * @param row      row-number as int
+   * @param col      column-number as int
+   * @param color    color to fill Cell with as String
+   * @param status   GameStatus
    * @return returns BoardInterface with replaced Cell
    */
-  def replace(strategy: CellReplacementStrategy, row: Int, col: Int, color: String, status: GameStatus): BoardInterface
+  def replace(strategy: CellReplacementStrategy, status: GameStatus)(row: Int, col: Int, color: String): BoardInterface
 
   /**
    * Replaces Cell at specified row and column with a new Cell of the specified color.
    * Determines a replacement strategy to execute nand calls replace().
    *
-   * @param row row-number as int
-   * @param col column-number as int
+   * @param row   row-number as int
+   * @param col   column-number as int
    * @param color color as String
    * @return returns BoardInterface with replaced Cell
    */
@@ -171,64 +196,11 @@ trait BoardInterface {
    * Checks if the placement of a Cell of specified color into specified row and column is allowed.
    * Calls all implemented game-rules.
    *
-   * @param row row-number as int
-   * @param col column-number as int
+   * @param row   row-number as int
+   * @param col   column-number as int
    * @param color color as String
    * @return returns true if all rules have been honored and Cell may be placed, else false
    */
   def allRules(row: Int, col: Int, color: String): Boolean
 
-}
-
-/**
- * PlayerInterface declares methods to be implemented in the Player case classes
- * Current implementations are :
- * @see caro.model.gridComponent.boardFullImpl.Player
- *
- * @author Ying-Ling Dang
- *         Rebecca Braun
- */
-trait PlayerInterface {
-
-  /**
-   * Getter for the player's points.
-   * @return points as Int
-   */
-  def getPoints: Int
-
-  /**
-   * Getter for the remaining amount of tiles for each color that can still be placed
-   * @return tiles as ListMap[String, Int]
-   */
-  def getTiles: ListMap[String, Int]
-
-  /**
-   * Getter for the player name
-   * @return name as String
-   */
-  def getName: String
-
-}
-
-/**
- * CellInterface declares methods to be implemented in the Cell case classes
- * Current implementations are :
- * @see caro.model.gridComponent.boardFullImpl.Cell
- *
- * @author Ying-Ling Dang
- *         Rebecca Braun
- */
-trait CellInterface {
-
-  /**
-   * Checks if color of Cell has been set.
-   * @return true if color has been set, false if color is None
-   */
-  def isOccupied: Boolean
-
-  /**
-   * Getter for color of Cell
-   * @return color as String
-   */
-  def getColor: String
 }

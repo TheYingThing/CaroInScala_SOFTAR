@@ -29,8 +29,8 @@ class BoardSpec extends AnyWordSpec with should.Matchers :
       }
       "set a cell when loading an old game" in {
         var loadBoard = Board()
-        loadBoard = loadBoard.setCell(8, 8, "black")
-        loadBoard = loadBoard.setCell(9,9, "none")
+        loadBoard = loadBoard.updateCell(8, 8, "black")
+        loadBoard = loadBoard.updateCell(9,9, "none")
         loadBoard.getCell(8, 8) should be (Cell(Some("black")))
         loadBoard.getCell(9,9) should be(Cell(None))
       }
@@ -134,59 +134,7 @@ class BoardSpec extends AnyWordSpec with should.Matchers :
 
       println("full board")
       println(board.toString)
-      "return a List with two lists containing all diagonal cells without the source cell" in {
-        board.getDiagonals(7, 8).head.map(c => c.getColor) should be (List("none", "red", "red",
-          "none", "grey", "none"))
-        board.getDiagonals(7, 8).last.map(c => c.getColor) should be (List("none", "none", "none",
-          "black", "none", "none"))
-      }
-      "return a List containing all the neighbouring cells" in {
-        board.getNeighbors(6, 8).map(c => c.getColor) should be (List("black", "red", "none", "red"))
-      }
-      "return false if two neighbouring cells have the same color" in {
-        board.sameColor(8, 8, "red") should be(false)
-      }
-      "return true if they have a different color" in {
-        board.sameColor(7, 7, "grey") should be(true)
-      }
-      "return false if a cell is not touching another cell" in {
-        board.onEdge(6, 4) should be(false)
-      }
-      "return true if it is touching another cell" in {
-        board.onEdge(5, 5) should be(true)
-      }
-      "check the amount of cells of the same color touching diagonally" in {
-        board.diagonal(8, 9, "red") should be(false)
-      }
-      "return true if it is not" in {
-        board.diagonal(6,8, "white") should be (true)
-      }
-      "return false if more than 1 cells with the same color are neighbours to the same cell " in {
-        board.maxColor(5, 8, "red") should be(false)
-      }
-      "return true if there are less" in {
-        board.maxColor(6, 11, "grey") should be(true)
-      }
-      "return false if two cells of the same color share a neighbour" in {
-        board.twoColor(6,8, "red") should be (false)
-      }
-      "return true if there is only one cell of that color" in {
-        board.twoColor(6,5, "grey") should be (true)
-      }
-      "return false if the max size of the field is already reached in this column" in {
-        board.maxField(7,11) should be (false)
-      }
-      "return false if the max size of the field is already reached in this row" in {
-        board = board.replaceCell(10, 9, "grey")
-        board.maxField(11, 9) should be (false)
-      }
-      "return true if not" in {
-        var miniBoard = Board()
-        miniBoard = miniBoard.replaceCell(4, 4, "red")
-        miniBoard = miniBoard.replaceCell(4, 5, "black")
 
-        miniBoard.maxField(4, 5) should be(true)
-      }
       "check all rules at once" in {
         board.allRules(6,7, "red") should be (false)
       }

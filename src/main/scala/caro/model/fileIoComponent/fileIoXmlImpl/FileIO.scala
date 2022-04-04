@@ -44,7 +44,7 @@ class FileIO extends FileIOInterface :
       val row: Int = (cell \ "@row").text.trim.toInt
       val col: Int = (cell \ "@col").text.trim.toInt
       val color: String = (cell \ "color").text.trim
-      board = board.setCell(row, col, color)
+      board = board.updateCell(row, col, color)
 
     board
   }
