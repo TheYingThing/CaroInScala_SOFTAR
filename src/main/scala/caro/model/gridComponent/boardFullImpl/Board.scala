@@ -62,7 +62,7 @@ case class Board(override val board: Vector[Vector[Cell]] = Vector.fill(19, 19)(
         if value == 0 then
           return (player, GameStatus.NOCOLORSLEFT)
 
-        val ntiles = player.getTiles.updated(color, value - 1)
+        val ntiles = player.tiles.updated(color, value - 1)
         var npoints = 0
         if this.isEmpty then
           npoints = player.points + 10

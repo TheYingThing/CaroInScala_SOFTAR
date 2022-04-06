@@ -39,14 +39,14 @@ class ScalaTuiSpec extends AnyWordSpec with should.Matchers :
 
     "set a name for player1 on input 'player1 Sam'" in {
       tui.processInputLine("player1 Sam")
-      cont.board.player1.getName should be("Sam")
-      cont.board.player2.getName should be("player2")
+      cont.board.player1.name should be("Sam")
+      cont.board.player2.name should be("player2")
     }
 
     "set a name for player2 on input 'player2 Mike'" in {
       tui.processInputLine("player2 Mike")
-      cont.board.player2.getName should be("Mike")
-      cont.board.player1.getName should be("Sam")
+      cont.board.player2.name should be("Mike")
+      cont.board.player1.name should be("Sam")
     }
 
     "undo the most recent move on input 'undo'" in {

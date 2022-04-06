@@ -109,23 +109,23 @@ class FileIO extends FileIOInterface :
   def playerToXml(player: PlayerInterface): Elem = {
     <player>
       <name>
-        {player.getName}
+        {player.name}
       </name>
       <points>
-        {player.getPoints.toString}
+        {player.points.toString}
       </points>
       <tiles>
         <red>
-          {player.getTiles("red").toString}
+          {player.tiles("red").toString}
         </red>
         <black>
-          {player.getTiles("black").toString}
+          {player.tiles("black").toString}
         </black>
         <grey>
-          {player.getTiles("grey").toString}
+          {player.tiles("grey").toString}
         </grey>
         <white>
-          {player.getTiles("white").toString}
+          {player.tiles("white").toString}
         </white>
       </tiles>
     </player>

@@ -15,7 +15,7 @@ class ControllerSpec extends AnyWordSpec with should.Matchers :
 
     "create a new Board empty with given names" in {
       cont.newBoard("bla", "blub")
-      cont.board.player1.getName should be("bla")
+      cont.board.player1.name should be("bla")
       cont.board.isEmpty should be(true)
     }
 

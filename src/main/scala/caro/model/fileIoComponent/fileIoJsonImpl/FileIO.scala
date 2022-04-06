@@ -102,23 +102,18 @@ class FileIO extends FileIOInterface :
         "lastColor" -> board.lastColor,
         "height" -> board.height,
         "width" -> board.width,
-        "status" -> board.getStatusAsString
-      )
-    )
+        "status" -> board.getStatusAsString))
   }
 
   def playerToJson(player: PlayerInterface): JsObject = {
     Json.obj(
       "player" -> Json.obj(
-        "points" -> player.getPoints,
-        "name" -> player.getName,
+        "points" -> player.points,
+        "name" -> player.name,
         "tiles" -> Json.obj(
-          "red" -> player.getTiles.get("red"),
-          "black" -> player.getTiles.get("black"),
-          "grey" -> player.getTiles.get("grey"),
-          "white" -> player.getTiles.get("white")
-        )
-      )
-    )
+          "red" -> player.tiles.get("red"),
+          "black" -> player.tiles.get("black"),
+          "grey" -> player.tiles.get("grey"),
+          "white" -> player.tiles.get("white"))))
   }
 end FileIO
