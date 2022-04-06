@@ -101,6 +101,15 @@ trait BoardInterface(val board: Vector[Vector[Cell]],
   def updatePlayer(row: Int, col: Int, color: String, player: Player): (PlayerInterface, GameStatus)
 
   /**
+   * Updates the dimensions of the played field
+   * @param int     row or column number as int
+   * @param current current dimensions of the field as int
+   * @param empty   function that checks if row or column is empty
+   * @return int of new field dimension
+   */
+  def updateField(int: Int, current: Int, empty: Int => Boolean): Int
+
+  /**
    * Updates the width of all currently filled Cells after a move.
    *
    * @param col column-number of placed Cell as int

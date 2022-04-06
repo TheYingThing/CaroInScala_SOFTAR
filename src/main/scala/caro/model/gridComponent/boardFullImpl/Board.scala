@@ -28,23 +28,12 @@ case class Board(override val board: Vector[Vector[Cell]] = Vector.fill(19, 19)(
     Player("player2")) :
 
   val maxSize: Int = 6
-
   val rules: Rules = Rules(this)
-
-  override def getStatusMessage: String = this.status.getMessage
-
+  def getStatusMessage: String = this.status.getMessage
   def getStatusAsString: String = status.getString(this.status)
-
   def getCell(row: Int, col: Int): Cell = board(row)(col)
-
-  def updatePlayerOne(player: Player): Board = {
-    copy(player1 = player)
-  }
-
-  def updatePlayerTwo(player: Player): Board = {
-    copy(player2 = player)
-  }
-
+  def updatePlayerOne(player: Player): Board = copy(player1 = player)
+  def updatePlayerTwo(player: Player): Board = copy(player2 = player)
   def updateCell(row: Int, col: Int, color: String): Board = {
     val newcell: Cell = if (color.equals("none")) Cell(None) else Cell(Some(color))
     copy(board.updated(row, board(row).updated(col, newcell)))
