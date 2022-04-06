@@ -10,24 +10,8 @@ import scala.collection.immutable.ListMap
  * @author Ying-Ling Dang
  *         Rebecca Braun
  */
-trait PlayerInterface {
+trait PlayerInterface(val name: String,
+                      val tiles: ListMap[String, Int],
+                      val points: Int) :
 
-  /**
-   * Getter for the player's points.
-   * @return points as Int
-   */
-  def getPoints: Int
-
-  /**
-   * Getter for the remaining amount of tiles for each color that can still be placed
-   * @return tiles as ListMap[String, Int]
-   */
-  def getTiles: ListMap[String, Int]
-
-  /**
-   * Getter for the player name
-   * @return name as String
-   */
-  def getName: String
-
-}
+end PlayerInterface
