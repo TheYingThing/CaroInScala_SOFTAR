@@ -12,41 +12,27 @@ import scala.collection.immutable.ListMap
  * @author Ying-Ling Dang
  *         Rebecca Braun
  */
-trait BoardInterface(board: Vector[Vector[Cell]],
-                     width: Int,
-                     height: Int,
-                     moves: Int,
-                     lastColor: String,
-                     status: GameStatus,
-                     player1: Player, 
-                     player2: Player) {
-
-  //-----------------------------GETTERS---------------------------------------------------------
-
+trait BoardInterface(val board: Vector[Vector[Cell]],
+                     val width: Int,
+                     val height: Int,
+                     val moves: Int,
+                     val lastColor: String,
+                     val status: GameStatus,
+                     val player1: Player,
+                     val player2: Player) {
+  
   /**
    * getter for the status-message
    *
    * @return message of current status as String
    */
   def getStatusMessage: String
-
-  /**
-   * getter for the status
-   * @return current status as Gamestatus
-   */
-  def getStatus: GameStatus
-
+  
   /**
    * getter for the status as String
    * @return current status as String
    */
   def getStatusAsString: String
-
-  /**
-   * getter for color of last incorrectly-placed tile
-   * @return lastColor as String
-   */
-  def getLastColor: String
 
   /**
    * returns the Cell at the specified row and column
@@ -57,45 +43,6 @@ trait BoardInterface(board: Vector[Vector[Cell]],
    */
 
   def getCell(row: Int, col: Int): CellInterface
-
-  /**
-   * returns the cumulative width of all currently placed tiles
-   * @return width as Int
-   */
-  def getWidth: Int
-
-  /**
-   * returns the cumulative height of all currently placed tiles
-   * @return height as Int
-   */
-  def getHeight: Int
-
-  /**
-   * getter for player1
-   * @return player1 as PlayerInterface
-   */
-  def getPlayerOne: PlayerInterface
-
-  /**
-   * getter for player2
-   * @return player2 as PlayerInterface
-   */
-  def getPlayerTwo: PlayerInterface
-
-  /**
-   * getter for number of moves that have been made during current ongoing game
-   * @return moves as Int
-   */
-  def getMoves: Int
-
-  def playerOneName: String
-
-  def playerTwoName: String
-
-  def playerOneAsString: String
-
-  def playerTwoAsString: String
-  //-------------------------------SETTERS-----------------------------------------------
 
   /**
    * creates new blank board with player as new player1. Player2 remains unchanged.

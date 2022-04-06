@@ -96,12 +96,12 @@ class FileIO extends FileIOInterface :
               "isOccupied" -> board.getCell(row, col).isOccupied
             )
         ),
-        "player1" -> playerToJson(board.getPlayerOne),
-        "player2" -> playerToJson(board.getPlayerTwo),
-        "moves" -> board.getMoves,
-        "lastColor" -> board.getLastColor,
-        "height" -> board.getHeight,
-        "width" -> board.getWidth,
+        "player1" -> playerToJson(board.player1),
+        "player2" -> playerToJson(board.player2),
+        "moves" -> board.moves,
+        "lastColor" -> board.lastColor,
+        "height" -> board.height,
+        "width" -> board.width,
         "status" -> board.getStatusAsString
       )
     )

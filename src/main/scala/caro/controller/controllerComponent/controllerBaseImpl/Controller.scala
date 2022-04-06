@@ -31,9 +31,9 @@ class Controller @Inject()(var board: BoardInterface) extends ControllerInterfac
     notifyObservers()
   }
 
-  def getPlayerOneName: String = board.playerOneName
+  def getPlayerOneName: String = board.player1.name
 
-  def getPlayerTwoName: String = board.playerTwoName
+  def getPlayerTwoName: String = board.player2.name
 
   def undo(): Unit = {
     undoManager.undoStep()
@@ -45,14 +45,14 @@ class Controller @Inject()(var board: BoardInterface) extends ControllerInterfac
     notifyObservers()
   }
 
-  override def playerOneToString: String = board.playerOneAsString
-  override def playerTwoToString: String = board.playerTwoAsString
+  override def playerOneToString: String = board.player1.toString
+  override def playerTwoToString: String = board.player2.toString
 
   override def getBoardStatus: String = board.getStatusMessage
 
   override def getCellColor(row: Int, col: Int): String = board.getCell(row, col).getColor
 
-  override def getMoves: Int = board.getMoves
+  override def getMoves: Int = board.moves
 
   def save(): Unit = {
     fileIo.save(board)

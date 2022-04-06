@@ -9,14 +9,14 @@ import scala.collection.immutable.ListMap
 import scala.collection.mutable.ListBuffer
 import scala.util.{Failure, Success, Try}
 
-case class Board(board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
-                 width: Int = 0,
-                 height: Int = 0,
-                 moves: Int = 0,
-                 lastColor: String = "",
-                 status: GameStatus = GameStatus.IDLE,
-                 player1: Player = Player("player1"),
-                 player2: Player = Player("player2"))
+case class Board(override val board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
+                 override val width: Int = 0,
+                 override val height: Int = 0,
+                 override val moves: Int = 0,
+                 override val lastColor: String = "",
+                 override val status: GameStatus = GameStatus.IDLE,
+                 override val player1: Player = Player("player1"),
+                 override val player2: Player = Player("player2"))
   extends BoardInterface(
     Vector.fill(19, 19)(Cell(None)),
     0,
@@ -30,39 +30,12 @@ case class Board(board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
   val maxSize: Int = 6
 
   val rules: Rules = Rules(this)
-
-  //---------------------GETTERS------------------------
-  def getStatus: GameStatus = status
-
+  
   override def getStatusMessage: String = this.status.getMessage
 
   def getStatusAsString: String = status.getString(this.status)
 
-  def getLastColor: String = this.lastColor
-
-  def getCellColor(row: Int, col: Int): String = board(row)(col).getColor
-
   def getCell(row: Int, col: Int): Cell = board(row)(col)
-
-  def getWidth: Int = this.width
-
-  def getHeight: Int = this.height
-
-  def getPlayerOne: Player = player1
-
-  def getPlayerTwo: Player = player2
-
-  def getMoves: Int = moves
-
-  def playerOneName: String = player1.name
-
-  def playerTwoName: String = player2.name
-
-  def playerOneAsString: String = player1.toString
-
-  def playerTwoAsString: String = player2.toString
-
-  //--------------------SETTERS--------------------
 
   def updatePlayerOne(player: Player): Board = {
     copy(player1 = player)
