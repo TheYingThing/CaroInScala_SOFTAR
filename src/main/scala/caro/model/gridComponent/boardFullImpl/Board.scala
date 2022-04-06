@@ -64,14 +64,13 @@ case class Board(board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
 
   //--------------------SETTERS--------------------
 
-  def updatePlayerOne(player: Player): Board = {
-    copy(player1 = player)
-  }
-
-  def updatePlayerTwo(player: Player): Board = {
-    copy(player2 = player)
-  }
-
+  /**
+   * 
+   * @param player Player to be set as player1
+   *  @return blank board with new player1
+   */
+  def updatePlayerOne(player: Player): Board = copy(player1 = player)
+  def updatePlayerTwo(player: Player): Board = copy(player2 = player)
   def updateCell(row: Int, col: Int, color: String): Board = {
     val newcell: Cell = if (color.equals("none")) Cell(None) else Cell(Some(color))
     copy(board.updated(row, board(row).updated(col, newcell)))
@@ -79,14 +78,8 @@ case class Board(board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
 
   //-----------------CHECKS--------------------
 
-  def isEmpty: Boolean = {
-    !(board exists (v => v exists (c => c.isOccupied)))
-  }
-
-  def rowEmpty(row: Int): Boolean = {
-    !(board(row) exists (c => c.isOccupied))
-  }
-
+  def isEmpty: Boolean = !(board exists (v => v exists (c => c.isOccupied)))
+  def rowEmpty(row: Int): Boolean = !(board(row) exists (c => c.isOccupied))
   def colEmpty(col: Int): Boolean = {
     var occ = true
     (3 to 15).toList.foreach(x => {
@@ -98,10 +91,7 @@ case class Board(board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
 
   //----------------------BOARDFUNCTIONS------------------------------------------------------------------------------
 
-  def validColor(color: String, player: Player): Try[Int] = {
-    Try(player.getTiles(color))
-  }
-
+  def validColor(color: String, player: Player): Try[Int] = Try(player.getTiles(color))
   def updatePlayer(row: Int, col: Int, color: String, player: Player): (Player, GameStatus) = {
     val oldValue: Try[Int] = validColor(color, player)
     oldValue match {
@@ -130,14 +120,8 @@ case class Board(board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
     newValue
   }
 
-  def updatedWidth(col: Int): Int = {
-    updateField(col, this.width, colEmpty)
-  }
-
-  def updatedHeight(row: Int): Int = {
-    updateField(row, this.height, rowEmpty)
-  }
-
+  def updatedWidth(col: Int): Int = updateField(col, this.width, colEmpty)
+  def updatedHeight(row: Int): Int = updateField(row, this.height, rowEmpty)
   def replace(strategy: CellReplacementStrategy, status: GameStatus)(row: Int, col: Int, color: String): Board = {
     strategy.newBoard(row, col, color, this, status)
   }
@@ -163,16 +147,13 @@ case class Board(board: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None)),
 
     val player = if (moves % 2 == 0) player1.name else player2.name
     output = output + "\n" + player + " it's your turn!\n"
-
     output = output + player1.toString + "\n" + player2.toString
     output = output + this.status.getMessage
     output
   }
 
   //----------------------------RULES----------------------------------------------------------------------------------
-  def allRules(row: Int, col: Int, color: String): Boolean = {
-    rules.allRules(row, col, color)
-  }
+  def allRules(row: Int, col: Int, color: String): Boolean = rules.allRules(row, col, color)
 
   //-----------------------POINTS----------------------------------------------------------------------------
   def newPoints(row: Int, col: Int, color: String): Int = {

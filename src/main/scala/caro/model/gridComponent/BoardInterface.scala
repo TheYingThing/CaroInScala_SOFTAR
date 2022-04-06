@@ -18,11 +18,10 @@ trait BoardInterface(board: Vector[Vector[Cell]],
                      moves: Int,
                      lastColor: String,
                      status: GameStatus,
-                     player1: Player, 
+                     player1: Player,
                      player2: Player) {
 
   //-----------------------------GETTERS---------------------------------------------------------
-
   /**
    * getter for the status-message
    *

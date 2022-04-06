@@ -31,14 +31,8 @@ case class Rules(board: Board) extends RulesInterface(board:Board):
     top :: bottom :: Nil
   }
 
-  def sameColor(row: Int, col: Int, color: String): Boolean = {
-    getNeighbors(row, col).forall(n => n.getColor != color)
-  }
-
-  def onEdge(row: Int, col: Int): Boolean = {
-    getNeighbors(row, col).exists(n => n.isOccupied)
-  }
-
+  def sameColor(row: Int, col: Int, color: String): Boolean = getNeighbors(row, col).forall(n => n.getColor != color)
+  def onEdge(row: Int, col: Int): Boolean = getNeighbors(row, col).exists(n => n.isOccupied)
   def diagonal(row: Int, col: Int, color: String): Boolean = {
     val diag1 = getDiagonals(row, col).head.sliding(3).toList
     val diag2 = getDiagonals(row, col)(1).sliding(3).toList
@@ -59,7 +53,7 @@ case class Rules(board: Board) extends RulesInterface(board:Board):
 
   //return true when tile can be laid
   def maxField(row: Int, col: Int): Boolean = {
-    if (board.getHeight == maxSize && board.rowEmpty(row)) || (board.getWidth == maxSize && board.colEmpty(col)) then
+    if (board.height == maxSize && board.rowEmpty(row)) || (board.width == maxSize && board.colEmpty(col)) then
       return false
     true
   }
