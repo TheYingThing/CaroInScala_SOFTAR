@@ -1,13 +1,13 @@
 package caro.controller.controllerComponent.controllerBaseImpl
 
 
-import caro.model.gridComponent.boardFullImpl._
-import org.scalatest.matchers._
-import org.scalatest.wordspec._
+import caro.model.gridComponent.boardFullImpl.*
+import org.scalatest.matchers.*
+import org.scalatest.wordspec.*
 
 import scala.io.Source
 
-class ControllerSpec extends AnyWordSpec with should.Matchers {
+class ControllerSpec extends AnyWordSpec with should.Matchers :
 
   "A Controller" should {
     val board = Board()
@@ -15,7 +15,7 @@ class ControllerSpec extends AnyWordSpec with should.Matchers {
 
     "create a new Board empty with given names" in {
       cont.newBoard("bla", "blub")
-      cont.board.getPlayerOne.getName should be("bla")
+      cont.board.player1.getName should be("bla")
       cont.board.isEmpty should be(true)
     }
 
@@ -128,4 +128,5 @@ class ControllerSpec extends AnyWordSpec with should.Matchers {
       cont3.board.getCell(9, 9).getColor.trim should be("red")
     }
   }
-}
+end ControllerSpec
+

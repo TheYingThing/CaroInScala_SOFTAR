@@ -2,10 +2,10 @@ package caro.aview
 
 import caro.controller.controllerComponent.controllerBaseImpl.Controller
 import caro.model.gridComponent.boardFullImpl.Board
-import org.scalatest.matchers._
-import org.scalatest.wordspec._
+import org.scalatest.matchers.*
+import org.scalatest.wordspec.*
 
-class ScalaTuiSpec extends AnyWordSpec with should.Matchers {
+class ScalaTuiSpec extends AnyWordSpec with should.Matchers :
 
   "A Caro Tui" should {
     val board = Board()
@@ -39,14 +39,14 @@ class ScalaTuiSpec extends AnyWordSpec with should.Matchers {
 
     "set a name for player1 on input 'player1 Sam'" in {
       tui.processInputLine("player1 Sam")
-      cont.board.getPlayerOne.getName should be("Sam")
-      cont.board.getPlayerTwo.getName should be("player2")
+      cont.board.player1.getName should be("Sam")
+      cont.board.player2.getName should be("player2")
     }
 
     "set a name for player2 on input 'player2 Mike'" in {
       tui.processInputLine("player2 Mike")
-      cont.board.getPlayerTwo.getName should be("Mike")
-      cont.board.getPlayerOne.getName should be("Sam")
+      cont.board.player2.getName should be("Mike")
+      cont.board.player1.getName should be("Sam")
     }
 
     "undo the most recent move on input 'undo'" in {
@@ -81,4 +81,4 @@ class ScalaTuiSpec extends AnyWordSpec with should.Matchers {
       cont.board.getCell(9, 10).getColor.trim should be("black")
     }
   }
-}
+end ScalaTuiSpec

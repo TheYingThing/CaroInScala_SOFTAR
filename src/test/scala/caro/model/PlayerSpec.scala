@@ -1,12 +1,12 @@
 package caro.model
 
 import caro.model.gridComponent.boardFullImpl.Player
-import org.scalatest.matchers._
-import org.scalatest.wordspec._
+import org.scalatest.matchers.*
+import org.scalatest.wordspec.*
 
 import scala.collection.immutable.ListMap
 
-class PlayerSpec extends AnyWordSpec with should.Matchers {
+class PlayerSpec extends AnyWordSpec with should.Matchers :
 
   "A Player" when {
     "new" should {
@@ -29,4 +29,4 @@ class PlayerSpec extends AnyWordSpec with should.Matchers {
       }
     }
   }
-}
+end PlayerSpec

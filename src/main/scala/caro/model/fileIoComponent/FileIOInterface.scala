@@ -8,7 +8,7 @@ import caro.model.gridComponent.BoardInterface
  *         Rebecca Braun
  */
 
-trait FileIOInterface {
+trait FileIOInterface :
 
   /**
    * loads a board from a saved IO File
@@ -22,4 +22,5 @@ trait FileIOInterface {
    * @param board BoardInterface
    */
   def save(board: BoardInterface): Unit
-}
+
+end FileIOInterface

@@ -1,16 +1,16 @@
 package caro.aview.gui
 
 
+import caro.controller.controllerComponent.*
 import caro.util.Observer
-import caro.controller.controllerComponent._
 
 import java.awt.Color
 import java.awt.image.BufferedImage
 import java.io.File
 import javax.imageio.ImageIO
 import javax.swing.{BorderFactory, ImageIcon}
-import scala.swing.BorderPanel.Position._
-import scala.swing._
+import scala.swing.*
+import scala.swing.BorderPanel.Position.*
 import scala.swing.event.ButtonClicked
 
 

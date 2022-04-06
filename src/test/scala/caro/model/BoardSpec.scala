@@ -1,11 +1,11 @@
 package caro.model
 
+import caro.model.gridComponent.boardFullImpl.*
 import caro.model.gridComponent.boardFullImpl.GameStatus.IDLE
-import org.scalatest.matchers._
-import org.scalatest.wordspec._
-import caro.model.gridComponent.boardFullImpl._
+import org.scalatest.matchers.*
+import org.scalatest.wordspec.*
 
-class BoardSpec extends AnyWordSpec with should.Matchers {
+class BoardSpec extends AnyWordSpec with should.Matchers :
 
   "A Board is a two-dimensional Vector that contains Cells as the playingfield. A Board" when {
 
@@ -58,14 +58,14 @@ class BoardSpec extends AnyWordSpec with should.Matchers {
         testBoard.getCell(9,9).getColor should be ("red")
       }
       "have width and height set" in {
-        testBoard.getHeight should be(3)
-        testBoard.getWidth should be(2)
+        testBoard.height should be(3)
+        testBoard.width should be(2)
       }
       "return the current Game Status" in {
-        testBoard.getStatus should be(GameStatus.IDLE)
+        testBoard.status should be(GameStatus.IDLE)
       }
       "return an empty String for lastColor if all moves have been legal so far" in {
-        testBoard.getLastColor should be ("")
+        testBoard.lastColor should be ("")
       }
 
       "be able to print current state as String" in {
@@ -145,5 +145,5 @@ class BoardSpec extends AnyWordSpec with should.Matchers {
       }
     }
   }
-}
+end BoardSpec
 

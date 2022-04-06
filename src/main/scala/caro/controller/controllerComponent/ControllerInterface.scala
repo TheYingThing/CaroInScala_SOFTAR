@@ -1,6 +1,6 @@
 package caro.controller.controllerComponent
 
-import caro.util._
+import caro.util.*
 
 /**
  * ControllerInterface includes all methods needed to play and manage the game.
@@ -9,7 +9,7 @@ import caro.util._
  *         Rebecca Braun
  */
 
-trait ControllerInterface extends Observable {
+trait ControllerInterface extends Observable :
 
   /**
    * Method newBoard creates a new Board.
@@ -103,4 +103,6 @@ trait ControllerInterface extends Observable {
    * loads a saved board from a file
    */
   def load():Unit
-}
+
+end ControllerInterface
+
