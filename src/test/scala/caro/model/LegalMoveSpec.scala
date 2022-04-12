@@ -11,14 +11,14 @@ class LegalMoveSpec extends AnyWordSpec with should.Matchers :
     val legal = new LegalMove()
     "being an even number" should {
       "replace player1" in {
-        legal.replacePlayer(9,9,"red", testBoard, testBoard.status).player1.getPoints should be(10)
+        legal.replacePlayer(9,9,"red", testBoard, testBoard.status).player1.points should be(10)
 
       }
     }
     "being an uneven number" should {
       "replace player2 " in {
         testBoard = testBoard.replaceCell(9, 9, "red")
-        legal.replacePlayer(8, 9, "grey", testBoard, testBoard.status).player2.getPoints should be(8)
+        legal.replacePlayer(8, 9, "grey", testBoard, testBoard.status).player2.points should be(8)
       }
     }
     "adding a new cell" should {

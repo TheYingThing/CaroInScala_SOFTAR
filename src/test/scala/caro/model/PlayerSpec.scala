@@ -16,16 +16,16 @@ class PlayerSpec extends AnyWordSpec with should.Matchers :
         player.name should be("A name")
     }
       "return a String of the players name" in {
-        player.getName should be("A name")
+        player.name should be("A name")
       }
       "return their current Score" in {
-        player.getPoints should be(0)
+        player.points should be(0)
       }
       "return a String of their current status(points and no. of tiles)" in {
         player.toString should be("A name\nred: 3\nblack: 3\ngrey: 3\nwhite: 3\nScore: 0\n")
       }
       "return a Map with their remaining tiles" in {
-        player.getTiles should be(ListMap("red" -> 3, "black" -> 3, "grey" -> 3, "white" ->3))
+        player.tiles should be(ListMap("red" -> 3, "black" -> 3, "grey" -> 3, "white" ->3))
       }
     }
   }

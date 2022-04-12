@@ -81,13 +81,13 @@ class FileIO extends FileIOInterface :
   }
 
   def boardToXml(board: BoardInterface): Elem = {
-    <board moves={board.getMoves.toString} width={board.getWidth.toString} height={board.getHeight.toString}
-           lastColor={board.getLastColor} status={board.getStatusAsString}>
+    <board moves={board.moves.toString} width={board.width.toString} height={board.height.toString}
+           lastColor={board.lastColor} status={board.getStatusAsString}>
       <player1>
-        {playerToXml(board.getPlayerOne)}
+        {playerToXml(board.player1)}
       </player1>
       <player2>
-        {playerToXml(board.getPlayerTwo)}
+        {playerToXml(board.player2)}
       </player2>
       <cells>
         {for
@@ -109,23 +109,23 @@ class FileIO extends FileIOInterface :
   def playerToXml(player: PlayerInterface): Elem = {
     <player>
       <name>
-        {player.getName}
+        {player.name}
       </name>
       <points>
-        {player.getPoints.toString}
+        {player.points.toString}
       </points>
       <tiles>
         <red>
-          {player.getTiles("red").toString}
+          {player.tiles("red").toString}
         </red>
         <black>
-          {player.getTiles("black").toString}
+          {player.tiles("black").toString}
         </black>
         <grey>
-          {player.getTiles("grey").toString}
+          {player.tiles("grey").toString}
         </grey>
         <white>
-          {player.getTiles("white").toString}
+          {player.tiles("white").toString}
         </white>
       </tiles>
     </player>
