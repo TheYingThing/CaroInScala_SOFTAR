@@ -54,7 +54,7 @@ case class Board(override val board: Vector[Vector[Cell]] = Vector.fill(19, 19)(
 
   //----------------------BOARDFUNCTIONS------------------------------------------------------------------------------
 
-  def validColor(color: String, player: Player): Try[Int] = Try(player.getTiles(color))
+  def validColor(color: String, player: Player): Try[Int] = Try(player.tiles(color))
   def updatePlayer(row: Int, col: Int, color: String, player: Player): (Player, GameStatus) = {
     val oldValue: Try[Int] = validColor(color, player)
     oldValue match {
