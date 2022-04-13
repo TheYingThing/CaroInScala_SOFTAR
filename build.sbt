@@ -4,6 +4,11 @@ version := "0.1"
 
 scalaVersion := "3.1.1"
 
+lazy val root = (project in file (".")).aggregate(aview, controller, model)
+lazy val aview = (project in file ("aview")).dependsOn(controller)
+lazy val controller = (project in file ("controller")).dependsOn(model)
+lazy val model = (project in file ("model"))
+
 libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.11"
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.12-RC1" % "test"
