@@ -9,6 +9,12 @@ lazy val aview = (project in file ("aview")).dependsOn(controller)
 lazy val controller = (project in file ("controller")).dependsOn(model)
 lazy val model = (project in file ("model"))
 
+libraryDependencies += ("com.typesafe.akka" %% "akka-http" % "10.2.9").cross(CrossVersion.for3Use2_13)
+
+libraryDependencies += "com.typesafe.akka" %% "akka-actor-typed" % "2.6.19"
+
+libraryDependencies += "com.typesafe.akka" %% "akka-stream" % "2.6.19"
+
 libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.11"
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.12-RC1" % "test"
