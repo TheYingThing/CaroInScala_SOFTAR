@@ -1,7 +1,7 @@
 package caro.aview
 
 import caro.controller.controllerComponent.controllerBaseImpl.Controller
-import caro.model.gridComponent.boardFullImpl.Board
+import gridComponent.boardFullImpl.Board
 import org.scalatest.matchers.*
 import org.scalatest.wordspec.*
 

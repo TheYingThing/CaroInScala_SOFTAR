@@ -2,7 +2,6 @@ package caro.aview.gui
 
 
 import caro.controller.controllerComponent.*
-import caro.util.Observer
 
 import java.awt.Color
 import java.awt.image.BufferedImage
@@ -12,6 +11,7 @@ import javax.swing.{BorderFactory, ImageIcon}
 import scala.swing.*
 import scala.swing.BorderPanel.Position.*
 import scala.swing.event.ButtonClicked
+import util.Observer
 
 
 class ScalaGui(controller: ControllerInterface) extends Frame with Observer :

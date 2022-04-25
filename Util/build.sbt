@@ -1,24 +1,8 @@
-name := "CaroInScala"
+ThisBuild / version := "0.1.0-SNAPSHOT"
 
-version := "0.1"
+ThisBuild / scalaVersion := "3.1.1"
+
 organization := "caro.sa"
-scalaVersion := "3.1.1"
-
-lazy val root = (project in file(".")).aggregate(fileIo, grid, util).dependsOn(fileIo, grid, util)
-lazy val util = (project in file("Util"))
-  .settings(
-    name := "Util"
-  )
-
-lazy val grid = (project in file("Grid"))
-  .settings(
-    name := "Grid"
-  )
-
-lazy val fileIo = (project in file("FileIO")).dependsOn(grid)
-  .settings(
-    name := "FileIO"
-  )
 
 libraryDependencies += ("com.typesafe.akka" %% "akka-http" % "10.2.9").cross(CrossVersion.for3Use2_13)
 
@@ -39,7 +23,3 @@ libraryDependencies += ("net.codingwell" %% "scala-guice" % "5.0.2").cross(Cross
 libraryDependencies += "com.typesafe.play" %% "play-json" % "2.10.0-RC5"
 
 libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "2.0.1"
-
-resolvers += Resolver.url("scoverage-bintray", url("https://dl.bintray.com/sksamuel/sbt-plugins/"))(Resolver.ivyStylePatterns)
-
-coverageExcludedPackages := "*.gui.*"

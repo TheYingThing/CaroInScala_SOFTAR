@@ -1,7 +1,8 @@
 package caro.controller.controllerComponent.controllerBaseImpl
 
-import caro.model.gridComponent.BoardInterface
-import caro.util.Command
+import gridComponent.BoardInterface
+
+import util.Command
 
 class ReplaceCommand(row:Int, col:Int, color:String, controller:Controller) extends Command :
   val oldboard:BoardInterface = controller.board

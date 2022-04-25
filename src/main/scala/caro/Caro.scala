@@ -1,9 +1,9 @@
 package caro
 
-import caro.aview.ScalaTui
 import caro.aview.gui.ScalaGui
+import caro.aview.*
 import caro.controller.controllerComponent.ControllerInterface
-import caro.model.gridComponent.boardFullImpl.Board
+import gridComponent.boardFullImpl.Board
 import com.google.inject.{Guice, Injector}
 
 import scala.io.StdIn.readLine

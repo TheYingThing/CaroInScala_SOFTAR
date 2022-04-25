@@ -1,14 +1,14 @@
 package caro.controller.controllerComponent.controllerBaseImpl
 
 import caro.CaroModule
-import caro.controller.controllerComponent.*
-import caro.model.fileIoComponent.FileIOInterface
-import caro.model.gridComponent.BoardInterface
-import caro.model.gridComponent.boardFullImpl.{Board, Player}
-import caro.util.*
+import caro.controller.controllerComponent.ControllerInterface
+import gridComponent.BoardInterface
 import com.google.inject.name.Named
 import com.google.inject.{Guice, Inject, Injector}
+import fileIoComponent.FileIOInterface
+import gridComponent.boardFullImpl.Player
 import net.codingwell.scalaguice.InjectorExtensions.ScalaInjector
+import util.UndoManager
 
 class Controller @Inject()(var board: BoardInterface) extends ControllerInterface :
   private val undoManager = new UndoManager
