@@ -9,11 +9,21 @@ import fileIoComponent.FileIOInterface
 import gridComponent.boardFullImpl.Player
 import net.codingwell.scalaguice.InjectorExtensions.ScalaInjector
 import util.UndoManager
+import akka.actor.typed.ActorSystem
+import akka.actor.typed.scaladsl.Behaviors
+import akka.http.scaladsl.Http
+import akka.http.scaladsl.model.*
+
+import scala.concurrent.{ExecutionContextExecutor, Future}
+import scala.util.{Failure, Success}
+
 
 class Controller @Inject()(var board: BoardInterface) extends ControllerInterface :
   private val undoManager = new UndoManager
   val injector: Injector = Guice.createInjector(new CaroModule)
   val fileIo: FileIOInterface = injector.getInstance(classOf[FileIOInterface])
+  val fileIoHost: String = "localhost"
+  val fileIoPort: Int = 8080
 
   def newBoard(p1: String, p2: String): Unit = {
     val nplayer1: Player = Player(p1)
@@ -46,12 +56,19 @@ class Controller @Inject()(var board: BoardInterface) extends ControllerInterfac
   override def getBoardStatus: String = board.getStatusMessage
   override def getCellColor(row: Int, col: Int): String = board.getCell(row, col).getColor
   override def getMoves: Int = board.moves
-  def save(): Unit = {
+
+  override def save(): Unit = {
+    val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "SingleRequest")
+    given ActorSystem[Any] = system
+    val executionContext: ExecutionContextExecutor = system.executionContext
+    given ExecutionContextExecutor = executionContext
+
+    val responseFuture: Future[HttpResponse] = Http().singleRequest(HttpRequest(uri = "http://$fileIoHost:fileIoPort/fileIO/json/save"))
     fileIo.save(board)
     notifyObservers()
   }
 
-  def load(): Unit = {
+  override def load(): Unit = {
     board = fileIo.load
     notifyObservers()
   }

@@ -68,18 +68,24 @@ class FileIO extends FileIOInterface :
   }
 
 
-  override def save(board: BoardInterface): Unit = saveString(board)
-
-  def saveString(board: BoardInterface): Unit = {
+  override def save(board: BoardInterface): Unit = {
     import java.io.*
-    new File("board.xml").delete()
     val pw = new PrintWriter(new File("board.xml"))
     val pp = new PrettyPrinter(120, 4)
     val xml = pp.format(boardToXml(board))
     pw.write(xml)
     pw.close()
   }
+  
+  def save(board: String): Unit = {
+    import java.io.*
+    val pw = new PrintWriter(new File("board.xml"))
+    pw.write(board)
+    pw.close()
+  } 
 
+  def boardToString(board: BoardInterface): String = boardToXml(board).toString()
+  
   def boardToXml(board: BoardInterface): Elem = {
     <board moves={board.moves.toString} width={board.width.toString} height={board.height.toString}
            lastColor={board.lastColor} status={board.getStatusAsString}>
