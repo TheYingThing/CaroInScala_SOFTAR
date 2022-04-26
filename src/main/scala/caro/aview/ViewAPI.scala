@@ -2,24 +2,30 @@ package caro.aview
 import akka.http.scaladsl.server.Directives.*
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
-
 import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.Behaviors
+import caro.controller.controllerComponent.controllerBaseImpl.Controller
+import caro.controller.controllerComponent.ControllerInterface
+
 import scala.io.StdIn
+import fileIoComponent.fileIoJsonImpl.FileIO
 
 import scala.concurrent.ExecutionContextExecutor
 
 
 object ViewAPI :
-  @main def run(): Unit = {
-    implicit val system = ActorSystem(Behaviors.empty, "my-system")
-    implicit val executionContext = system.executionContext
+  val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "my-system")
+  given ActorSystem[Any] = system
+  val executionContext: ExecutionContextExecutor = system.executionContext
+  given ExecutionContextExecutor = executionContext
+  def apply(controller: ControllerInterface) =
+    val board = FileIO().load
+    val boardJson = FileIO().boardToJson(board)
     val route =
-      path("hello") {
+      path("board") {
         get {
-          complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http</h1>"))
+          complete(boardJson.toString)
         }
       }
     val bindingFuture = Http().newServerAt("localhost", 8080).bind(route)
-  }
 

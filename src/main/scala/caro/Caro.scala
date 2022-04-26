@@ -15,6 +15,7 @@ object Caro:
   val injector: Injector = Guice.createInjector(new CaroModule)
   val controller: ControllerInterface = injector.getInstance(classOf[ControllerInterface])
   val tui = new ScalaTui(controller)
+  val api = ViewAPI(controller)
 
   @main def run(): Unit = {
 
