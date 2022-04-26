@@ -10,8 +10,16 @@ import scala.xml.{Elem, NodeSeq, PrettyPrinter}
 class FileIO extends FileIOInterface :
 
   override def load: BoardInterface = {
-
     val file = scala.xml.XML.loadFile("board.xml")
+    loadFromFile(file)
+  }
+
+  override def loadFromString(board: String): BoardInterface = {
+    val boardXml = scala.xml.XML.loadString(board)
+    loadFromFile(boardXml)
+  }
+  
+  def loadFromFile(file: Elem): BoardInterface = {
     file.attribute("tiles")
     val boardval = file \\ "board"
 
@@ -84,7 +92,7 @@ class FileIO extends FileIOInterface :
     pw.close()
   } 
 
-  def boardToString(board: BoardInterface): String = boardToXml(board).toString()
+  override def boardToString(board: BoardInterface): String = boardToXml(board).toString()
   
   def boardToXml(board: BoardInterface): Elem = {
     <board moves={board.moves.toString} width={board.width.toString} height={board.height.toString}

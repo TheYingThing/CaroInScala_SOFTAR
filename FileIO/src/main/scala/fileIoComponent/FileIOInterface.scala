@@ -1,6 +1,7 @@
 package fileIoComponent
 
 import gridComponent.BoardInterface
+import scala.xml.Elem
 
 /**
  * FileIOInterface declares methods to be implemented in the specific FileIO case classes
@@ -23,4 +24,18 @@ trait FileIOInterface :
    */
   def save(board: BoardInterface): Unit
 
+  /**
+   * returns the current IO Object as a String
+   * @param board
+   * @return
+   */
+  def boardToString(board: BoardInterface): String
+
+  /**
+   * loads Board from String
+   * @param board
+   * @return
+   */
+  def loadFromString(board: String): BoardInterface
+  
 end FileIOInterface

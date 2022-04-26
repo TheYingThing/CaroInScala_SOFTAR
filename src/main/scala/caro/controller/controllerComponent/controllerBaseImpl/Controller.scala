@@ -13,8 +13,10 @@ import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.Behaviors
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.*
+import akka.http.scaladsl.unmarshalling.Unmarshal
 
 import scala.concurrent.{ExecutionContextExecutor, Future}
+import scala.util
 import scala.util.{Failure, Success}
 
 
@@ -63,13 +65,36 @@ class Controller @Inject()(var board: BoardInterface) extends ControllerInterfac
     val executionContext: ExecutionContextExecutor = system.executionContext
     given ExecutionContextExecutor = executionContext
 
-    val responseFuture: Future[HttpResponse] = Http().singleRequest(HttpRequest(uri = "http://$fileIoHost:fileIoPort/fileIO/json/save"))
-    fileIo.save(board)
+    val responseFuture: Future[HttpResponse] = Http().singleRequest(
+      HttpRequest(
+        method =  HttpMethods.PUT,
+        uri = s"http://$fileIoHost:$fileIoPort/fileIO/json/save",
+        entity = HttpEntity(ContentTypes.`application/json`, fileIo.boardToString(board))
+      ))
+
     notifyObservers()
   }
 
   override def load(): Unit = {
-    board = fileIo.load
-    notifyObservers()
+    val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "SingleRequest")
+    given ActorSystem[Any] = system
+    val executionContext: ExecutionContextExecutor = system.executionContext
+    given ExecutionContextExecutor = executionContext
+
+    val responseFuture: Future[HttpResponse] = Http().singleRequest(HttpRequest(uri = s"http://$fileIoHost:$fileIoPort/fileIO/json/load"))
+
+    responseFuture
+      .onComplete {
+        case Success(value) =>
+          val boardAsString = Unmarshal(value.entity).to[String]
+          println(boardAsString)
+          boardAsString.onComplete {
+            case Success(value) =>
+              board = fileIo.loadFromString(value)
+              notifyObservers()
+            case Failure(exception) =>
+          }
+        case Failure(exception) =>
+      }
   }
 end Controller

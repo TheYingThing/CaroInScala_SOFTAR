@@ -13,21 +13,28 @@ import play.api.libs.json.{JsArray, JsObject, JsValue, Json, Writes}
 import scala.collection.immutable.ListMap
 import scala.io.{BufferedSource, Source}
 import scala.language.postfixOps
+import scala.xml.Elem
 
 class FileIO extends FileIOInterface :
   override def load: BoardInterface = {
-
     val bufferedSource: BufferedSource = Source.fromFile("board.json")
     val source: String = bufferedSource.getLines().mkString
     bufferedSource.close()
-
     val json: JsValue = Json.parse(source)
+    loadFromFile(json)
+  }
 
-    val moves = (json \ "board" \ "moves").get.toString.toInt
-    val height = (json \ "board" \ "height").get.toString.toInt
-    val width = (json \ "board" \ "width").get.toString.toInt
-    val lastColor = (json \ "board" \ "lastColor").get.toString
-    val status = (json \ "board" \ "status").get.toString
+  override def loadFromString(board: String): BoardInterface = {
+    val boardJson = Json.parse(board)
+    loadFromFile(boardJson)
+  }
+
+  def loadFromFile(file: JsValue): BoardInterface = {
+    val moves = (file \ "board" \ "moves").get.toString.toInt
+    val height = (file \ "board" \ "height").get.toString.toInt
+    val width = (file \ "board" \ "width").get.toString.toInt
+    val lastColor = (file \ "board" \ "lastColor").get.toString
+    val status = (file \ "board" \ "status").get.toString
     val gameStatus: GameStatus = {
       status match {
         case "IDLE" => GameStatus.IDLE
@@ -38,8 +45,8 @@ class FileIO extends FileIOInterface :
       }
     }
 
-    val player1val = (json \ "board" \ "player1").get.as[JsValue]
-    val player2val = (json \ "board" \ "player2").get.as[JsValue]
+    val player1val = (file \ "board" \ "player1").get.as[JsValue]
+    val player2val = (file \ "board" \ "player2").get.as[JsValue]
     val player1 = loadPlayer(player1val)
     val player2 = loadPlayer(player2val)
 
@@ -49,9 +56,9 @@ class FileIO extends FileIOInterface :
     for
       i <- 0 until 18 * 18
     do
-      val row = (json \\ "row") (i).as[Int]
-      val col = (json \\ "col") (i).as[Int]
-      val color = (json \\ "color") (i).as[String]
+      val row = (file \\ "row") (i).as[Int]
+      val col = (file \\ "col") (i).as[Int]
+      val color = (file \\ "color") (i).as[String]
       board = board.updateCell(row, col, color)
 
     board
@@ -87,7 +94,7 @@ class FileIO extends FileIOInterface :
     pw.close()
   }
 
-  def boardToString(board: Board): String = boardToJson(board).toString
+  override def boardToString(board: BoardInterface): String = boardToJson(board).toString
 
   def boardToJson(board: BoardInterface): JsObject = {
     Json.obj(

@@ -27,5 +27,5 @@ object ViewAPI :
           complete(boardJson.toString)
         }
       }
-    val bindingFuture = Http().newServerAt("localhost", 8080).bind(route)
+    val bindingFuture = Http().newServerAt("localhost", 8081).bind(route)
 
