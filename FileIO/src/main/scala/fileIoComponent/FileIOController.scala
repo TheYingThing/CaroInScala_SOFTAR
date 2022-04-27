@@ -41,7 +41,7 @@ object FileIOController {
       path("fileIO" / "json" / "save") {
         put {
           entity(as[String]) { board =>
-            json.save(board)
+            json.saveFromString(board)
             Try(json.load) match {
               case Success(board) => complete(StatusCodes.OK, "Board was saved")
               case Failure(exception) => complete(StatusCodes.BadRequest, "Board could not be saved")
@@ -63,7 +63,7 @@ object FileIOController {
       path("fileIO" / "xml" / "load") {
         get {
           entity(as[String]) { board =>
-            xml.save(board)
+            xml.saveFromString(board)
             Try(xml.load) match {
               case Success(board) => complete(StatusCodes.OK, "Board was saved")
               case Failure(exception) => complete(StatusCodes.BadRequest, "Board could not be saved")

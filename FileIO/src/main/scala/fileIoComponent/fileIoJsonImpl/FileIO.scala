@@ -87,7 +87,7 @@ class FileIO extends FileIOInterface :
     pw.close
   }
 
-  def save(board: String): Unit = {
+  def saveFromString(board: String): Unit = {
     import java.io._
     val pw = new PrintWriter(new File("board.json"))
     pw.write(board)

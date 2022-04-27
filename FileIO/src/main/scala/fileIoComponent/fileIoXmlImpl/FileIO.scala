@@ -85,7 +85,7 @@ class FileIO extends FileIOInterface :
     pw.close()
   }
   
-  def save(board: String): Unit = {
+  def saveFromString(board: String): Unit = {
     import java.io.*
     val pw = new PrintWriter(new File("board.xml"))
     pw.write(board)

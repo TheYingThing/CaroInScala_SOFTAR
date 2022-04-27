@@ -87,7 +87,6 @@ class Controller @Inject()(var board: BoardInterface) extends ControllerInterfac
       .onComplete {
         case Success(value) =>
           val boardAsString = Unmarshal(value.entity).to[String]
-          println(boardAsString)
           boardAsString.onComplete {
             case Success(value) =>
               board = fileIo.loadFromString(value)
