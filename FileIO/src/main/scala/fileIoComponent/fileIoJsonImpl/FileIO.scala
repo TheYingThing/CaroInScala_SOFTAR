@@ -1,11 +1,10 @@
 package fileIoComponent.fileIoJsonImpl
 
-import gridComponent.*
-import gridComponent.boardFullImpl.{Board, Cell, GameStatus, Player}
-import gridComponent.boardFullImpl.GameStatus
 import com.google.inject.Guice
 import com.google.inject.name.Names
 import fileIoComponent.FileIOInterface
+import gridComponent.{BoardInterface, PlayerInterface}
+import gridComponent.boardFullImpl.{Board, Player, GameStatus}
 import net.codingwell.scalaguice.InjectorExtensions.ScalaInjector
 import play.api.libs.json.JsPath.\\
 import play.api.libs.json.{JsArray, JsObject, JsValue, Json, Writes}
@@ -14,6 +13,8 @@ import scala.collection.immutable.ListMap
 import scala.io.{BufferedSource, Source}
 import scala.language.postfixOps
 import scala.xml.Elem
+
+
 
 class FileIO extends FileIOInterface :
   override def load: BoardInterface = {

@@ -1,4 +1,4 @@
-package util
+package caro.util
 
 /**
  * Trait Command declares methods to do, redo or undo a move

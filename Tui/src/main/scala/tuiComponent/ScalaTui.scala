@@ -1,7 +1,7 @@
-package caro.aview
+package tuiComponent
 
 import caro.controller.controllerComponent.ControllerInterface
-import util.Observer
+import caro.util.Observer
 
 class ScalaTui(controller: ControllerInterface) extends Observer :
   controller.add(this)

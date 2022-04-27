@@ -2,13 +2,13 @@ package caro.controller.controllerComponent.controllerBaseImpl
 
 import caro.CaroModule
 import caro.controller.controllerComponent.ControllerInterface
-import gridComponent.BoardInterface
 import com.google.inject.name.Named
 import com.google.inject.{Guice, Inject, Injector}
 import fileIoComponent.FileIOInterface
 import gridComponent.boardFullImpl.Player
+import gridComponent.BoardInterface
 import net.codingwell.scalaguice.InjectorExtensions.ScalaInjector
-import util.UndoManager
+import caro.util.UndoManager
 import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.Behaviors
 import akka.http.scaladsl.Http

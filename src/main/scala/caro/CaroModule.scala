@@ -6,7 +6,6 @@ import gridComponent.boardFullImpl.{Board, Player}
 import gridComponent.BoardInterface
 import com.google.inject.AbstractModule
 import com.google.inject.name.Names
-import gridComponent.BoardInterface
 import net.codingwell.scalaguice.ScalaModule
 
 

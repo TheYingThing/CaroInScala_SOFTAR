@@ -1,6 +1,5 @@
 package gridComponent.boardFullImpl
 
-import gridComponent.boardFullImpl.{Board, LegalMove}
 import org.scalatest.matchers.*
 import org.scalatest.wordspec.*
 

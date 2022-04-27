@@ -1,7 +1,7 @@
 package fileIoComponent
 
-import gridComponent.BoardInterface
 import scala.xml.Elem
+import gridComponent.BoardInterface
 
 /**
  * FileIOInterface declares methods to be implemented in the specific FileIO case classes

@@ -3,8 +3,9 @@ package caro
 import caro.aview.gui.ScalaGui
 import caro.aview.*
 import caro.controller.controllerComponent.ControllerInterface
-import gridComponent.boardFullImpl.Board
 import com.google.inject.{Guice, Injector}
+
+import gridComponent.boardFullImpl.Board
 
 import scala.io.StdIn.readLine
 
@@ -14,7 +15,7 @@ object Caro:
   var board = new Board
   val injector: Injector = Guice.createInjector(new CaroModule)
   val controller: ControllerInterface = injector.getInstance(classOf[ControllerInterface])
-  val tui = new ScalaTui(controller)
+  //val tui = new ScalaTui(controller)
   val api = ViewAPI(controller)
 
   @main def run(): Unit = {
@@ -41,11 +42,11 @@ object Caro:
 
     Thread.sleep(1000)
 
-    while
+    /*while
       printf("\nEnter your command: \n")
       input = readLine()
       tui.processInputLine(input)
       input != "quit"
-    do ()
+    do ()*/
   }
 end Caro

@@ -1,6 +1,5 @@
 package gridComponent.boardFullImpl
 
-import gridComponent.boardFullImpl.Player
 import org.scalatest.matchers.*
 import org.scalatest.wordspec.*
 

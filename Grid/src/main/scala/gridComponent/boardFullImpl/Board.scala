@@ -1,6 +1,7 @@
 package gridComponent.boardFullImpl
 
 import gridComponent.BoardInterface
+
 import scala.collection.immutable.ListMap
 import scala.util.{Failure, Success, Try}
 

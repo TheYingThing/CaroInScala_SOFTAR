@@ -1,4 +1,4 @@
-package util
+package caro.util
 
 class UndoManager {
   private var undoStack: List[Command]= Nil
