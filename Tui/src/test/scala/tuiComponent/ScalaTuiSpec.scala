@@ -1,3 +1,4 @@
+/*
 package tuiComponent
 
 import caro.controller.controllerComponent.controllerBaseImpl.Controller
@@ -81,3 +82,4 @@ class ScalaTuiSpec extends AnyWordSpec with should.Matchers :
     }
   }
 end ScalaTuiSpec
+*/
