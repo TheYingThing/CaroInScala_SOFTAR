@@ -11,6 +11,7 @@ import javax.swing.{BorderFactory, ImageIcon}
 import scala.swing.*
 import scala.swing.BorderPanel.Position.*
 import scala.swing.event.ButtonClicked
+import scala.util.control.Exception.allCatch
 
 
 class ScalaGui(controller: ControllerInterface) extends Frame with Observer :

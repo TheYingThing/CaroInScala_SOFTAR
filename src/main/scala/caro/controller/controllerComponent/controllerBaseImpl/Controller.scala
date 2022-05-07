@@ -28,11 +28,28 @@ class Controller @Inject()(var board: BoardInterface) extends ControllerInterfac
   val fileIoPort: Int = 8080
 
   def newBoard(p1: String, p2: String): Unit = {
-    val nplayer1: Player = Player(p1)
-    val nplayer2: Player = Player(p2)
+    val p1Opt: Option[String] = Option(p1).filter(_.trim.nonEmpty)
+    val p2Opt: Option[String] = Option(p2).filter(_.trim.nonEmpty)
+    val p1Name: String = board.player1.name
+    val p2Name: String = board.player2.name
+
     board = injector.getInstance(classOf[BoardInterface])
-    board = board.updatePlayerOne(nplayer1)
-    board = board.updatePlayerTwo(nplayer2)
+    p1Opt match {
+      case Some(t) =>
+        val nplayer1: Player = Player(t)
+        val nplayer2: Player = Player(p2Name)
+        board = board.updatePlayerOne(nplayer1)
+        board = board.updatePlayerTwo(nplayer2)
+      case None =>
+    }
+    p2Opt match {
+      case Some(t) =>
+        val nplayer1: Player = Player(p1Name)
+        val nplayer2: Player = Player(t)
+         board = board.updatePlayerTwo(nplayer2)
+         board = board.updatePlayerOne(nplayer1)
+      case None =>
+    }
     notifyObservers()
   }
   
@@ -75,7 +92,7 @@ class Controller @Inject()(var board: BoardInterface) extends ControllerInterfac
     notifyObservers()
   }
 
-  override def load(): Unit = {
+  override def load(): Future[Boolean] = {
     val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "SingleRequest")
     given ActorSystem[Any] = system
     val executionContext: ExecutionContextExecutor = system.executionContext
@@ -91,9 +108,14 @@ class Controller @Inject()(var board: BoardInterface) extends ControllerInterfac
             case Success(value) =>
               board = fileIo.loadFromString(value)
               notifyObservers()
+              return Future(true)
             case Failure(exception) =>
+              return Future(false)
           }
         case Failure(exception) =>
+          return Future(false)
       }
+    return Future(false)
   }
+
 end Controller

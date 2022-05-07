@@ -18,7 +18,7 @@ object ViewAPI :
   given ActorSystem[Any] = system
   val executionContext: ExecutionContextExecutor = system.executionContext
   given ExecutionContextExecutor = executionContext
-  def apply(controller: ControllerInterface) =
+  def apply() =
     val board = FileIO().load
     val boardJson = FileIO().boardToJson(board)
     val route =
@@ -27,5 +27,5 @@ object ViewAPI :
           complete(boardJson.toString)
         }
       }
-    val bindingFuture = Http().newServerAt("localhost", 8081).bind(route)
+    val bindingFuture = Http().newServerAt("localhost", 8082).bind(route)
 

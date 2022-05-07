@@ -6,7 +6,7 @@ scalaVersion := "3.1.1"
 
 lazy val root = (project in file(".")).aggregate(fileIo, grid).dependsOn(fileIo, grid)
 
-lazy val tui = (project in file("Tui")).dependsOn(root)
+lazy val tui = (project in file("Tui"))
   .settings(
     name := "Tui"
   )

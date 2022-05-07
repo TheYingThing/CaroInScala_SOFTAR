@@ -2,6 +2,8 @@ package caro.controller.controllerComponent
 
 import caro.util.Observable
 
+import scala.concurrent.Future
+
 /**
  * ControllerInterface includes all methods needed to play and manage the game.
  * Controller is an instance of ControllerInterface and supervises all processes.
@@ -18,7 +20,7 @@ trait ControllerInterface extends Observable :
    * @param p1 String
    * @param p2 String
    */
-  def newBoard(p1:String, p2:String):Unit
+  def newBoard(p1: String, p2: String):Unit
 
   /**
    * boardToString returns the current board as a String.
@@ -102,7 +104,7 @@ trait ControllerInterface extends Observable :
   /**
    * loads a saved board from a file
    */
-  def load():Unit
+  def load():Future[Boolean]
 
 end ControllerInterface
 

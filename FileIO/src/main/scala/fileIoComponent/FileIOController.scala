@@ -60,7 +60,7 @@ object FileIOController {
           }
         }
       },
-      path("fileIO" / "xml" / "load") {
+      path("fileIO" / "xml" / "save") {
         get {
           entity(as[String]) { board =>
             xml.saveFromString(board)

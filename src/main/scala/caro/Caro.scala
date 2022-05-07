@@ -1,12 +1,13 @@
 package caro
 
+import akka.http.scaladsl.Http
 import caro.aview.gui.ScalaGui
 import caro.aview.*
-import caro.controller.controllerComponent.ControllerInterface
+import caro.controller.controllerComponent.{ControllerAPI, ControllerInterface}
 import com.google.inject.{Guice, Injector}
-
 import gridComponent.boardFullImpl.Board
 
+import scala.concurrent.Future
 import scala.io.StdIn.readLine
 
 object Caro:
@@ -15,8 +16,8 @@ object Caro:
   var board = new Board
   val injector: Injector = Guice.createInjector(new CaroModule)
   val controller: ControllerInterface = injector.getInstance(classOf[ControllerInterface])
-  //val tui = new ScalaTui(controller)
-  val api = ViewAPI(controller)
+  val controllerAPI: Future[Http.ServerBinding] = ControllerAPI(controller)
+  val api: Unit = ViewAPI()
 
   @main def run(): Unit = {
 
@@ -24,29 +25,5 @@ object Caro:
       val gui = new ScalaGui(controller)
       gui.update
       gui.visible = true
-
-    println("Welcome to Caro!\n")
-
-    print("\nCommands:"
-      + "\n\t'player1|player2 <name>' - set player names"
-      + "\n\t'first <Tile color>' - start with this color tile"
-      + "\n\t'board' - prints current board"
-      + "\n\t'put <column> <row> <Tile color> - sets tile at position"
-      + "\n\t'undo' - undo most recent move"
-      + "\n\t'redo' - redo most recent undo"
-      + "\n\t'quit' - exit game"
-      + "\n\t'save' - save current game"
-      + "\n\t'load' - load saved game")
-
-    var input: String = ""
-
-    Thread.sleep(1000)
-
-    /*while
-      printf("\nEnter your command: \n")
-      input = readLine()
-      tui.processInputLine(input)
-      input != "quit"
-    do ()*/
   }
 end Caro
