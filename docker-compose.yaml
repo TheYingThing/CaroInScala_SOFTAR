@@ -1,0 +1,38 @@
+version: '3.9'
+services:
+  caro:
+    container_name: caro
+    image: caro:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - fileio
+    stdin_open: true
+    ports:
+      - "8081:8081"
+      - "8082:8082"
+    environment:
+      - DISPLAY=host.docker.internal:0.0
+      - FILE_IO_HOST=fileio
+      - FILE_IO_PORT=8081
+      - UI_CONFIG=tui gui
+  fileio:
+    container_name: fileio
+    image: fileio:latest
+    build:
+      context: ./FileIO
+      dockerfile: Dockerfile
+    tty: true
+    ports:
+      - "8080:8080"
+  tui:
+    container_name: tui
+    image: tui:latest
+    build:
+      context: ./Tui
+      dockerfile: Dockerfile
+    stdin_open: true
+    tty: true
+    ports:
+     - "8083:8083"
