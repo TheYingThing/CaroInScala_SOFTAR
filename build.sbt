@@ -41,6 +41,10 @@ libraryDependencies += "com.typesafe.play" %% "play-json" % "2.10.0-RC5"
 
 libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "2.0.1"
 
+libraryDependencies += ("com.typesafe.slick" %% "slick" % "3.4.0-M1").cross(CrossVersion.for3Use2_13)
+
+libraryDependencies += "org.slf4j" % "slf4j-nop" % "2.0.0-alpha7" % Test
+
 resolvers += Resolver.url("scoverage-bintray", url("https://dl.bintray.com/sksamuel/sbt-plugins/"))(Resolver.ivyStylePatterns)
 
 coverageExcludedPackages := "*.gui.*"
