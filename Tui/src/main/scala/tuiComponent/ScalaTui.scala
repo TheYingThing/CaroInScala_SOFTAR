@@ -10,8 +10,8 @@ import scala.concurrent.{ExecutionContextExecutor, Future}
 import scala.util.{Failure, Success}
 
 class ScalaTui():
-  val controllerHost = "localhost"
-  val controllerPort = 8081
+  val controllerHost: String = System.getenv().getOrDefault("CONTROLLER_HOST", "localhost")
+  val controllerPort: Int = System.getenv().getOrDefault("CONTROLLER_PORT", "8081").toInt
   val center = 9
 
   val endpoint = s"http://$controllerHost:$controllerPort/"

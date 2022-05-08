@@ -24,8 +24,8 @@ import scala.util.{Failure, Success}
 class Controller @Inject()(var board: BoardInterface) extends ControllerInterface :
   private val undoManager = new UndoManager
   val injector: Injector = Guice.createInjector(new CaroModule)
-  val fileIoHost: String = "localhost"
-  val fileIoPort: Int = 8080
+  val fileIoHost: String = System.getenv().getOrDefault("FILEIO_HOST", "localhost")
+  val fileIoPort: Int = System.getenv().getOrDefault("FILEIO_PORT", "8080").toInt
 
   def newBoard(p1: String, p2: String): Unit = {
     val p1Opt: Option[String] = Option(p1).filter(_.trim.nonEmpty)

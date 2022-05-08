@@ -14,9 +14,11 @@ services:
       - "8082:8082"
     environment:
       - DISPLAY=host.docker.internal:0.0
-      - FILE_IO_HOST=fileio
-      - FILE_IO_PORT=8081
-      - UI_CONFIG=tui gui
+      - UI_CONFIG=gui
+      - FILEIO_PORT=8080
+      - FILEIO_HOST=fileio
+      - CONTROLLER_HOST=caro
+      - CONTROLLER_PORT=8081
   fileio:
     container_name: fileio
     image: fileio:latest
@@ -26,6 +28,9 @@ services:
     tty: true
     ports:
       - "8080:8080"
+    environment:
+      - FILEIO_PORT=8080
+      - FILEIO_HOST=fileio
   tui:
     container_name: tui
     image: tui:latest
@@ -35,4 +40,7 @@ services:
     stdin_open: true
     tty: true
     ports:
-     - "8083:8083"
+      - "8083:8083"
+    environment:
+      - CONTROLLER_HOST=caro
+      - CONTROLLER_PORT=8081

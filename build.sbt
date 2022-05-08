@@ -21,6 +21,9 @@ lazy val fileIo = (project in file("FileIO"))
     name := "Grid"
   )*/
 
+fork in Test := true
+envVars in Test := Map("UI_CONFIG" -> "gui")
+
 libraryDependencies += ("com.typesafe.akka" %% "akka-http" % "10.2.9").cross(CrossVersion.for3Use2_13)
 
 libraryDependencies += ("com.typesafe.akka" %% "akka-actor-typed" % "2.6.19").cross(CrossVersion.for3Use2_13)

@@ -17,7 +17,6 @@ object Caro:
   val injector: Injector = Guice.createInjector(new CaroModule)
   val controller: ControllerInterface = injector.getInstance(classOf[ControllerInterface])
   val controllerAPI: Future[Http.ServerBinding] = ControllerAPI(controller)
-  val api: Unit = ViewAPI()
 
   @main def run(): Unit = {
 

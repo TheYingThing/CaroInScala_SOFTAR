@@ -14,8 +14,8 @@ import scala.util.{Failure, Success, Try}
 
 object FileIOAPI {
 
-  val host = "localhost"
-  val port = 8080
+  val host: String = System.getenv().getOrDefault("FILEIO_HOST", "localhost")
+  val port: Int = System.getenv().getOrDefault("FILEIO_PORT", "8080").toInt
 
   val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "my-system")
   given ActorSystem[Any] = system
