@@ -1,6 +1,6 @@
-package gridComponent.boardFullImpl
+package caro.model.gridComponent.boardFullImpl
 
-import gridComponent.RulesInterface
+import caro.model.gridComponent.RulesInterface
 
 import scala.collection.mutable.ListBuffer
 

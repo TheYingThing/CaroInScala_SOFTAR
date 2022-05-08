@@ -1,6 +1,6 @@
-package gridComponent
+package caro.model.gridComponent
 
-import gridComponent.boardFullImpl.{Cell, CellReplacementStrategy, GameStatus, Player}
+import caro.model.gridComponent.boardFullImpl.{Cell, CellReplacementStrategy, GameStatus, Player}
 
 /**
  * BoardInterface declares methods to be implemented in the Board case classes

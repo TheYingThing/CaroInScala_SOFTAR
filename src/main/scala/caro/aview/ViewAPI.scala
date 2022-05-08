@@ -19,12 +19,10 @@ object ViewAPI :
   val executionContext: ExecutionContextExecutor = system.executionContext
   given ExecutionContextExecutor = executionContext
   def apply() =
-    val board = FileIO().load
-    val boardJson = FileIO().boardToJson(board)
     val route =
       path("board") {
         get {
-          complete(boardJson.toString)
+          complete(FileIO().load)
         }
       }
     val bindingFuture = Http().newServerAt("localhost", 8082).bind(route)

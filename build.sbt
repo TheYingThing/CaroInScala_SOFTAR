@@ -4,22 +4,22 @@ version := "0.1"
 organization := "caro.sa"
 scalaVersion := "3.1.1"
 
-lazy val root = (project in file(".")).aggregate(fileIo, grid).dependsOn(fileIo, grid)
+lazy val root = (project in file(".")).aggregate(fileIo).dependsOn(fileIo)
 
 lazy val tui = (project in file("Tui"))
   .settings(
     name := "Tui"
   )
 
-lazy val fileIo = (project in file("FileIO")).dependsOn(grid)
+lazy val fileIo = (project in file("FileIO"))
   .settings(
     name := "FileIO"
   )
 
-lazy val grid = (project in file("Grid"))
+/*lazy val grid = (project in file("Grid"))
   .settings(
     name := "Grid"
-  )
+  )*/
 
 libraryDependencies += ("com.typesafe.akka" %% "akka-http" % "10.2.9").cross(CrossVersion.for3Use2_13)
 

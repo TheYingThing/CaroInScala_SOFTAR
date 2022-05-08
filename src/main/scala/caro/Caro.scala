@@ -5,7 +5,7 @@ import caro.aview.gui.ScalaGui
 import caro.aview.*
 import caro.controller.controllerComponent.{ControllerAPI, ControllerInterface}
 import com.google.inject.{Guice, Injector}
-import gridComponent.boardFullImpl.Board
+import caro.model.gridComponent.boardFullImpl.Board
 
 import scala.concurrent.Future
 import scala.io.StdIn.readLine

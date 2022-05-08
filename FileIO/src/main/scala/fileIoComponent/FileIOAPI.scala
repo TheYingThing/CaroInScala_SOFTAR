@@ -12,7 +12,7 @@ import scala.concurrent.ExecutionContextExecutor
 import scala.util.{Failure, Success, Try}
 
 
-object FileIOController {
+object FileIOAPI {
 
   val host = "localhost"
   val port = 8080
@@ -32,8 +32,8 @@ object FileIOController {
         get {
           Try(json.load) match {
             case Success(board) =>
-              val boardJson = json.boardToJson(board).toString
-              complete(HttpEntity(ContentTypes.`application/json`, boardJson))
+              val loadData = board.toString
+              complete(HttpEntity(ContentTypes.`text/xml(UTF-8)`, loadData))
             case Failure(exception) => complete(StatusCodes.BadRequest, "Board could not be loaded")
           }
         }
@@ -41,7 +41,7 @@ object FileIOController {
       path("fileIO" / "json" / "save") {
         put {
           entity(as[String]) { board =>
-            json.saveFromString(board)
+            json.save(board)
             Try(json.load) match {
               case Success(board) => complete(StatusCodes.OK, "Board was saved")
               case Failure(exception) => complete(StatusCodes.BadRequest, "Board could not be saved")
@@ -52,10 +52,9 @@ object FileIOController {
       path("fileIO" / "xml" / "load") {
         get {
           Try(xml.load) match {
-            case Success(board) => {
-              val boardXml = xml.boardToXml(board).toString
-              complete(HttpEntity(ContentTypes.`text/xml(UTF-8)`, boardXml))
-            }
+            case Success(board) =>
+              val loadData = board.toString
+              complete(HttpEntity(ContentTypes.`text/xml(UTF-8)`, loadData))
             case Failure(exception) => complete(StatusCodes.BadRequest, "Board could not be loaded")
           }
         }
@@ -63,7 +62,7 @@ object FileIOController {
       path("fileIO" / "xml" / "save") {
         get {
           entity(as[String]) { board =>
-            xml.saveFromString(board)
+            xml.save(board)
             Try(xml.load) match {
               case Success(board) => complete(StatusCodes.OK, "Board was saved")
               case Failure(exception) => complete(StatusCodes.BadRequest, "Board could not be saved")

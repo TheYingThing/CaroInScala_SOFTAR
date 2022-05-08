@@ -1,4 +1,4 @@
-package gridComponent
+package caro.model.gridComponent
 
 import scala.collection.immutable.ListMap
 

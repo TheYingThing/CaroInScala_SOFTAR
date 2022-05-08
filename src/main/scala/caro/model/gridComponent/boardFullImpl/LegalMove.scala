@@ -1,7 +1,7 @@
-package gridComponent.boardFullImpl
+package caro.model.gridComponent.boardFullImpl
 
-import gridComponent.boardFullImpl.*
-import gridComponent.boardFullImpl.{Board, Cell, CellReplacementStrategy, GameStatus, Player}
+import caro.model.gridComponent.boardFullImpl.*
+import caro.model.gridComponent.boardFullImpl.{Board, Cell, CellReplacementStrategy, GameStatus, Player}
 
 class LegalMove extends CellReplacementStrategy :
 

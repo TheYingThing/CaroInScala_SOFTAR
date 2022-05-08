@@ -1,6 +1,6 @@
-package gridComponent
+package caro.model.gridComponent
 
-import gridComponent.boardFullImpl.Cell
+import caro.model.gridComponent.boardFullImpl.Cell
 
 trait RulesInterface(boardInterface: BoardInterface) :
 

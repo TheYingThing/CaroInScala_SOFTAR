@@ -1,4 +1,4 @@
-package gridComponent.boardFullImpl
+package caro.model.gridComponent.boardFullImpl
 
 /**
  * CellReplacementStrategy declares methods to be called when trying to replace a Cell on the current Board.
