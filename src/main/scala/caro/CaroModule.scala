@@ -2,8 +2,8 @@ package caro
 
 import caro.controller.controllerComponent.*
 import fileIoComponent.*
-import gridComponent.boardFullImpl.{Board, Player}
-import gridComponent.BoardInterface
+import caro.model.gridComponent.boardFullImpl.{Board, Player}
+import caro.model.gridComponent.BoardInterface
 import com.google.inject.AbstractModule
 import com.google.inject.name.Names
 import net.codingwell.scalaguice.ScalaModule

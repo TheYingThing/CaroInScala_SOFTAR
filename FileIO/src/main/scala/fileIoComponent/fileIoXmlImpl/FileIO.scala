@@ -1,24 +1,27 @@
 package fileIoComponent.fileIoXmlImpl
 
 import fileIoComponent.FileIOInterface
-import gridComponent.boardFullImpl.{Board, GameStatus, Player}
-import gridComponent.{BoardInterface, PlayerInterface}
 
 import scala.collection.immutable.ListMap
+import scala.io.{BufferedSource, Source}
 import scala.xml.{Elem, NodeSeq, PrettyPrinter}
 
 class FileIO extends FileIOInterface :
 
-  override def load: BoardInterface = {
-    val file = scala.xml.XML.loadFile("board.xml")
-    loadFromFile(file)
-  }
-
-  override def loadFromString(board: String): BoardInterface = {
-    val boardXml = scala.xml.XML.loadString(board)
-    loadFromFile(boardXml)
+  override def load: String = {
+    val bufferedSource: BufferedSource = Source.fromFile("board.json")
+    val source: String = bufferedSource.getLines().mkString
+    bufferedSource.close()
+    source
   }
   
+/*
+  def loadFromString(board: String): BoardInterface = {
+    val boardXml = scala.xml.XML.loadString(board)
+    loadFromFile(boardXml)
+  } */
+  
+  /*
   def loadFromFile(file: Elem): BoardInterface = {
     file.attribute("tiles")
     val boardval = file \\ "board"
@@ -73,27 +76,26 @@ class FileIO extends FileIOInterface :
 
     val player = Player(name = nameval, tiles = tilesval, points = pointval)
     player
-  }
+  } */
 
 
-  override def save(board: BoardInterface): Unit = {
+  override def save(board: String): Unit = {
     import java.io.*
     val pw = new PrintWriter(new File("board.xml"))
-    val pp = new PrettyPrinter(120, 4)
-    val xml = pp.format(boardToXml(board))
-    pw.write(xml)
+    pw.write(board)
     pw.close()
   }
   
+  /*
   def saveFromString(board: String): Unit = {
     import java.io.*
     val pw = new PrintWriter(new File("board.xml"))
     pw.write(board)
     pw.close()
-  } 
+  } */
 
-  override def boardToString(board: BoardInterface): String = boardToXml(board).toString()
-  
+  //override def boardToString(board: BoardInterface): String = boardToXml(board).toString()
+  /*
   def boardToXml(board: BoardInterface): Elem = {
     <board moves={board.moves.toString} width={board.width.toString} height={board.height.toString}
            lastColor={board.lastColor} status={board.getStatusAsString}>
@@ -143,5 +145,5 @@ class FileIO extends FileIOInterface :
         </white>
       </tiles>
     </player>
-  }
+  } */
 end FileIO

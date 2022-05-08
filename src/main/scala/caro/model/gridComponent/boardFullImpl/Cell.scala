@@ -1,6 +1,6 @@
-package gridComponent.boardFullImpl
+package caro.model.gridComponent.boardFullImpl
 
-import gridComponent.CellInterface
+import caro.model.gridComponent.CellInterface
 
 case class Cell(color: Option[String]) extends CellInterface
 

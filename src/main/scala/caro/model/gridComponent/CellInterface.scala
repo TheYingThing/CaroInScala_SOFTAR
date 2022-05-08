@@ -1,4 +1,4 @@
-package gridComponent
+package caro.model.gridComponent
 
 /**
  * CellInterface declares methods to be implemented in the Cell case classes

@@ -63,10 +63,8 @@ object ControllerAPI {
           },
           path("load") {
             get {
-              println("loading board")
               onComplete(controller.load()) {
                 case Success(value) =>
-                  println("board being loaded: " + controller.boardToString)
                   complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, controller.boardToString))
                 case Failure(exception) => complete(StatusCodes.BadRequest, "Board could not be loaded")
               }

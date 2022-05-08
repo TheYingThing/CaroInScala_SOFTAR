@@ -38,7 +38,6 @@ class ScalaTui():
     responseFuture
       .onComplete {
         case Success(value) =>
-          println(value)
           val boardAsString = Unmarshal(value.entity).to[String]
           boardAsString.onComplete {
             case Success(value) =>

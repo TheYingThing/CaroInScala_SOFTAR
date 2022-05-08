@@ -1,4 +1,4 @@
-package gridComponent.boardFullImpl
+package caro.model.gridComponent.boardFullImpl
 
 import org.scalatest.matchers.*
 import org.scalatest.wordspec.*

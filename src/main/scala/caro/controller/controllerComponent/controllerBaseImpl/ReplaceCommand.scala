@@ -1,6 +1,6 @@
 package caro.controller.controllerComponent.controllerBaseImpl
 
-import gridComponent.BoardInterface
+import caro.model.gridComponent.BoardInterface
 import caro.util.Command
 
 class ReplaceCommand(row:Int, col:Int, color:String, controller:Controller) extends Command :

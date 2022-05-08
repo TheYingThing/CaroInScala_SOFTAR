@@ -1,4 +1,4 @@
-package gridComponent.boardFullImpl
+package caro.model.gridComponent.boardFullImpl
 
 enum GameStatus(message:String) :
   case IDLE extends GameStatus("")

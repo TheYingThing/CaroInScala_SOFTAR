@@ -1,6 +1,6 @@
-package gridComponent.boardFullImpl
+package caro.model.gridComponent.boardFullImpl
 
-import gridComponent.PlayerInterface
+import caro.model.gridComponent.PlayerInterface
 
 import scala.collection.immutable.ListMap
 
