@@ -49,7 +49,7 @@ libraryDependencies += "mysql" % "mysql-connector-java" % "8.0.29"
 
 libraryDependencies += "com.github.slick.slick" % "slick_3" % "nafg~dottyquery-SNAPSHOT"
 
-libraryDependencies += "org.slf4j" % "slf4j-nop" % "2.0.0-alpha7" % Test
+libraryDependencies += "org.slf4j" % "slf4j-nop" % "1.7.36" % Test
 
 resolvers += Resolver.url("scoverage-bintray", url("https://dl.bintray.com/sksamuel/sbt-plugins/"))(Resolver.ivyStylePatterns)
 
