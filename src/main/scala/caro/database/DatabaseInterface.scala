@@ -2,7 +2,10 @@ package caro.database
 
 trait DatabaseInterface :
 
- //TODO: define methods to implement
-
+ def safeToDB() : Unit
+ 
+ def loadFromDB() : Unit
+ 
+ 
 end DatabaseInterface
 

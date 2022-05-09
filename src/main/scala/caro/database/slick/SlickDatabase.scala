@@ -4,16 +4,16 @@ import caro.database.DatabaseInterface
 import caro.database.slick.dataTables.{BoardTable, CellTable, PlayerTable}
 import slick.dbio.DBIO
 import slick.jdbc.JdbcBackend.Database
-import slick.lifted.TableQuery
 import slick.jdbc.MySQLProfile.api.*
 
 import scala.language.postfixOps
 import concurrent.ExecutionContext.Implicits.global
 import scala.util.{Failure, Success}
 
-object DAOSlick extends DatabaseInterface:
+object SlickDatabase extends DatabaseInterface :
 
   @main def run(): Unit = {
+
     val databaseUrl: String = "jdbc:mysql://localhost:3306/carodb"
     val databaseUser: String = "caro"
     val databasePassword: String = "caro"
@@ -22,7 +22,7 @@ object DAOSlick extends DatabaseInterface:
       url = databaseUrl,
       user = databaseUser,
       password = databasePassword,
-      driver = "com.mysql.jdbc.Driver"
+      driver = "com.mysql.cj.jdbc.Driver"
     )
 
     val playerTable = TableQuery[PlayerTable]
@@ -38,5 +38,10 @@ object DAOSlick extends DatabaseInterface:
       case Failure(e) => println(s"Connection Failed: ${e.getMessage}")
     }
   }
-end DAOSlick
+
+  def safeToDB() : Unit = {}
+
+  def loadFromDB() : Unit = {}
+
+end SlickDatabase
 
