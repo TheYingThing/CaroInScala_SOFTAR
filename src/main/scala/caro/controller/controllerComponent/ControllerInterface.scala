@@ -1,5 +1,7 @@
 package caro.controller.controllerComponent
 
+import caro.model.gridComponent.BoardInterface
+import caro.model.gridComponent.boardFullImpl.Board
 import caro.util.Observable
 
 import scala.concurrent.Future
@@ -105,6 +107,16 @@ trait ControllerInterface extends Observable :
    * loads a saved board from a file
    */
   def load():Future[Boolean]
+
+  /**
+   * saves the current board to a file
+   */
+  def saveToDB():Unit
+
+  /**
+   * loads a saved board from a file
+   */
+  def loadFromDB():Board
 
 end ControllerInterface
 

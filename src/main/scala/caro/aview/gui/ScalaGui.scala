@@ -46,6 +46,12 @@ class ScalaGui(controller: ControllerInterface) extends Frame with Observer :
       contents += new MenuItem(Action("Load") {
         controller.load()
       })
+      contents += new MenuItem(Action("Save to DB") {
+        controller.saveToDB()
+      })
+      contents += new MenuItem(Action("Load from DB") {
+        controller.loadFromDB()
+      })
     }
     contents += new Menu("Edit") {
       contents += new MenuItem(Action("undo") {

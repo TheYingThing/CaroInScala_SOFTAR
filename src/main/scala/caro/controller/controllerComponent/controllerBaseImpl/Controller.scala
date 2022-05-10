@@ -13,6 +13,7 @@ import akka.actor.typed.scaladsl.Behaviors
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.*
 import akka.http.scaladsl.unmarshalling.Unmarshal
+import caro.database.DatabaseInterface
 import play.api.libs.json.{JsObject, JsValue, Json}
 
 import scala.collection.immutable.ListMap
@@ -24,6 +25,7 @@ import scala.util.{Failure, Success}
 class Controller @Inject()(var board: BoardInterface) extends ControllerInterface :
   private val undoManager = new UndoManager
   val injector: Injector = Guice.createInjector(new CaroModule)
+  val database: DatabaseInterface = injector.getInstance(classOf[DatabaseInterface])
   val fileIoHost: String = "localhost"
   val fileIoPort: Int = 8080
 
@@ -75,6 +77,14 @@ class Controller @Inject()(var board: BoardInterface) extends ControllerInterfac
   override def getBoardStatus: String = board.getStatusMessage
   override def getCellColor(row: Int, col: Int): String = board.getCell(row, col).getColor
   override def getMoves: Int = board.moves
+
+  def saveToDB():Unit = {
+    database.safeToDB(board)
+  }
+
+  def loadFromDB():Board = {
+    database.loadFromDB()
+  }
 
   override def save(): Unit = {
     val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "SingleRequest")

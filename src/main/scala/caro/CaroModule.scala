@@ -1,6 +1,8 @@
 package caro
 
 import caro.controller.controllerComponent.*
+import caro.database.DatabaseInterface
+import caro.database.slick.SlickDatabase
 import fileIoComponent.*
 import caro.model.gridComponent.boardFullImpl.{Board, Player}
 import caro.model.gridComponent.BoardInterface
@@ -16,5 +18,6 @@ class CaroModule extends AbstractModule :
     bind(classOf[ControllerInterface]).to(classOf[controllerBaseImpl.Controller])
 //    bind(classOf[FileIOInterface]).to(classOf[fileIoXmlImpl.FileIO])
     bind(classOf[FileIOInterface]).to(classOf[fileIoJsonImpl.FileIO])
+    bind(classOf[DatabaseInterface]).to(classOf[database.slick.SlickDatabase])
   }
 end CaroModule
