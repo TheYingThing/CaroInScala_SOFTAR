@@ -23,3 +23,13 @@ libraryDependencies += ("net.codingwell" %% "scala-guice" % "5.0.2").cross(Cross
 libraryDependencies += "com.typesafe.play" %% "play-json" % "2.10.0-RC5"
 
 libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "2.0.1"
+
+libraryDependencies += ("com.typesafe.slick" %% "slick" % "3.3.3").cross(CrossVersion.for3Use2_13)
+
+libraryDependencies += ("com.typesafe.slick" %% "slick-hikaricp" % "3.3.3").cross(CrossVersion.for3Use2_13)
+
+libraryDependencies += "mysql" % "mysql-connector-java" % "8.0.29"
+
+libraryDependencies += "org.slf4j" % "slf4j-nop" % "1.7.36" % Test
+
+libraryDependencies += ("org.mongodb.scala" %% "mongo-scala-driver" % "4.6.0").cross(CrossVersion.for3Use2_13)

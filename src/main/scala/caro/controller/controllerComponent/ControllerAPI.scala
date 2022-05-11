@@ -18,7 +18,7 @@ import scala.util.control.Exception.allCatch
 object ControllerAPI {
 
     val host: String = sys.env.getOrElse("CONTROLLER_HOST", "localhost").toString
-    val port: Int = sys.env.getOrElse("CONTROLLER_PORT", "8080").toString.toInt
+    val port: Int = sys.env.getOrElse("CONTROLLER_PORT", "8081").toString.toInt
 
     val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "my-system")
     given ActorSystem[Any] = system
@@ -69,6 +69,19 @@ object ControllerAPI {
                   complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, controller.boardToString))
                 case Failure(exception) => complete(StatusCodes.BadRequest, "Board could not be loaded")
               }
+            }
+          },
+          path("saveDB") {
+            get {
+              controller.saveToDB()
+              complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, controller.boardToString))
+            }
+          },
+          path("loadDB") {
+            get {
+              controller.loadFromDB()
+              val board = controller.boardToString
+              complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, board))
             }
           },
           path("boardToString") {

@@ -18,7 +18,9 @@ object Tui {
       + "\n\t'redo' - redo most recent undo"
       + "\n\t'quit' - exit game"
       + "\n\t'save' - save current game"
-      + "\n\t'load' - load saved game")
+      + "\n\t'load' - load saved game"
+      + "\n\t'saveDB' - save current game to Database"
+      + "\n\t'loadDB' - load saved game from Database")
 
     var input: String = ""
 

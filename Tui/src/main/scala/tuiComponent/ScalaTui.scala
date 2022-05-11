@@ -30,9 +30,9 @@ class ScalaTui():
         request = request + t
       case None =>
     }
-
+    
     val responseFuture: Future[HttpResponse] = Http().singleRequest(HttpRequest(uri = request))
-
+    
     responseFuture
       .onComplete {
         case Success(value) =>
@@ -41,7 +41,7 @@ class ScalaTui():
             case Success(value) =>
               println(value)
             case Failure(exception) =>
-              println("could not print board")
+              println("could not print board: " + exception.getMessage)
           }
         case Failure(exception) =>
           println("could not update board: " + exception.getMessage)
@@ -62,6 +62,8 @@ class ScalaTui():
         sendRequestAndPrintBoard("put", Option(s"?row=${(cmd(1).toInt+2).toString}&col=${(cmd(2).toInt+2).toString}&color=${cmd(3)}"))
       case "save" => sendRequestAndPrintBoard("save", None)
       case "load" => sendRequestAndPrintBoard("load", None)
+      case "saveDB" => sendRequestAndPrintBoard("saveDB", None)
+      case "loadDB" => sendRequestAndPrintBoard("loadDB", None)
       case "quit" =>
       case _ => println("Not a valid Command!")
     }

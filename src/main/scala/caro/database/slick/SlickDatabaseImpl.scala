@@ -1,7 +1,5 @@
 package caro.database.slick
 
-import caro.dao.DAOInterface
-import caro.dao.slick.DAOSlickImpl
 import caro.database.DatabaseInterface
 import caro.database.slick.dataTables.{BoardTable, CellTable, PlayerTable}
 import caro.model.gridComponent.BoardInterface
@@ -14,7 +12,7 @@ import scala.language.postfixOps
 import concurrent.ExecutionContext.Implicits.global
 import scala.collection.immutable.ListMap
 import scala.collection.mutable.ListBuffer
-import scala.concurrent.Await
+import scala.concurrent.{Await, Future}
 import scala.concurrent.duration.Duration
 import scala.util.{Failure, Success}
 
@@ -35,23 +33,23 @@ class SlickDatabaseImpl extends DatabaseInterface :
   val boardTable = new TableQuery(new BoardTable(_))
   val cellTable = new TableQuery(new CellTable(_))
 
-  def saveToDB(dao: DAOInterface): Unit = {
+  def saveToDB(board: BoardInterface): Unit = {
     val i = (3 to 15).toList
     var cellList: List[(Int, Int, String)] = List()
 
     i.foreach(x =>
       i.foreach(y =>
-        val color: String = dao.board(x)(y).getColor
+        val color: String = board.getCell(x, y).getColor
         if !color.equals("none") then cellList::=(x, y, color)
       )
     )
 
-    val player1 = dao.player1
-    val player2 = dao.player2
+    val player1 = board.player1
+    val player2 = board.player2
 
     val actions = for {
       tables <- (playerTable.schema ++ boardTable.schema ++ cellTable.schema)createIfNotExists;
-      boardId <- (boardTable returning boardTable.map(_.id)) += (0, dao.width, dao.height, dao.moves, dao.lastColor, dao.status.toString)
+      boardId <- (boardTable returning boardTable.map(_.id)) += (0, board.width, board.height, board.moves, board.lastColor, board.status.toString)
       playerId1 <- (playerTable returning playerTable.map(_.id)) += (0, player1.name, player1.tiles("red"), player1.tiles("black"), player1.tiles("grey"), player1.tiles("white"), player1.points, boardId)
       playerId2 <- (playerTable returning playerTable.map(_.id)) += (0, player2.name, player2.tiles("red"), player2.tiles("black"), player2.tiles("grey"), player2.tiles("white"), player2.points, boardId)
       cells <- cellTable ++= cellList.map(cell => (0, cell._1, cell._2, cell._3, boardId))
@@ -63,7 +61,7 @@ class SlickDatabaseImpl extends DatabaseInterface :
     }
   }
 
-  def loadFromDB(): DAOInterface = {
+  def loadFromDB(): BoardInterface = {
     val boardIdQuery = boardTable.sortBy(_.id.desc).take(1).map(_.id)
     val boardId = Await.result(database.run(boardIdQuery.result), Duration.Inf).head
 
@@ -94,9 +92,9 @@ class SlickDatabaseImpl extends DatabaseInterface :
       }
     }
 
-    var loadedBoard = DAOSlickImpl(cellVector, boardResult(1), boardResult(2), boardResult(3), boardResult(4), gameStatus, loadedPlayer1, loadedPlayer2)
-    cells.foreach(c => loadedBoard.copy(board = cellVector.updated(c(1), cellVector(c(1)).updated(c(2), Cell(Some(c(3)))))))
-    println(cells)
+    var loadedBoard = Board(cellVector, boardResult(1), boardResult(2), boardResult(3), boardResult(4), gameStatus, loadedPlayer1, loadedPlayer2)
+    cells.foreach(c => loadedBoard = loadedBoard.updateCell(c(1), c(2), c(3)))
+    println(loadedBoard.toString)
     loadedBoard
   }
 
