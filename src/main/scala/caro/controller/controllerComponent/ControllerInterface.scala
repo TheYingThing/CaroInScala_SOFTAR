@@ -116,7 +116,7 @@ trait ControllerInterface extends Observable :
   /**
    * loads a saved board from a file
    */
-  def loadFromDB():Board
+  def loadFromDB():Unit
 
 end ControllerInterface
 

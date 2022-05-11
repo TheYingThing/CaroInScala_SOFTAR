@@ -29,68 +29,36 @@ class SlickDatabase extends DatabaseInterface :
     driver = "com.mysql.cj.jdbc.Driver"
   )
 
-  val playerTable = TableQuery[PlayerTable]
+  val playerTable = new TableQuery(new PlayerTable(_))
   val boardTable = TableQuery[BoardTable]
   val cellTable = TableQuery[CellTable]
 
   def safeToDB(board: BoardInterface): Unit = {
-    savePlayers(board.player1, board.player2)
-    saveBoard(board)
-    saveCells(board)
-  }
-
-  def savePlayers(player1: Player, player2: Player): Unit = {
-    val players = DBIO.seq(
-      playerTable.schema.createIfNotExists,
-      playerTable += (0, player1.name, player1.tiles("red"), player1.tiles("black"), player1.tiles("grey"), player1.tiles("white"), player1.points),
-      playerTable += (0, player2.name, player2.tiles("red"), player2.tiles("black"), player2.tiles("grey"), player2.tiles("white"), player2.points)
-    )
-
-    database.run(players).andThen {
-      case Success(_) => println("Players Saved")
-      case Failure(e) => println(s"Failed to save Players: ${e.getMessage}")
-    }
-  }
-
-  def saveBoard(board: BoardInterface): Unit = {
-    val playerIdQuery = sql"""SELECT MAX(id) FROM PLAYER""".as[Int]
-    val playerId = Await.result(database.run(playerIdQuery), Duration.Inf).head
-
-    val insert = DBIO.seq(
-      boardTable.schema.createIfNotExists,
-      boardTable += (0, board.width, board.height, board.moves, board.lastColor, board.getStatusAsString, (playerId - 1), playerId)
-    )
-
-    database.run(insert).andThen {
-      case Success(_) => println("Board Saved")
-      case Failure(e) => println(s"Failed to save Board: ${e.getMessage}")
-    }
-  }
-
-  def saveCells(board: BoardInterface): Unit = {
-    val boardIdQuery = sql"""SELECT MAX(id) FROM BOARDS""".as[Int]
-    val boardId = Await.result(database.run(boardIdQuery), Duration.Inf).head
-
     val i = (3 to 15).toList
-    val list: List[(Int, Int, String)] = List()
+    var cellList: List[(Int, Int, String)] = List()
 
     i.foreach(x =>
       i.foreach(y =>
         val color: String = board.getCell(x, y).getColor
-        if !color.equals("none") then (x, y, color) :: list
+        if !color.equals("none") then cellList::=(x, y, color)
       )
     )
 
-    list.foreach(c =>
-      val cell = DBIO.seq(
-        cellTable.schema.createIfNotExists,
-        cellTable += (0, c._1, c._2, c._3, boardId)
-      )
-        database.run(cell).andThen {
-      case Success(_) => println("cell Saved")
-      case Failure(e) => println(s"Failed to save Cell: ${e.getMessage}")
+    val player1 = board.player1
+    val player2 = board.player2
+
+    val actions = for {
+      tables <- (playerTable.schema ++ boardTable.schema ++ cellTable.schema)createIfNotExists;
+      playerId1 <- (playerTable returning playerTable.map(_.id)) += (0, player1.name, player1.tiles("red"), player1.tiles("black"), player1.tiles("grey"), player1.tiles("white"), player1.points)
+      playerId2 <- (playerTable returning playerTable.map(_.id)) += (0, player2.name, player2.tiles("red"), player2.tiles("black"), player2.tiles("grey"), player2.tiles("white"), player2.points)
+      boardId <- (boardTable returning boardTable.map(_.id)) += (0, board.width, board.height, board.moves, board.lastColor, board.getStatusAsString, playerId1, playerId2)
+      cells <- cellTable ++= cellList.map(cell => (0, cell._1, cell._2, cell._3, boardId))
+    } yield (tables, playerId1, playerId2, boardId, cells)
+
+    database.run(actions.transactionally).andThen {
+      case Success(_) => println("Values saved")
+      case Failure(e) => println(s"Failed to save: ${e.getMessage}")
     }
-    )
   }
 
   def loadFromDB(): Board = {
@@ -109,7 +77,7 @@ class SlickDatabase extends DatabaseInterface :
     val player2Query = sql"""SELECT * FROM PLAYER WHERE id = $player2Id""".as[(Int, String, Int, Int, Int, Int, Int)]
     val player2 = Await.result(database.run(player2Query), Duration.Inf).head
 
-    val cellsQuery = sql"""SELECT * FROM CELLS WHERE boardID = $boardId""".as[(Int, Int, Int, String, Int)]
+    val cellsQuery = sql"""SELECT * FROM CELLS WHERE board_id = $boardId""".as[(Int, Int, Int, String, Int)]
     val cells = Await.result(database.run(cellsQuery), Duration.Inf)
 
     val loadedPlayer1 = Player(player1(1), ListMap("red" -> player1(2), "black" -> player1(3), "grey" -> player1(4), "white" -> player1(5)), player1(6))
@@ -127,7 +95,10 @@ class SlickDatabase extends DatabaseInterface :
       }
     }
 
-    Board(cellVector, board(1), board(2), board(3), board(4), gameStatus, loadedPlayer1, loadedPlayer2)
+    var loadedBoard = Board(cellVector, board(1), board(2), board(3), board(4), gameStatus, loadedPlayer1, loadedPlayer2)
+    cells.foreach(c => loadedBoard = loadedBoard.updateCell(c(1), c(2), c(3)))
+    println(loadedBoard.toString)
+    loadedBoard
   }
 
 end SlickDatabase

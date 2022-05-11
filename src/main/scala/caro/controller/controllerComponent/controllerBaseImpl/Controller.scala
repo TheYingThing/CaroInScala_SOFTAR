@@ -80,10 +80,12 @@ class Controller @Inject()(var board: BoardInterface) extends ControllerInterfac
 
   def saveToDB():Unit = {
     database.safeToDB(board)
+    notifyObservers()
   }
 
-  def loadFromDB():Board = {
-    database.loadFromDB()
+  def loadFromDB():Unit = {
+    board = database.loadFromDB()
+    notifyObservers()
   }
 
   override def save(): Unit = {

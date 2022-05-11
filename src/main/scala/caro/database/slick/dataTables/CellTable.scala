@@ -12,8 +12,5 @@ class CellTable(tag: Tag) extends Table[(Int, Int, Int, String, Int)](tag, "CELL
 
   override def * = (id, row, col, color, boardID)
 
-  def board = foreignKey("board_fk", boardID, TableQuery[BoardTable])(_.id, onUpdate=ForeignKeyAction.Restrict, onDelete=ForeignKeyAction.Cascade)
-  
-
 end CellTable
 
