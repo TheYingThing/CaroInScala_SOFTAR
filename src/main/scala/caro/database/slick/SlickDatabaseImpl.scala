@@ -64,30 +64,28 @@ class SlickDatabaseImpl extends DatabaseInterface :
   }
 
   def loadFromDB(): DAOInterface = {
-    val query = for {
-      boardId <- boardTable.sortBy(_.id).take(1).map(_.id)
-      board <- boardTable.filter(_.id === boardId)
-      player1 <- playerTable.filter(_.boardId === boardId).sortBy(_.id).take(1)
-      player2 <- playerTable.filter(_.boardId === boardId).sortBy(_.id).take(2)
-      cells <- cellTable.filter(_.boardID === boardId).to[List]
-    } yield (boardId, board, player1, player2, cells)
+    val boardIdQuery = boardTable.sortBy(_.id.desc).take(1).map(_.id)
+    val boardId = Await.result(database.run(boardIdQuery.result), Duration.Inf).head
 
-    val actions = query.result
+    val boardQuery = boardTable.filter(_.id === boardId)
+    val boardResult = Await.result(database.run(boardQuery.result), Duration.Inf).head
 
-    val results = Await.result(database.run(actions.transactionally), Duration.Inf).head
+    val player1Query = playerTable.filter(_.boardId === boardId).sortBy(_.id).take(1)
+    val player1 = Await.result(database.run(player1Query.result), Duration.Inf).head
 
-    val board = results(1)
-    val p1result = results(2)
-    val p2result = results(3)
-    val cells = results(4)
+    val player2Query = playerTable.filter(_.boardId === boardId).sortBy(_.id).take(2)
+    val player2 = Await.result(database.run(player2Query.result), Duration.Inf).head
 
-    val loadedPlayer1 = Player(p1result(1), ListMap("red" -> p1result(2), "black" -> p1result(3), "grey" -> p1result(4), "white" -> p1result(5)), p1result(6))
-    val loadedPlayer2 = Player(p2result(1), ListMap("red" -> p2result(2), "black" -> p2result(3), "grey" -> p2result(4), "white" -> p2result(5)), p2result(6))
+    val cellsQuery = cellTable.filter(_.boardID === boardId).to[List]
+    val cells = Await.result(database.run(cellsQuery.result), Duration.Inf)
+
+    val loadedPlayer1 = Player(player1(1), ListMap("red" -> player1(2), "black" -> player1(3), "grey" -> player1(4), "white" -> player1(5)), player1(6))
+    val loadedPlayer2 = Player(player2(1), ListMap("red" -> player2(2), "black" -> player2(3), "grey" -> player2(4), "white" -> player2(5)), player2(6))
 
     val cellVector: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None))
 
     val gameStatus: GameStatus = {
-      board(5) match {
+      boardResult(5) match {
         case "IDLE" => GameStatus.IDLE
         case "NOCOLORSLEFT" => GameStatus.NOCOLORSLEFT
         case "ILLEGALMOVE" => GameStatus.ILLEGALMOVE
@@ -96,44 +94,10 @@ class SlickDatabaseImpl extends DatabaseInterface :
       }
     }
 
-    var loadedBoard = DAOSlickImpl(cellVector, board(1), board(2), board(3), board(4), gameStatus, loadedPlayer1, loadedPlayer2)
-    //cells.foreach(c => loadedBoard = loadedBoard.updateCell(c(1), c(2), c(3)))
-    println(loadedBoard.toString)
+    var loadedBoard = DAOSlickImpl(cellVector, boardResult(1), boardResult(2), boardResult(3), boardResult(4), gameStatus, loadedPlayer1, loadedPlayer2)
+    cells.foreach(c => loadedBoard.copy(board = cellVector.updated(c(1), cellVector(c(1)).updated(c(2), Cell(Some(c(3)))))))
     println(cells)
     loadedBoard
-
-    /*val boardIdQuery = sql"""SELECT MAX(id) FROM BOARDS""".as[Int]
-    val boardId = Await.result(database.run(boardIdQuery), Duration.Inf).head
-
-    val boardQuery = sql"""SELECT * FROM BOARDS WHERE id = $boardId""".as[(Int, Int, Int, Int, String, String, Int, Int)]
-    val board = Await.result(database.run(boardQuery), Duration.Inf).head
-
-    val player1Id = board(6)
-    val player2Id = board(7)
-
-    val player1Query = sql"""SELECT * FROM PLAYER WHERE id = $player1Id""".as[(Int, String, Int, Int, Int, Int, Int)]
-    val player1 = Await.result(database.run(player1Query), Duration.Inf).head
-
-    val player2Query = sql"""SELECT * FROM PLAYER WHERE id = $player2Id""".as[(Int, String, Int, Int, Int, Int, Int)]
-    val player2 = Await.result(database.run(player2Query), Duration.Inf).head
-
-    val cellsQuery = sql"""SELECT * FROM CELLS WHERE board_id = $boardId""".as[(Int, Int, Int, String, Int)]
-    val cells = Await.result(database.run(cellsQuery), Duration.Inf)
-
-    val loadedPlayer1 = Player(player1(1), ListMap("red" -> player1(2), "black" -> player1(3), "grey" -> player1(4), "white" -> player1(5)), player1(6))
-    val loadedPlayer2 = Player(player2(1), ListMap("red" -> player2(2), "black" -> player2(3), "grey" -> player2(4), "white" -> player2(5)), player2(6))
-
-    val cellVector: Vector[Vector[Cell]] = Vector.fill(19, 19)(Cell(None))
-
-    val gameStatus: GameStatus = {
-      board(5) match {
-        case "IDLE" => GameStatus.IDLE
-        case "NOCOLORSLEFT" => GameStatus.NOCOLORSLEFT
-        case "ILLEGALMOVE" => GameStatus.ILLEGALMOVE
-        case "INVALIDCOLOR" => GameStatus.INVALIDCOLOR
-        case _ => GameStatus.IDLE
-      }
-    }*/
   }
 
 end SlickDatabaseImpl

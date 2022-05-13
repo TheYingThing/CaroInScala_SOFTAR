@@ -29,7 +29,7 @@ class Controller @Inject()(var board: BoardInterface) extends ControllerInterfac
   val injector: Injector = Guice.createInjector(new CaroModule)
   val fileIoHost: String = "localhost"
   val fileIoPort: Int = 8080
-  val dao:DAOInterface = DAOSlickImpl(board.board, board.width, board.height, board.moves, board.lastColor, board.getStatusAsString, board.player1, board.player2)
+  val dao:DAOInterface = injector.getInstance(classOf[DAOInterface])
 
   def newBoard(p1: String, p2: String): Unit = {
     val p1Opt: Option[String] = Option(p1).filter(_.trim.nonEmpty)
@@ -81,7 +81,7 @@ class Controller @Inject()(var board: BoardInterface) extends ControllerInterfac
   override def getMoves: Int = board.moves
 
   def saveToDB():Unit = {
-    dao.create()
+    dao.create(board.board, board.width, board.height, board.moves, board.lastColor, board.status, board.player1, board.player2)
     notifyObservers()
   }
 

@@ -14,7 +14,7 @@ trait DAOInterface(val board: Vector[Vector[Cell]],
   /**
    * creates a new entry in the database.
    */
-  def create(): Unit
+  def create(boardValue: Vector[Vector[Cell]], widthValue: Int, heightValue: Int, movesValue: Int, lastColorValue: String, statusValue: GameStatus, player1Value: Player, player2Value: Player): Unit
 
   /**
    * Reads the last Board entry in the Database.

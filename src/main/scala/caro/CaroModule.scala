@@ -2,6 +2,7 @@ package caro
 
 import caro.controller.controllerComponent.*
 import caro.dao.DAOInterface
+import caro.dao.slick.DAOSlickImpl
 import caro.database.DatabaseInterface
 import caro.database.slick.SlickDatabaseImpl
 import fileIoComponent.*
@@ -16,10 +17,10 @@ class CaroModule extends AbstractModule :
   override def configure(): Unit = {
 
     bind(classOf[BoardInterface]).toInstance(Board())
+    bind(classOf[DAOInterface]).toInstance(DAOSlickImpl())
     bind(classOf[ControllerInterface]).to(classOf[controllerBaseImpl.Controller])
 //    bind(classOf[FileIOInterface]).to(classOf[fileIoXmlImpl.FileIO])
     bind(classOf[FileIOInterface]).to(classOf[fileIoJsonImpl.FileIO])
     bind(classOf[DatabaseInterface]).to(classOf[database.slick.SlickDatabaseImpl])
-    bind(classOf[DAOInterface]).to(classOf[dao.slick.DAOSlickImpl])
   }
 end CaroModule
