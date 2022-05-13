@@ -47,12 +47,8 @@ libraryDependencies += ("com.typesafe.slick" %% "slick-hikaricp" % "3.3.3").cros
 
 libraryDependencies += "mysql" % "mysql-connector-java" % "8.0.29"
 
-libraryDependencies += "com.github.slick.slick" % "slick_3" % "nafg~dottyquery-SNAPSHOT"
-
 libraryDependencies += "org.slf4j" % "slf4j-nop" % "1.7.36" % Test
 
 resolvers += Resolver.url("scoverage-bintray", url("https://dl.bintray.com/sksamuel/sbt-plugins/"))(Resolver.ivyStylePatterns)
-
-resolvers += "jitpack" at "https://jitpack.io"
 
 coverageExcludedPackages := "*.gui.*"
