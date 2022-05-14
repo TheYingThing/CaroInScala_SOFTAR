@@ -70,10 +70,10 @@ class SlickDatabaseImpl extends DatabaseInterface :
     val boardQuery = boardTable.filter(_.id === boardId)
     val boardResult = Await.result(database.run(boardQuery.result), Duration.Inf).head
 
-    val player1Query = playerTable.filter(_.boardId === boardId).sortBy(_.id).take(1)
+    val player1Query = playerTable.filter(_.boardId === boardId).sortBy(_.id.desc).take(1)
     val player1 = Await.result(database.run(player1Query.result), Duration.Inf).head
 
-    val player2Query = playerTable.filter(_.boardId === boardId).sortBy(_.id).take(2)
+    val player2Query = playerTable.filter(_.boardId === boardId).sortBy(_.id.desc).take(1)
     val player2 = Await.result(database.run(player2Query.result), Duration.Inf).head
 
     val cellsQuery = cellTable.filter(_.boardID === boardId).to[List]
