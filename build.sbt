@@ -4,7 +4,7 @@ version := "0.1"
 organization := "caro.sa"
 scalaVersion := "3.1.1"
 
-lazy val root = (project in file(".")).aggregate(fileIo).dependsOn(fileIo)
+lazy val root = (project in file(".")).aggregate(fileIo, tui).dependsOn(fileIo, tui)
 
 lazy val tui = (project in file("Tui"))
   .settings(
@@ -20,9 +20,6 @@ lazy val fileIo = (project in file("FileIO"))
   .settings(
     name := "Grid"
   )*/
-
-fork in Test := true
-envVars in Test := Map("UI_CONFIG" -> "gui")
 
 libraryDependencies += ("com.typesafe.akka" %% "akka-http" % "10.2.9").cross(CrossVersion.for3Use2_13)
 

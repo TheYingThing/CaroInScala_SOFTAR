@@ -14,8 +14,8 @@ import scala.util.{Failure, Success, Try}
 
 object FileIOAPI {
 
-  val host: String = System.getenv().getOrDefault("FILEIO_HOST", "localhost")
-  val port: Int = System.getenv().getOrDefault("FILEIO_PORT", "8080").toInt
+  val host: String = sys.env.getOrElse("FILEIO_HOST", "localhost").toString
+  val port: Int = sys.env.getOrElse("FILEIO_PORT", "8080").toString.toInt
 
   val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "my-system")
   given ActorSystem[Any] = system
@@ -71,7 +71,12 @@ object FileIOAPI {
         }
       }
     )
+
     val bindingFuture = Http().newServerAt(host, port).bind(route)
+    StdIn.readLine() // let it run until user presses return
+    bindingFuture
+      .flatMap(_.unbind()) // trigger unbinding from the port
+      .onComplete(_ => system.terminate()) // and shutdown when done
   }
 
 

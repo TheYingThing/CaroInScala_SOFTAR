@@ -8,29 +8,36 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - fileio
+      - tui
     stdin_open: true
+    tty: true
     ports:
       - "8081:8081"
-      - "8082:8082"
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
     environment:
-      - DISPLAY=host.docker.internal:0.0
-      - UI_CONFIG=gui
+      - UI_CONFIG=tui
       - FILEIO_PORT=8080
       - FILEIO_HOST=fileio
-      - CONTROLLER_HOST=caro
       - CONTROLLER_PORT=8081
+      - CONTROLLER_HOST=caro
+    networks:
+      - caro-network
   fileio:
     container_name: fileio
     image: fileio:latest
     build:
       context: ./FileIO
       dockerfile: Dockerfile
+    stdin_open: true
     tty: true
     ports:
       - "8080:8080"
     environment:
-      - FILEIO_PORT=8080
       - FILEIO_HOST=fileio
+      - FILEIO_PORT=8080
+    networks:
+      - caro-network
   tui:
     container_name: tui
     image: tui:latest
@@ -44,3 +51,10 @@ services:
     environment:
       - CONTROLLER_HOST=caro
       - CONTROLLER_PORT=8081
+    networks:
+     - caro-network
+networks:
+  caro-network:
+    driver: bridge
+    ipam:
+      driver: default

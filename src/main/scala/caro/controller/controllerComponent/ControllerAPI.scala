@@ -7,17 +7,18 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity, StatusCodes}
 import akka.http.scaladsl.server.Route
 import caro.Caro.injector
+import fileIoComponent.FileIOAPI.system
 
 import scala.concurrent
 import scala.concurrent.{ExecutionContextExecutor, Future}
 import scala.io.StdIn
-import scala.util.{Success, Failure}
+import scala.util.{Failure, Success}
 import scala.util.control.Exception.allCatch
 
 object ControllerAPI {
 
-    val host: String = System.getenv().getOrDefault("CONTROLLER_HOST", "localhost")
-    val port: Int = System.getenv().getOrDefault("CONTROLLER_PORT", "8081").toInt
+    val host: String = sys.env.getOrElse("CONTROLLER_HOST", "localhost").toString
+    val port: Int = sys.env.getOrElse("CONTROLLER_PORT", "8080").toString.toInt
 
     val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "my-system")
     given ActorSystem[Any] = system
@@ -77,6 +78,16 @@ object ControllerAPI {
           }
         )
 
-      Http().newServerAt(host, port).bind(route)
+      
+      val bindingFuture = Http().newServerAt(host, port).bind(route)
+      wait(bindingFuture)
+    }
+    
+    def wait(bindingFuture: Future[Http.ServerBinding]): Unit = {
+      StdIn.readLine() // let it run until user presses return
+      bindingFuture
+        .flatMap(_.unbind()) // trigger unbinding from the port
+        .onComplete(_ => system.terminate()) // and shutdown when done
+
     }
 }

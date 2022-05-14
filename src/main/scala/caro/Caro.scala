@@ -16,10 +16,11 @@ object Caro:
   var board = new Board
   val injector: Injector = Guice.createInjector(new CaroModule)
   val controller: ControllerInterface = injector.getInstance(classOf[ControllerInterface])
-  val controllerAPI: Future[Http.ServerBinding] = ControllerAPI(controller)
 
   @main def run(): Unit = {
 
+    val controllerAPI: Unit = ControllerAPI(controller)
+    
     if UICONFIG.equals("gui") then
       val gui = new ScalaGui(controller)
       gui.update
