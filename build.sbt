@@ -49,6 +49,8 @@ libraryDependencies += "mysql" % "mysql-connector-java" % "8.0.29"
 
 libraryDependencies += "org.slf4j" % "slf4j-nop" % "1.7.36" % Test
 
+libraryDependencies += ("org.mongodb.scala" %% "mongo-scala-driver" % "4.6.0").cross(CrossVersion.for3Use2_13)
+
 resolvers += Resolver.url("scoverage-bintray", url("https://dl.bintray.com/sksamuel/sbt-plugins/"))(Resolver.ivyStylePatterns)
 
 coverageExcludedPackages := "*.gui.*"

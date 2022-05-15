@@ -35,7 +35,7 @@ class SlickDatabaseImpl extends DatabaseInterface :
   val boardTable = new TableQuery(new BoardTable(_))
   val cellTable = new TableQuery(new CellTable(_))
 
-  def safeToDB(dao: DAOInterface): Unit = {
+  def saveToDB(dao: DAOInterface): Unit = {
     val i = (3 to 15).toList
     var cellList: List[(Int, Int, String)] = List()
 

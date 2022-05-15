@@ -34,7 +34,7 @@ case class DAOSlickImpl(override val board: Vector[Vector[Cell]] = Vector.fill(1
 
   def create(boardValue: Vector[Vector[Cell]], widthValue: Int, heightValue: Int, movesValue: Int, lastColorValue: String, statusValue: GameStatus, player1Value: Player, player2Value: Player): Unit = {
     val daoToSave = DAOSlickImpl(boardValue, widthValue, heightValue, movesValue, lastColorValue, statusValue, player1Value, player2Value)
-    database.safeToDB(daoToSave)
+    database.saveToDB(daoToSave)
   }
 
   def read(): DAOInterface = {

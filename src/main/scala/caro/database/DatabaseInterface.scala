@@ -6,7 +6,7 @@ import caro.model.gridComponent.boardFullImpl.Board
 
 trait DatabaseInterface :
 
- def safeToDB(dao: DAOInterface) : Unit
+ def saveToDB(dao: DAOInterface) : Unit
  
  def loadFromDB() : DAOInterface
 
