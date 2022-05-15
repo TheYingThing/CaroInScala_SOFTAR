@@ -4,7 +4,7 @@ version := "0.1"
 organization := "caro.sa"
 scalaVersion := "3.1.1"
 
-lazy val root = (project in file(".")).aggregate(fileIo).dependsOn(fileIo)
+lazy val root = (project in file(".")).aggregate(fileIo, tui).dependsOn(fileIo, tui)
 
 lazy val tui = (project in file("Tui"))
   .settings(

@@ -1,5 +1,5 @@
-FROM hseeberger/scala-sbt:8u222_1.3.5_2.13.1
-EXPOSE 8081
+FROM hseeberger/scala-sbt:17.0.2_1.6.2_3.1.1
 WORKDIR /fileIoComponent
 ADD . /fileIoComponent
+RUN sbt compile
 CMD sbt run

@@ -10,8 +10,8 @@ import scala.concurrent.{ExecutionContextExecutor, Future}
 import scala.util.{Failure, Success}
 
 class ScalaTui():
-  val controllerHost = "localhost"
-  val controllerPort = 8081
+  val controllerHost: String = sys.env.getOrElse("CONTROLLER_HOST", "localhost").toString
+  val controllerPort: Int = sys.env.getOrElse("CONTROLLER_PORT", "8081").toString.toInt
   val center = 9
 
   val endpoint = s"http://$controllerHost:$controllerPort/"
@@ -27,10 +27,8 @@ class ScalaTui():
     var request = endpoint + path
     params match {
       case Some(t) =>
-        println(t)
         request = request + t
       case None =>
-        println("no params")
     }
 
     val responseFuture: Future[HttpResponse] = Http().singleRequest(HttpRequest(uri = request))
@@ -46,7 +44,7 @@ class ScalaTui():
               println("could not print board")
           }
         case Failure(exception) =>
-          println("could not update board")
+          println("could not update board: " + exception.getMessage)
       }
   }
 
@@ -54,7 +52,7 @@ class ScalaTui():
     val command = input.split(" ").toList
     command.head match {
       case "board" => sendRequestAndPrintBoard("boardToString", None)
-      case "first" => sendRequestAndPrintBoard("put", Option(s"?row=${center.toString}&column=${center.toString}&${command.tail.head}"))
+      case "first" => sendRequestAndPrintBoard("put", Option(s"?row=${center.toString}&col=${center.toString}&color=${command.tail.head}"))
       case "player1" => sendRequestAndPrintBoard("newBoard", Option(s"?player1=${command.tail.head}&player2="))
       case "player2" => sendRequestAndPrintBoard("newBoard", Option(s"?player1=&player2=${command.tail.head}") )
       case "undo" => sendRequestAndPrintBoard("undo", None)

@@ -1,0 +1,60 @@
+version: '3.9'
+services:
+  caro:
+    container_name: caro
+    image: caro:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - fileio
+      - tui
+    stdin_open: true
+    tty: true
+    ports:
+      - "8081:8081"
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    environment:
+      - UI_CONFIG=tui
+      - FILEIO_PORT=8080
+      - FILEIO_HOST=fileio
+      - CONTROLLER_PORT=8081
+      - CONTROLLER_HOST=caro
+    networks:
+      - caro-network
+  fileio:
+    container_name: fileio
+    image: fileio:latest
+    build:
+      context: ./FileIO
+      dockerfile: Dockerfile
+    stdin_open: true
+    tty: true
+    ports:
+      - "8080:8080"
+    environment:
+      - FILEIO_HOST=fileio
+      - FILEIO_PORT=8080
+    networks:
+      - caro-network
+  tui:
+    container_name: tui
+    image: tui:latest
+    build:
+      context: ./Tui
+      dockerfile: Dockerfile
+    stdin_open: true
+    tty: true
+    ports:
+      - "8083:8083"
+    environment:
+      - CONTROLLER_HOST=caro
+      - CONTROLLER_PORT=8081
+    networks:
+     - caro-network
+networks:
+  caro-network:
+    driver: bridge
+    ipam:
+      driver: default
