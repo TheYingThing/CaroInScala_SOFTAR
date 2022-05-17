@@ -1,14 +1,13 @@
 package caro.database
 
-import caro.dao.DAOInterface
 import caro.model.gridComponent.BoardInterface
 import caro.model.gridComponent.boardFullImpl.Board
 
 trait DatabaseInterface :
 
- def safeToDB(dao: DAOInterface) : Unit
+ def safeToDB(board: BoardInterface) : Unit
  
- def loadFromDB() : DAOInterface
+ def loadFromDB() : BoardInterface
 
 end DatabaseInterface
 
