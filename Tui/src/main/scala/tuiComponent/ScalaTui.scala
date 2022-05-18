@@ -10,7 +10,7 @@ import scala.concurrent.{ExecutionContextExecutor, Future}
 import scala.util.{Failure, Success}
 
 class ScalaTui():
-  val controllerHost: String = sys.env.getOrElse("CONTROLLER_HOST", "localhost").toString
+  val controllerHost: String = sys.env.getOrElse("CONTROLLER_HOST", "127.0.0.1").toString
   val controllerPort: Int = sys.env.getOrElse("CONTROLLER_PORT", "8081").toString.toInt
   val center = 9
 

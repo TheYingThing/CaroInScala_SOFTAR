@@ -17,7 +17,7 @@ import scala.util.control.Exception.allCatch
 
 object ControllerAPI {
 
-    val host: String = sys.env.getOrElse("CONTROLLER_HOST", "localhost").toString
+    val host: String = sys.env.getOrElse("CONTROLLER_HOST", "127.0.0.1").toString
     val port: Int = sys.env.getOrElse("CONTROLLER_PORT", "8081").toString.toInt
 
     val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "my-system")

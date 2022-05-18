@@ -27,7 +27,7 @@ import scala.util.{Failure, Success}
 class Controller @Inject()(var board: BoardInterface) extends ControllerInterface :
   private val undoManager = new UndoManager
   val injector: Injector = Guice.createInjector(new CaroModule)
-  val fileIoHost: String = sys.env.getOrElse("FILEIO_HOST", "localhost").toString
+  val fileIoHost: String = sys.env.getOrElse("FILEIO_HOST", "127.0.0.1").toString
   val fileIoPort: Int = sys.env.getOrElse("FILEIO_PORT", "8080").toString.toInt
   val database:DatabaseInterface = injector.getInstance(classOf[DatabaseInterface])
   val jsonService = JsonService
