@@ -49,7 +49,7 @@ class SlickDatabaseImpl extends DatabaseInterface :
 
     val actions = for {
       tables <- (playerTable.schema ++ boardTable.schema ++ cellTable.schema)createIfNotExists;
-      boardId <- (boardTable returning boardTable.map(_.id)) += (0, board.width, board.height, board.moves, board.lastColor, board.status.toString)
+      boardId <- (boardTable returning boardTable.map(_.id)) += (0, board.width, board.height, board.moves, board.lastColor, board.getStatusAsString)
       playerId1 <- (playerTable returning playerTable.map(_.id)) += (0, player1.name, player1.tiles("red"), player1.tiles("black"), player1.tiles("grey"), player1.tiles("white"), player1.points, boardId)
       playerId2 <- (playerTable returning playerTable.map(_.id)) += (0, player2.name, player2.tiles("red"), player2.tiles("black"), player2.tiles("grey"), player2.tiles("white"), player2.points, boardId)
       cells <- cellTable ++= cellList.map(cell => (0, cell._1, cell._2, cell._3, boardId))
@@ -68,11 +68,11 @@ class SlickDatabaseImpl extends DatabaseInterface :
     val boardQuery = boardTable.filter(_.id === boardId)
     val boardResult = Await.result(database.run(boardQuery.result), Duration.Inf).head
 
-    val player1Query = playerTable.filter(_.boardId === boardId).sortBy(_.id.desc).take(1)
-    val player1 = Await.result(database.run(player1Query.result), Duration.Inf).head
+    val playersQuery = playerTable.filter(_.boardId === boardId).to[List]
+    val players = Await.result(database.run(playersQuery.result), Duration.Inf)
 
-    val player2Query = playerTable.filter(_.boardId === boardId).sortBy(_.id.desc).take(1)
-    val player2 = Await.result(database.run(player2Query.result), Duration.Inf).head
+    val player1 = players(0)
+    val player2 = players(1)
 
     val cellsQuery = cellTable.filter(_.boardID === boardId).to[List]
     val cells = Await.result(database.run(cellsQuery.result), Duration.Inf)
@@ -93,10 +93,8 @@ class SlickDatabaseImpl extends DatabaseInterface :
     }
 
     var loadedBoard = Board(cellVector, boardResult(1), boardResult(2), boardResult(3), boardResult(4), gameStatus, loadedPlayer1, loadedPlayer2)
-    cells.foreach(c => loadedBoard = loadedBoard.updateCell(c(1), c(2), c(3)))
-    println(loadedBoard.toString)
+    cells.foreach(c => loadedBoard = loadedBoard.updateCell(c._2, c._3, c._4))
     loadedBoard
   }
 
 end SlickDatabaseImpl
-

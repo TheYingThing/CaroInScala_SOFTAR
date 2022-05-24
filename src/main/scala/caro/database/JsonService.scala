@@ -17,7 +17,6 @@ object JsonService {
     val moves = (file \ "board" \ "moves").get.toString.toInt
     val height = (file \ "board" \ "height").get.toString.toInt
     val width = (file \ "board" \ "width").get.toString.toInt
-    val lastColor = (file \ "board" \ "lastColor").get.toString
     val status = (file \ "board" \ "status").get.toString
     val gameStatus: GameStatus = {
       status match {
@@ -33,6 +32,8 @@ object JsonService {
     val player2val = (file \ "board" \ "player2").get.as[JsValue]
     val player1 = loadPlayer(player1val)
     val player2 = loadPlayer(player2val)
+
+    val lastColor = ""
 
     var board = Board(width = width, height = height, moves = moves, lastColor = lastColor, status = gameStatus,
       player1 = player1, player2 = player2)
@@ -81,7 +82,6 @@ object JsonService {
         "player1" -> playerToJson(board.player1),
         "player2" -> playerToJson(board.player2),
         "moves" -> board.moves,
-        "lastColor" -> board.lastColor,
         "height" -> board.height,
         "width" -> board.width,
         "status" -> board.getStatusAsString))

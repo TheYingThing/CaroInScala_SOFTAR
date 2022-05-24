@@ -21,6 +21,8 @@ import concurrent.duration.DurationInt
 class MongoDBImpl() extends DatabaseInterface:
   val uri: String = "mongodb+srv://caro:caro_123@carodb.ydmgk.mongodb.net/CaroPersistence?retryWrites=true&w=majority"
   System.setProperty("org.mongodb.async.type", "netty")
+
+  //val uri: String = "mongodb://127.0.0.1:27017/"
   val client: MongoClient = MongoClient(uri)
   val db: MongoDatabase = client.getDatabase("CaroPersistence")
   val collection: MongoCollection[Document] = db.getCollection("GameFiles")

@@ -16,14 +16,16 @@ object Caro:
   var board = new Board
   val injector: Injector = Guice.createInjector(new CaroModule)
   val controller: ControllerInterface = injector.getInstance(classOf[ControllerInterface])
+  val gui = new ScalaGui(controller)
 
   @main def run(): Unit = {
 
-    val controllerAPI: Unit = ControllerAPI(controller)
-    
     if UICONFIG.equals("gui") then
-      val gui = new ScalaGui(controller)
       gui.update
       gui.visible = true
+
+
+    val controllerAPI: Unit = ControllerAPI(controller)
+
   }
 end Caro
