@@ -19,11 +19,10 @@ object Caro:
 
   @main def run(): Unit = {
 
-    val controllerAPI: Unit = ControllerAPI(controller)
-    
     if UICONFIG.equals("gui") then
       val gui = new ScalaGui(controller)
       gui.update
       gui.visible = true
+    val controllerAPI: Unit = ControllerAPI(controller)
   }
 end Caro
