@@ -31,8 +31,8 @@ case class Board(override val board: Vector[Vector[Cell]] = Vector.fill(19, 19)(
   def updatePlayerOne (player: Player): Board = copy (player1 = player)
   def updatePlayerTwo (player: Player): Board = copy (player2 = player)
   def updateCell (row: Int, col: Int, color: String): Board = {
-  val newcell: Cell = if (color.equals ("none") ) Cell (None) else Cell (Some (color) )
-  copy (board.updated (row, board (row).updated (col, newcell) ) )
+    val newcell: Cell = if (color.equals ("none") ) Cell (None) else Cell (Some (color) )
+    copy (board.updated (row, board (row).updated (col, newcell) ) )
   }
 
   //-----------------CHECKS--------------------
@@ -40,49 +40,49 @@ case class Board(override val board: Vector[Vector[Cell]] = Vector.fill(19, 19)(
   def isEmpty: Boolean = ! (board exists (v => v exists (c => c.isOccupied) ) )
   def rowEmpty (row: Int): Boolean = ! (board (row) exists (c => c.isOccupied) )
   def colEmpty (col: Int): Boolean = {
-  var occ = true
-  (3 to 15).toList.foreach (x => {
-  if board (x) (col).isOccupied then
-  occ = false
-  })
-  occ
+    var occ = true
+    (3 to 15).toList.foreach (x => {
+      if board (x) (col).isOccupied then
+      occ = false
+    })
+    occ
   }
 
   //----------------------BOARDFUNCTIONS------------------------------------------------------------------------------
 
   def validColor (color: String, player: Player): Try[Int] = Try (player.tiles (color) )
   def updatePlayer (row: Int, col: Int, color: String, player: Player): (Player, GameStatus) = {
-  val oldValue: Try[Int] = validColor (color, player)
-  oldValue match {
-  case Success (value) =>
-  if value == 0 then
-  return (player, GameStatus.NOCOLORSLEFT)
-
-  val ntiles = player.tiles.updated (color, value - 1)
-  var npoints = 0
-  if this.isEmpty then
-  npoints = player.points + 10
-  else if ntiles (color) == 0 then
-  npoints = player.points + (newPoints (row, col, color) * 2)
-  else
-  npoints = player.points + newPoints (row, col, color)
-
-  (player.copy (tiles = ntiles, points = npoints), GameStatus.IDLE)
-
-  case Failure (exception) => (player, GameStatus.INVALIDCOLOR)
-  }
+    val oldValue: Try[Int] = validColor (color, player)
+    oldValue match {
+      case Success (value) =>
+      if value == 0 then
+      return (player, GameStatus.NOCOLORSLEFT)
+    
+      val ntiles = player.tiles.updated (color, value - 1)
+      var npoints = 0
+      if this.isEmpty then
+      npoints = player.points + 10
+      else if ntiles (color) == 0 then
+      npoints = player.points + (newPoints (row, col, color) * 2)
+      else
+      npoints = player.points + newPoints (row, col, color)
+    
+      (player.copy (tiles = ntiles, points = npoints), GameStatus.IDLE)
+    
+      case Failure (exception) => (player, GameStatus.INVALIDCOLOR)
+    }
   }
 
   def updateField (int: Int, current: Int, empty: Int => Boolean): Int = {
-  val currentValue = current
-  val newValue = if (this.isEmpty || empty (int) ) currentValue + 1 else currentValue
-  newValue
+    val currentValue = current
+    val newValue = if (this.isEmpty || empty (int) ) currentValue + 1 else currentValue
+    newValue
   }
 
   def updatedWidth (col: Int): Int = updateField (col, this.width, colEmpty)
   def updatedHeight (row: Int): Int = updateField (row, this.height, rowEmpty)
   def replace (strategy: CellReplacementStrategy, status: GameStatus) (row: Int, col: Int, color: String): Board = {
-  strategy.newBoard (row, col, color, this, status)
+    strategy.newBoard (row, col, color, this, status)
   }
 
   def replaceCell (row: Int, col: Int, color: String): Board = {

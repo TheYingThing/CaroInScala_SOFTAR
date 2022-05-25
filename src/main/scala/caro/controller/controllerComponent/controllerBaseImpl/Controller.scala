@@ -35,21 +35,19 @@ class Controller @Inject()(var board: BoardInterface) extends ControllerInterfac
   def newBoard(p1: String, p2: String): Unit = {
     val p1Opt: Option[String] = Option(p1).filter(_.trim.nonEmpty)
     val p2Opt: Option[String] = Option(p2).filter(_.trim.nonEmpty)
-    val p1Name: String = board.player1.name
-    val p2Name: String = board.player2.name
 
     board = injector.getInstance(classOf[BoardInterface])
     p1Opt match {
       case Some(t) =>
         val nplayer1: Player = Player(t)
-        val nplayer2: Player = Player(p2Name)
+        val nplayer2: Player = Player(board.player2.name)
         board = board.updatePlayerOne(nplayer1)
         board = board.updatePlayerTwo(nplayer2)
       case None =>
     }
     p2Opt match {
       case Some(t) =>
-        val nplayer1: Player = Player(p1Name)
+        val nplayer1: Player = Player(board.player1.name)
         val nplayer2: Player = Player(t)
          board = board.updatePlayerTwo(nplayer2)
          board = board.updatePlayerOne(nplayer1)
