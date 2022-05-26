@@ -10,7 +10,7 @@ trait DatabaseInterface :
 
  def saveToDB(board:BoardInterface) : Unit
  
- def loadFromDB() : BoardInterface
+ def loadFromDB() : Future[BoardInterface]
 
 end DatabaseInterface
 

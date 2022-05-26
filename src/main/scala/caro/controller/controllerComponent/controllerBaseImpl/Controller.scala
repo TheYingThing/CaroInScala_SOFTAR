@@ -85,8 +85,14 @@ class Controller @Inject()(var board: BoardInterface) extends ControllerInterfac
   }
 
   def loadFromDB():Unit = {
-    board = database.loadFromDB()
-    notifyObservers()
+    database.loadFromDB().onComplete {
+      case Success(boardInterface) =>
+        println(boardInterface)
+        board = boardInterface
+        notifyObservers()
+      case Failure(exception) =>
+        println("could not load board from Database: " + exception.getMessage)
+    }
   }
 
   override def save(): Unit = {

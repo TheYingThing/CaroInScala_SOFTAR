@@ -66,7 +66,11 @@ object ControllerAPI {
             get {
               onComplete(controller.load()) {
                 case Success(value) =>
-                  complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, controller.boardToString))
+                  if(value) {
+                    complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, controller.boardToString))
+                  } else {
+                    complete(StatusCodes.BadRequest, "Board could not be loaded")
+                  }
                 case Failure(exception) => complete(StatusCodes.BadRequest, "Board could not be loaded")
               }
             }

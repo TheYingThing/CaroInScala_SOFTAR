@@ -61,7 +61,7 @@ class SlickDatabaseImpl extends DatabaseInterface :
     }
   }
 
-  def loadFromDB(): BoardInterface = {
+  def loadFromDB(): Future[BoardInterface] = {
     val boardIdQuery = boardTable.sortBy(_.id.desc).take(1).map(_.id)
     val boardId = Await.result(database.run(boardIdQuery.result), Duration.Inf).head
 
@@ -94,7 +94,7 @@ class SlickDatabaseImpl extends DatabaseInterface :
 
     var loadedBoard = Board(cellVector, boardResult(1), boardResult(2), boardResult(3), boardResult(4), gameStatus, loadedPlayer1, loadedPlayer2)
     cells.foreach(c => loadedBoard = loadedBoard.updateCell(c._2, c._3, c._4))
-    loadedBoard
+    Future{loadedBoard}
   }
 
 end SlickDatabaseImpl
