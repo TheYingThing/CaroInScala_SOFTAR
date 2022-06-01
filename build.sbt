@@ -53,4 +53,8 @@ libraryDependencies += ("org.mongodb.scala" %% "mongo-scala-driver" % "4.6.0").c
 
 resolvers += Resolver.url("scoverage-bintray", url("https://dl.bintray.com/sksamuel/sbt-plugins/"))(Resolver.ivyStylePatterns)
 
-coverageExcludedPackages := "*.gui.*"
+jacocoExcludes := Seq(
+  "caro.aview.gui.ScalaGui"
+)
+
+enablePlugins(JacocoCoverallsPlugin)

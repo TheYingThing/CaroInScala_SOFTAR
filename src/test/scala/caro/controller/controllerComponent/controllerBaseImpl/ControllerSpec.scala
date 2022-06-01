@@ -123,8 +123,12 @@ class ControllerSpec extends AnyWordSpec with should.Matchers :
     "load a board" in {
       cont3.newBoard("", "")
       cont3.board.getCell(9, 9).getColor should be("none")
+      cont3.putCell(9, 9, "black")
+      cont3.board.getCell(9, 9).getColor should be("black")
+      cont3.save()
+      cont3.newBoard("", "")
       cont3.load()
-      cont3.board.getCell(9, 9).getColor.trim should be("red")
+      cont3.board.getCell(9, 9).getColor.trim should be("none")
     }
   }
 end ControllerSpec
