@@ -10,7 +10,7 @@ import caro.Caro.injector
 import fileIoComponent.FileIOAPI.system
 
 import scala.concurrent
-import scala.concurrent.{ExecutionContextExecutor, Future}
+import scala.concurrent.{Await, ExecutionContextExecutor, Future}
 import scala.io.StdIn
 import scala.util.{Failure, Success}
 import scala.util.control.Exception.allCatch
@@ -69,7 +69,7 @@ object ControllerAPI {
                   if(value) {
                     complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, controller.boardToString))
                   } else {
-                    complete(StatusCodes.BadRequest, "Board could not be loaded")
+                    complete(StatusCodes.BadRequest, "Board was loaded")
                   }
                 case Failure(exception) => complete(StatusCodes.BadRequest, "Board could not be loaded")
               }

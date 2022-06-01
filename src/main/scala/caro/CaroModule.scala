@@ -18,6 +18,6 @@ class CaroModule extends AbstractModule :
     bind(classOf[ControllerInterface]).to(classOf[controllerBaseImpl.Controller])
 //    bind(classOf[FileIOInterface]).to(classOf[fileIoXmlImpl.FileIO])
     bind(classOf[FileIOInterface]).to(classOf[fileIoJsonImpl.FileIO])
-    bind(classOf[DatabaseInterface]).to(classOf[database.mongoDB.MongoDBImpl])
+    bind(classOf[DatabaseInterface]).to(classOf[database.slick.SlickDatabaseImpl])
   }
 end CaroModule

@@ -16,10 +16,11 @@ import akka.http.scaladsl.unmarshalling.Unmarshal
 import caro.database.DatabaseInterface
 import caro.database.JsonService
 import play.api.libs.json.{JsObject, JsValue, Json}
-import scala.concurrent.ExecutionContext.Implicits.global
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.collection.immutable.ListMap
-import scala.concurrent.{ExecutionContextExecutor, Future}
+import scala.concurrent.duration.Duration
+import scala.concurrent.{Await, ExecutionContextExecutor, Future}
 import scala.util
 import scala.util.{Failure, Success}
 
@@ -85,13 +86,15 @@ class Controller @Inject()(var board: BoardInterface) extends ControllerInterfac
   }
 
   def loadFromDB():Unit = {
-    database.loadFromDB().onComplete {
-      case Success(boardInterface) =>
-        println(boardInterface)
-        board = boardInterface
-        notifyObservers()
-      case Failure(exception) =>
-        println("could not load board from Database: " + exception.getMessage)
+    val loadedBoard = Await.ready(database.loadFromDB(), Duration.Inf).value.get
+
+      loadedBoard match {
+        case Success(value) =>
+          println(value)
+          board = value
+          notifyObservers()
+        case Failure(exception) =>
+          println("could not load board from Database: " + exception.getMessage)
     }
   }
 
