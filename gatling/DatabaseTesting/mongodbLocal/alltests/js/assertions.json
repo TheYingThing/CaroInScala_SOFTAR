@@ -1,0 +1,10 @@
+{
+  "simulation": "test.AllTests",
+  "simulationId": "alltests",
+  "start": 1653464567207,
+  "description": "",
+  "scenarios": ["load", "stress", "volume", "endurance", "spike"],
+  "assertions": [
+
+  ]
+}
