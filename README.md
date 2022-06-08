@@ -1,5 +1,5 @@
 # Caro
-[![Build Status](https://app.travis-ci.com/TheYingThing/CaroInScala_SOFTAR.svg?branch=w1_migration_tests)](https://app.travis-ci.com/TheYingThing/CaroInScala_SOFTAR?branch=w1_migration_tests)
+[![Scala CI](https://github.com/TheYingThing/CaroInScala_SOFTAR/actions/workflows/scala.yml/badge.svg?branch=master)](https://github.com/TheYingThing/CaroInScala_SOFTAR/actions/workflows/scala.yml)
 [![Coverage Status](https://coveralls.io/repos/github/TheYingThing/CaroInScala_SOFTAR/badge.svg?branch=master)](https://coveralls.io/github/TheYingThing/CaroInScala_SOFTAR?branch=master)
 
 ## Description
