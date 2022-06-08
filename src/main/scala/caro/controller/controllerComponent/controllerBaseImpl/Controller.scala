@@ -13,8 +13,6 @@ import akka.actor.typed.scaladsl.Behaviors
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.*
 import akka.http.scaladsl.unmarshalling.Unmarshal
-import caro.dao.DAOInterface
-import caro.dao.slick.DAOSlickImpl
 import caro.database.DatabaseInterface
 import play.api.libs.json.{JsObject, JsValue, Json}
 
@@ -30,6 +28,9 @@ class Controller @Inject()(var board: BoardInterface) extends ControllerInterfac
   val fileIoHost: String = sys.env.getOrElse("FILEIO_HOST", "localhost").toString
   val fileIoPort: Int = sys.env.getOrElse("FILEIO_PORT", "8080").toString.toInt
   val dao:DAOInterface = injector.getInstance(classOf[DAOInterface])
+  val fileIoHost: String = "localhost"
+  val fileIoPort: Int = 8080
+  val database:DatabaseInterface = injector.getInstance(classOf[DatabaseInterface])
 
   def newBoard(p1: String, p2: String): Unit = {
     val p1Opt: Option[String] = Option(p1).filter(_.trim.nonEmpty)
@@ -81,13 +82,12 @@ class Controller @Inject()(var board: BoardInterface) extends ControllerInterfac
   override def getMoves: Int = board.moves
 
   def saveToDB():Unit = {
-    dao.create(board.board, board.width, board.height, board.moves, board.lastColor, board.status, board.player1, board.player2)
+    database.safeToDB(board)
     notifyObservers()
   }
 
   def loadFromDB():Unit = {
-    val boardDAO = dao.read()
-    board = Board(boardDAO.board, boardDAO.width, boardDAO.height, boardDAO.moves, boardDAO.lastColor, boardDAO.status, boardDAO.player1, boardDAO.player2)
+    board = database.loadFromDB()
     notifyObservers()
   }
 
