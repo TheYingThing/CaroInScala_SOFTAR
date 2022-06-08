@@ -1,6 +1,10 @@
 package caro.controller.controllerComponent
 
-import caro.util.*
+import caro.model.gridComponent.BoardInterface
+import caro.model.gridComponent.boardFullImpl.Board
+import caro.util.Observable
+
+import scala.concurrent.Future
 
 /**
  * ControllerInterface includes all methods needed to play and manage the game.
@@ -18,7 +22,7 @@ trait ControllerInterface extends Observable :
    * @param p1 String
    * @param p2 String
    */
-  def newBoard(p1:String, p2:String):Unit
+  def newBoard(p1: String, p2: String):Unit
 
   /**
    * boardToString returns the current board as a String.
@@ -102,7 +106,17 @@ trait ControllerInterface extends Observable :
   /**
    * loads a saved board from a file
    */
-  def load():Unit
+  def load():Future[Boolean]
+
+  /**
+   * saves the current board to a file
+   */
+  def saveToDB():Unit
+
+  /**
+   * loads a saved board from a file
+   */
+  def loadFromDB():Unit
 
 end ControllerInterface
 

@@ -4,6 +4,7 @@ scala:
 
 script:
 - sbt clean coverage test coverageReport
+- sbt ++$TRAVIS_SCALA_VERSION coverage test coverageReport
 
 after_success:
 - sbt coverageReport coveralls

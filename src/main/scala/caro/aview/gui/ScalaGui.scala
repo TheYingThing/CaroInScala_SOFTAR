@@ -1,6 +1,5 @@
 package caro.aview.gui
 
-
 import caro.controller.controllerComponent.*
 import caro.util.Observer
 
@@ -12,6 +11,7 @@ import javax.swing.{BorderFactory, ImageIcon}
 import scala.swing.*
 import scala.swing.BorderPanel.Position.*
 import scala.swing.event.ButtonClicked
+import scala.util.control.Exception.allCatch
 
 
 class ScalaGui(controller: ControllerInterface) extends Frame with Observer :
@@ -45,6 +45,12 @@ class ScalaGui(controller: ControllerInterface) extends Frame with Observer :
       })
       contents += new MenuItem(Action("Load") {
         controller.load()
+      })
+      contents += new MenuItem(Action("Save to DB") {
+        controller.saveToDB()
+      })
+      contents += new MenuItem(Action("Load from DB") {
+        controller.loadFromDB()
       })
     }
     contents += new Menu("Edit") {

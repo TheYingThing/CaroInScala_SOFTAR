@@ -1,0 +1,10 @@
+{
+  "simulation": "test.StressTest",
+  "simulationId": "stresstest",
+  "start": 1653422214897,
+  "description": "",
+  "scenarios": ["DBStressTesting"],
+  "assertions": [
+
+  ]
+}

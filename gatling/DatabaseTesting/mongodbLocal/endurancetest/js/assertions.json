@@ -1,0 +1,10 @@
+{
+  "simulation": "test.EnduranceTest",
+  "simulationId": "endurancetest",
+  "start": 1653422622485,
+  "description": "",
+  "scenarios": ["DBEnduranceTesting"],
+  "assertions": [
+
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "simulation": "test.SpikeTest",
+  "simulationId": "spiketest",
+  "start": 1653345190313,
+  "description": "",
+  "scenarios": ["DBSpikeTesting"],
+  "assertions": [
+
+  ]
+}

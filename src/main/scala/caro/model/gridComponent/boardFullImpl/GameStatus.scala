@@ -1,6 +1,6 @@
 package caro.model.gridComponent.boardFullImpl
 
-enum GameStatus(message:String):
+enum GameStatus(message:String) :
   case IDLE extends GameStatus("")
   case NOCOLORSLEFT extends GameStatus("\nNo Tiles of this Color left!\n")
   case ILLEGALMOVE extends GameStatus("\nIllegal Move! Minus 10 Points!\n")
@@ -16,4 +16,5 @@ enum GameStatus(message:String):
       case INVALIDCOLOR => "INVALIDCOLOR"
     }
   }
+  
 end GameStatus
