@@ -27,9 +27,6 @@ class Controller @Inject()(var board: BoardInterface) extends ControllerInterfac
   val injector: Injector = Guice.createInjector(new CaroModule)
   val fileIoHost: String = sys.env.getOrElse("FILEIO_HOST", "localhost").toString
   val fileIoPort: Int = sys.env.getOrElse("FILEIO_PORT", "8080").toString.toInt
-  val dao:DAOInterface = injector.getInstance(classOf[DAOInterface])
-  val fileIoHost: String = "localhost"
-  val fileIoPort: Int = 8080
   val database:DatabaseInterface = injector.getInstance(classOf[DatabaseInterface])
 
   def newBoard(p1: String, p2: String): Unit = {
