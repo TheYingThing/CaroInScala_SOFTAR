@@ -52,3 +52,6 @@ grid.json
 .bsp/
 board.xml
 board.json
+
+#github actions
+.github

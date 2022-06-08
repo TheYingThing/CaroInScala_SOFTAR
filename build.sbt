@@ -16,11 +16,6 @@ lazy val fileIo = (project in file("FileIO"))
     name := "FileIO"
   )
 
-/*lazy val grid = (project in file("Grid"))
-  .settings(
-    name := "Grid"
-  )*/
-
 libraryDependencies += ("com.typesafe.akka" %% "akka-http" % "10.2.9").cross(CrossVersion.for3Use2_13)
 
 libraryDependencies += ("com.typesafe.akka" %% "akka-actor-typed" % "2.6.19").cross(CrossVersion.for3Use2_13)
