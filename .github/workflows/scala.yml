@@ -2,9 +2,9 @@ name: Scala CI
 
 on:
   push:
-    branches: [ w11_Tests ]
+    branches: [ master ]
   pull_request:
-    branches: [ w11_Tests ]
+    branches: [ master ]
 
 permissions:
   contents: read
