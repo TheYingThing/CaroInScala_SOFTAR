@@ -95,7 +95,6 @@ object ControllerAPI {
           }
         )
 
-      
       val bindingFuture = Http().newServerAt(host, port).bind(route)
       wait(bindingFuture)
     }
@@ -105,6 +104,5 @@ object ControllerAPI {
       bindingFuture
         .flatMap(_.unbind()) // trigger unbinding from the port
         .onComplete(_ => system.terminate()) // and shutdown when done
-
     }
 }

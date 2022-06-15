@@ -12,8 +12,6 @@ import scala.io.{BufferedSource, Source}
 import scala.language.postfixOps
 import scala.xml.Elem
 
-
-
 class FileIO extends FileIOInterface :
   override def load: String = {
     val bufferedSource: BufferedSource = Source.fromFile("board.json")
