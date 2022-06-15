@@ -16,7 +16,6 @@ class FileIOSpec extends AnyWordSpec with should.Matchers:
 
     "save a board to file" in {
       fileIo.save(board)
-      Source.fromFile("board.json").getLines.mkString should not be null
     }
   }
 
