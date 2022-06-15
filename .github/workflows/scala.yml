@@ -23,13 +23,12 @@ jobs:
           distribution: 'temurin'
       - name: Run tests
         run: sbt test
+        
   tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Build and export coverage
-        env:
-          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-        run: |
-          export CI_BRANCH="${GITHUB_REF#refs/heads/}"
-          sbt clean jacoco jacocoCoveralls
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.COVERALLS_REPO_TOKEN }}
