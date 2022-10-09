@@ -53,3 +53,7 @@ jacocoExcludes := Seq(
 )
 
 enablePlugins(JacocoCoverallsPlugin)
+
+assemblyMergeStrategy in assembly := {
+  case PathList("reference.conf") => MergeStrategy.concat
+}
